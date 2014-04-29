@@ -1,0 +1,1 @@
+An example module for how your module can integrate with Devel generate extras.

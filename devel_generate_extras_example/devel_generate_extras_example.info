@@ -1,0 +1,5 @@
+name = Devel generate extras example
+description = Example of how to integrate Devel Generate Extras into your module. This module replaces the body field of all node types with custom dummy content; it also replaces the image field of articles and the picture field of users.
+package = Examples
+core = 7.x
+tags[] = examples

@@ -1,0 +1,34 @@
+<?php 
+/**
+ * @file
+ * This file contains the testing code for this module
+ */
+
+/**
+ * The test case
+ */
+class devel_generate_extrasTestCase extends DrupalUnitTestCase {
+  /**
+   * Info for this test case.
+   */
+  public static function getInfo() {
+    return array(
+      'name' => t('devel_generate_extras: basic unit test'),
+      'description' => t('unit test.'),
+      'group' => 'devel_generate_extras',
+    );
+  }
+
+  public function setUp() {
+    // specifically include files which contain functions to test.
+    module_load_include('module', 'devel_generate_extras');
+    parent::setUp();
+  }
+
+  /*
+   * Test case for devel_generate_extras.
+   */
+  public function testModule() {
+    // only pure functions should be tested here.
+  }
+}

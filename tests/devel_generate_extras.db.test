@@ -1,0 +1,69 @@
+<?php 
+/**
+ * @file
+ *
+ * This file contains the testing code which requires the database. These
+ * tests are slower than the unit tests so we want to limit them.
+ */
+
+/**
+ * The test case
+ */
+class devel_generate_extrasTestCase extends DrupalWebTestCase {
+  /**
+   * Info for this test case.
+   */
+  public static function getInfo() {
+    return array(
+      'name' => t('Devel generate extras database tests'),
+      'description' => t('Tests for Devel generate extras which require a database.'),
+      'group' => 'Devel generate extras',
+    );
+  }
+
+  /**
+   * Enable the module
+   */
+  public function setUp() {
+    parent::setUp('devel_generate_extras', 'devel_generate_extras_example');
+  }
+
+  /*
+   * Test case for devel_generate_extras with the database.
+   */
+  public function testModule() {
+    $title = $this->randomName();
+    $body = $this->randomName();
+
+    foreach (array(FALSE, TRUE, TRUE) as $generated) {
+      $node = (StdClass)array(
+        'title' => $title,
+        'body' => $body,
+        'type' => 'article',
+      )
+      if ($generated) {
+        $node->devel_generate = array('whatever'),
+      }
+      node_save($node);
+  
+      $node = (StdClass)array(
+        'title' => $title,
+        'body' => $body,
+        'type' => 'page',
+      )
+      if ($generated) {
+        $node->devel_generate = array('whatever'),
+      }
+      node_save($node);
+  
+      $user = (StdClass)array(
+        'name' => $this->randomName(),
+        'mail' => $this->randomName() . '@example.com',
+      );
+      if ($generated) {
+        $user->mail .= '.invalid';
+      }
+      user_save($user);
+    }
+  }
+}

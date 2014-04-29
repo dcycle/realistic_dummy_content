@@ -1,0 +1,17 @@
+<?php
+/**
+ * @file
+ *
+ * This module replaces the body field of all node types with custom dummy
+ * content; it also replaces the image field of articles and the picture field
+ * of users. It does this by placing the dummy replacement content in a
+ * specific directory hierarchy, enclosed.
+ *
+ * This file is left empty because modules do not need to implement any hooks
+ * unless you want finer control over what constitutes dummy content, or you
+ * want to define classes which define different ways of dealing with dummy
+ * content.
+ *
+ * See devel_generate_extras.api.php.
+ * See also the devel_generate_extras module which implements its own hooks.
+ */

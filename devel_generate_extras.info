@@ -1,0 +1,11 @@
+name = Devel generate extras
+description = Generate kick-ass demo content. Do not enable on production sites.
+package = Development
+core = 7.x
+tags[] = developer
+
+files[] = includes/DevelGenerateExtrasBase.inc
+files[] = includes/DevelGenerateExtrasEntity.inc
+files[] = includes/DevelGenerateExtrasNode.inc
+files[] = includes/DevelGenerateExtrasHandlers.inc
+files[] = tests/devel_generate_extras.test
