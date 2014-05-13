@@ -1,0 +1,34 @@
+<?php 
+/**
+ * @file
+ * This file contains the testing code for this module
+ */
+
+/**
+ * The test case
+ */
+class realistic_dummy_content_UnitTestCase extends DrupalUnitTestCase {
+  /**
+   * Info for this test case.
+   */
+  public static function getInfo() {
+    return array(
+      'name' => t('Realistic dummy content unit test'),
+      'description' => t('Test pure functions for Realistic dummy content.'),
+      'group' => 'Realistic dummy content',
+    );
+  }
+
+  public function setUp() {
+    // specifically include files which contain functions to test.
+    module_load_include('module', 'realistic_dummy_content_api');
+    parent::setUp();
+  }
+
+  /*
+   * Test case for realistic_dummy_content_api.
+   */
+  public function testModule() {
+    // only pure functions should be tested here.
+  }
+}

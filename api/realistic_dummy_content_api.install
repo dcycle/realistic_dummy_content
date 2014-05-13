@@ -1,0 +1,14 @@
+<?php
+
+/**
+ * @file
+ *
+ * Install, deployment (update), and uninstall hooks for this module.
+ */
+
+/**
+ * Implements hook_uninstall().
+ */
+function realistic_dummy_content_api_uninstall() {
+  variable_del('realistic_dummy_content_api_rand');
+}

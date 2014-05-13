@@ -1,0 +1,10 @@
+name = Realistic dummy content
+description = Changes user pictures.
+package = Examples
+core = 7.x
+tags[] = examples
+
+dependencies[] = realistic_dummy_content_api
+
+files[] = tests/realistic_dummy_content_api.db.test
+files[] = tests/realistic_dummy_content_api.unit.test

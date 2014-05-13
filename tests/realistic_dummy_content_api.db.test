@@ -1,0 +1,68 @@
+<?php 
+/**
+ * @file
+ *
+ * This file contains the testing code which requires the database. These
+ * tests are slower than the unit tests so we want to limit them.
+ */
+
+/**
+ * The test case
+ */
+class realistic_dummy_content_DatabaseTestCase extends DrupalWebTestCase {
+  /**
+   * Info for this test case.
+   */
+  public static function getInfo() {
+    return array(
+      'name' => t('Realistic dummy content database test'),
+      'description' => t('Test Realistic dummy content with a temporary database.'),
+      'group' => 'Realistic dummy content',
+    );
+  }
+
+  /**
+   * Enable the module
+   */
+  public function setUp() {
+    parent::setUp('realistic_dummy_content_api', 'realistic_dummy_content');
+
+    // Our test needs to check that a given content was replaced, so turn
+    // off random number generator during the test.
+    variable_set('realistic_dummy_content_api_rand', FALSE);
+  }
+
+  /*
+   * Test case for realistic_dummy_content_api with the database.
+   */
+  public function testModule() {
+    // Create a node with the devel_generate property set.
+    $node = (object)array(
+      'title' => $this->randomName(),
+      'type' => 'article',
+    );
+    $node->devel_generate = array('whatever');
+    node_save($node);
+
+    // Create a user with the email ending in .invalid
+    $user = (object)array(
+      'name' => $this->randomName(),
+      'mail' => $this->randomName() . '@example.com.invalid',
+      'picture' => NULL,
+    );
+    user_save($user);
+
+    // Load the user and view
+    $node = node_load(1);
+    $user = user_load(1);
+
+    // The node should have replaced the image with our own.
+    $filesize = $node->field_image[LANGUAGE_NONE][0]['filesize'];
+    $this->assertTrue($filesize == 186838, 'The image file was replaced as expected for node/article/field_image. We know this because the file_size corresponds to the file size of the first candidate image (' . $filesize . ' == 186838).');
+    $this->drupalGet('node/1');
+
+    // for now I cannot manage to test the user profile, because it is always
+    // NULL, see https://drupal.org/node/2266579
+    $this->drupalGet('user/1');
+  }
+}

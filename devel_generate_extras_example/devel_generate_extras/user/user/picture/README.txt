@@ -1,1 +1,0 @@
-The files herein are used by Devel generate extras to replace generated user pictures.

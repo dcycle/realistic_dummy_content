@@ -1,1 +1,0 @@
-The files herein are used by Devel generate extras to replace generated content for fields with the `body` machine name in all entities of all types of all bundles.

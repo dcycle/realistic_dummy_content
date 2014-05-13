@@ -1,0 +1,184 @@
+<?php
+
+/**
+ * Implements hook_entity_insert().
+ */
+function realistic_dummy_content_api_entity_presave($entity, $type) {
+  if ($type != 'user') {
+    _realistic_dummy_content_api_entity_presave($entity, $type);
+  }
+}
+
+/**
+ * Implements hook_user_insert().
+ */
+function realistic_dummy_content_api_user_insert(&$edit, $account, $category) {
+  // This hook is invoked only once when the user is first created, whether
+  // by the administrator or by devel_generate. The hook is not invoked
+  // thereafter.
+  $filter = array(
+    'exclude' => array(
+      'picture',
+    ),
+  );
+  _realistic_dummy_content_api_entity_presave($account, 'user', $filter);
+}
+
+/**
+ * Implements hook_user_presave().
+ */
+function realistic_dummy_content_api_user_presave(&$edit, $account, $category) {
+  // $edit['uid'] can have several values:
+  // This hook is invoked twice when content is created via devel_generate,
+  // once with $edit['uid'] set to NULL (which causes us to do nothing) and
+  // once with $edit['uid'] set to the UID of newly-created user object.
+  // When the user is changed via the admin interface, this hook is invoked
+  // but $edit['uid'] is not set.
+  if (isset($edit['uid']) && $edit['uid']) {
+    $filter = array(
+      'include' => array(
+        'picture',
+      ),
+    );
+    $user = (object)$edit;
+    _realistic_dummy_content_api_entity_presave($user, 'user', $filter);
+    $edit = (array)$user;
+  }
+}
+
+/**
+ *
+ */
+function _realistic_dummy_content_api_entity_presave($entity, $type, $filter = array()) {
+  try {
+    if (realistic_dummy_content_api_is_dummy($entity, $type)) {
+      $candidate = $entity;
+      realistic_dummy_content_api_improve_dummy_content($candidate, $type, $filter);
+      realistic_dummy_content_api_validate($candidate, $type);
+      //$entity = $candidate;
+    }
+  }
+  catch (Exception $e) {
+    drupal_set_message(t('realistic_dummy_content_api failed to modify dummy objects: message: @m', array('@m' => $e->getMessage())), 'error', FALSE);
+  }
+}
+
+/**
+ * Checks if a given entity is dummy content.
+ *
+ * @param $entity
+ *   The object for a given bundle, for example this can be a user object
+ *   or a node object.
+ * @param $type
+ *   The bundle of the information to change, for example 'user' or 'node'.
+ *
+ * @return
+ *   TRUE if at least one module implemented hook_realistic_dummy_content_api_dummy
+ *   and thinks the entity is a dummy objects; FALSE otherwise.
+ */
+function realistic_dummy_content_api_is_dummy($entity, $type) {
+  foreach (module_invoke_all('realistic_dummy_content_api_dummy', $entity, $type) as $dummy) {
+    if ($dummy) {
+      return TRUE;
+    }
+  }
+  return FALSE;
+}
+
+/**
+ * Insert or improve dummy data in an entity of a given type.
+ *
+ * @param $entity
+ *   The object for a given bundle, for example this can be a user object
+ *   or a node object.
+ * @param $type
+ *   The bundle of the information to change, for example 'user' or 'node'.
+ *
+ * @throws
+ *   Exception
+ */
+function realistic_dummy_content_api_improve_dummy_content(&$entity, $type, $filter = array()) {
+  $modifiers = module_invoke_all('realistic_dummy_content_api_class', $entity, $type, $filter);
+  foreach ($modifiers as $modifier_class) {
+    realistic_dummy_content_api_validate_class($modifier_class);
+    $modifier = new $modifier_class($entity, $type, $filter);
+    $modifier->Modify();
+    $entity = $modifier->GetEntity();
+  }
+}
+
+/**
+ * Throw an exception if an entity is not valid
+ */
+function realistic_dummy_content_api_validate($entity, $type) {
+  // Throw an exception here if an entity is not valid, for example if two users
+  // have the same email address or name, or anything else.
+}
+
+/**
+ * Validate that a class is a valid subclasss of RealisticDummyContentAPIBase
+ *
+ * @param $class
+ *   A class name
+ *
+ * @throws
+ *   Exception
+ */
+function realistic_dummy_content_api_validate_class($class) {
+  if (!class_exists($class)) {
+    throw new Exception(t('@class is not a valid class; make sure you include its file or use Drupal\'s autoload mechanism: name your include file with the same name as the class, and add it to the .info file, then clear your cache.', array('@class' => $class)));
+  }
+  if (!is_subclass_of($class, 'RealisticDummyContentAPIBase')) {
+    throw new Exception(t('@class is a valid class but it is not a subclass of RealisticDummyContentAPIBase.', array('@class' => $class)));
+  }
+}
+
+/**
+ * Implements hook_realistic_dummy_content_api_class().
+ */
+function realistic_dummy_content_api_realistic_dummy_content_api_class($entity, $type, $filter = array()) {
+  return array(
+    // Insert class names for all classes which can modify entities for the
+    // given type. These classes must exist, either through Drupal's
+    // autoload system or be included explictely, and they must be
+    // subclasses of RealisticDummyContentAPIBase
+    'RealisticDummyContentAPIFieldModifier',
+  );
+}
+
+/**
+ * Implements hook_realistic_dummy_content_api_dummy().
+ */
+function realistic_dummy_content_api_realistic_dummy_content_api_dummy($entity, $type) {
+  $return = FALSE;
+  switch ($type) {
+    case 'node':
+      if (isset($entity->devel_generate)) {
+        return TRUE;
+      }
+      break;
+    case 'user':
+      // devel_generate puts .invalid at the end of the generated user's
+      // email address. This module should not be activated on a production
+      // site, or else anyone can put ".invalid" at the end of their email
+      // address and their profile's content will be overridden.
+      $suffix = '.invalid';
+      if (drupal_substr($entity->mail, strlen($entity->mail) - strlen($suffix)) == $suffix) {
+        return TRUE;
+      }
+      break;
+    default:
+      break;
+  }
+  return $return;
+}
+
+/**
+ * Generate a random number, or during tests, give the first available number.
+ */
+function realistic_dummy_content_api_rand($start, $end) {
+  if (variable_get('realistic_dummy_content_api_rand', TRUE)) {
+    return rand($start, $end);
+  }
+  return $start;
+}

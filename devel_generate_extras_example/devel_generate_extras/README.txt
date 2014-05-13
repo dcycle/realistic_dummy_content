@@ -1,1 +1,0 @@
-Every module can have a `devel_generate_extras` folder. Devel generate extras will look for this folder to find content with which to replace stock generated content for fields in entities of various bundles and types.

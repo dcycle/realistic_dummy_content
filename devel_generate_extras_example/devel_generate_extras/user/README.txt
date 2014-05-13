@@ -1,1 +1,0 @@
-The files herein are used by Devel generate extras to replace generated content for fields in user bundles. In the case of users, the bundle `user` contains only one type, `user`. We are still using the `bundle/type` structure, because it's the same structure we are using for all entities.
