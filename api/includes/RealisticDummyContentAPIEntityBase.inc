@@ -1,5 +1,18 @@
 <?php
 
+/**
+ * @file
+ *
+ * Define RealisticDummyContentAPIEntityBase autoload class.
+ */
+
+/**
+ * Generic entity manipulator.
+ *
+ * Class with an abstract Modify() method. Subclasses can have
+ * access to entities in order to override demo content in them.
+ */
+
 abstract class RealisticDummyContentAPIEntityBase extends RealisticDummyContentAPIBase {
   private $entity;
   private $type;

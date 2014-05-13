@@ -7,11 +7,13 @@
  * of users. It does this by placing the dummy replacement content in a
  * specific directory hierarchy, enclosed.
  *
- * This file is left empty because modules do not need to implement any hooks
- * unless you want finer control over what constitutes dummy content, or you
- * want to define classes which define different ways of dealing with dummy
- * content.
+ * This file is left empty because modules do not need to implement any hooks,
+ * although hooks are available for finer control over what constitutes
+ * dummy content.
  *
- * See realistic_dummy_content.api.php.
- * See also the realistic_dummy_content module which implements its own hooks.
+ * See realistic_dummy_content.api.php for hooks you can implement.
+ * See also the realistic_dummy_content_api module which implements its own
+ * hooks.
+ *
+ * See also https://drupal.org/node/2266627.
  */

@@ -29,6 +29,7 @@ class realistic_dummy_content_UnitTestCase extends DrupalUnitTestCase {
    * Test case for realistic_dummy_content_api.
    */
   public function testModule() {
-    // only pure functions should be tested here.
+    // only pure functions should be tested here. @TODO, see
+    // https://drupal.org/node/2266615
   }
 }

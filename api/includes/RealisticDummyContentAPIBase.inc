@@ -14,7 +14,9 @@
  * by a subclass of this, but we leave the door open to manipulators
  * of other types of data (including menus, for example, which are
  * not entites), which are not yet supported but which could be
- * in future releases.
+ * in future releases. See the issue queue or open a new issue
+ * at https://drupal.org/project/issues/realistic_dummy_content
+ * if you would like to help with this!
  */
 abstract class RealisticDummyContentAPIBase {
 }

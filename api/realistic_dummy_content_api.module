@@ -1,6 +1,13 @@
 <?php
 
 /**
+ * @file
+ *
+ * API code allowing other modules to generate realistic dummy content.
+ * See the Realistic Dummy Content module for an example of how to use.
+ */
+
+/**
  * Implements hook_entity_insert().
  */
 function realistic_dummy_content_api_entity_presave($entity, $type) {
@@ -47,7 +54,37 @@ function realistic_dummy_content_api_user_presave(&$edit, $account, $category) {
 }
 
 /**
+ * Generic function called by various hooks in Drupal.
  *
+ * hook_entity_insert(), hook_user_insert() and hook_user_presave() have subtle
+ * differences. This function aims to be more abstract and uses the concept of
+ * a filter, see below.
+ *
+ * @param $entity
+ *   The object for a given type, for example this can be a user object
+ *   or a node object.
+ * @param $type
+ *   The entity type of the information to change, for example 'user' or 'node'.
+ * @param $filter
+ *   If set, only certain fields will be considered when manipulating
+ *   the object. This can be useful, for example for users, because
+ *   two separate manipulations need to be performed, depending on whether
+ *   hook_user_insert() or hook_user_presave(). Both hooks need to modify
+ *   only certain properties and fields, but taken together the entire
+ *   object can be manipulated.
+ *   The filter is an associative array which can contain no key (all
+ *   fields and properties should be manipulated), the include key (fields
+ *   included are the only ones to be manipulated, or the exclude key (all
+ *   fields except those included are the ones to be manipulated).
+ *
+ *   realistic_dummy_content_api_user_insert() defines the array
+ *   ('exclude' => array(picture)) whereas
+ *   realistic_dummy_content_api_user_presave() defines the array
+ *   ('include' => array(picture)). Therefore taken together these two
+ *   hooks manipulate the entire user object, but in two phases.
+ *
+ *   This allows hook implementations to return a different class based on
+ *   the type of filter.
  */
 function _realistic_dummy_content_api_entity_presave($entity, $type, $filter = array()) {
   try {
@@ -67,10 +104,10 @@ function _realistic_dummy_content_api_entity_presave($entity, $type, $filter = a
  * Checks if a given entity is dummy content.
  *
  * @param $entity
- *   The object for a given bundle, for example this can be a user object
+ *   The object for a given entity type, for example this can be a user object
  *   or a node object.
  * @param $type
- *   The bundle of the information to change, for example 'user' or 'node'.
+ *   The type of the information to change, for example 'user' or 'node'.
  *
  * @return
  *   TRUE if at least one module implemented hook_realistic_dummy_content_api_dummy
@@ -89,10 +126,30 @@ function realistic_dummy_content_api_is_dummy($entity, $type) {
  * Insert or improve dummy data in an entity of a given type.
  *
  * @param $entity
- *   The object for a given bundle, for example this can be a user object
+ *   The object for a given type, for example this can be a user object
  *   or a node object.
  * @param $type
- *   The bundle of the information to change, for example 'user' or 'node'.
+ *   The type of the information to change, for example 'user' or 'node'.
+ * @param $filter
+ *   If set, only certain fields will be considered when manipulating
+ *   the object. This can be useful, for example for users, because
+ *   two separate manipulations need to be performed, depending on whether
+ *   hook_user_insert() or hook_user_presave(). Both hooks need to modify
+ *   only certain properties and fields, but taken together the entire
+ *   object can be manipulated.
+ *   The filter is an associative array which can contain no key (all
+ *   fields and properties should be manipulated), the include key (fields
+ *   included are the only ones to be manipulated, or the exclude key (all
+ *   fields except those included are the ones to be manipulated).
+ *
+ *   realistic_dummy_content_api_user_insert() defines the array
+ *   ('exclude' => array(picture)) whereas
+ *   realistic_dummy_content_api_user_presave() defines the array
+ *   ('include' => array(picture)). Therefore taken together these two
+ *   hooks manipulate the entire user object, but in two phases.
+ *
+ *   This allows hook implementations to return a different class based on
+ *   the type of filter.
  *
  * @throws
  *   Exception

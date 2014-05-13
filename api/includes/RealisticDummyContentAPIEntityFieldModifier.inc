@@ -11,7 +11,7 @@
  *
  * All manipulation of generated content to make it more realistic
  * passes through modifiers (direct or indirect subclasses of
- * RealisticDummyContentAPIBase).
+ * RealisticDummyContentAPIEntityBase).
  *
  * This class allows active modules to put files in a specific
  * directory hierarchy resembling realistic_dummy_content/fields/
@@ -26,6 +26,9 @@
  * picture property, and the title of nodes.
  */
 class RealisticDummyContentAPIFieldModifier extends RealisticDummyContentAPIEntityBase {
+  /**
+   * Get properties for the entity, for example user's picture or node's name.
+   */
   function GetProperties() {
     $modifiable_properties = array();
     $fields = $this->GetFields();
@@ -37,6 +40,9 @@ class RealisticDummyContentAPIFieldModifier extends RealisticDummyContentAPIEnti
     return $modifiable_properties;
   }
 
+  /**
+   * Get fields for the entity, for example body or field_image.
+   */
   function GetFields() {
     $modifiable_fields = array();
     $entity = $this->GetEntity();
@@ -51,9 +57,10 @@ class RealisticDummyContentAPIFieldModifier extends RealisticDummyContentAPIEnti
     return $modifiable_fields;
   }
 
+  /**
+   * Override RealisticDummyContentAPIEntityBase::Modify().
+   */
   function Modify() {
-    $fields = $this->GetFields();
-    $properties = $this->GetProperties();
     foreach ($this->GetFields() as $field) {
       $files = $this->GetCandidateFiles($field);
       $this->ChangeField($files, $field);
@@ -114,6 +121,9 @@ class RealisticDummyContentAPIFieldModifier extends RealisticDummyContentAPIEnti
 
   /**
    * Given a list of files, return a value from one of them randomly.
+   *
+   * @TODO this function only supports image fields, picture properties, and
+   * text areas for now, see https://drupal.org/node/2266639.
    *
    * @param $files
    *   An array of file objects

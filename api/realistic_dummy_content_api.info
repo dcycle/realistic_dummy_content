@@ -1,5 +1,5 @@
-name = Realistic dummy content
-description = Generate kick-ass demo content. Do not enable on production sites.
+name = Realistic Dummy Content API
+description = Allows enabled modules to generate kick-ass demo content (see the Realistic Dummy Content module for an example of how to do this). Do not enable on production sites.
 package = Development
 core = 7.x
 tags[] = developer
@@ -8,4 +8,5 @@ files[] = includes/RealisticDummyContentAPIBase.inc
 files[] = includes/RealisticDummyContentAPIEntityBase.inc
 files[] = includes/RealisticDummyContentAPIEntityFieldModifier.inc
 
-files[] = tests/realistic_dummy_content_api.test
+files[] = tests/realistic_dummy_content_api.db.test
+files[] = tests/realistic_dummy_content_api.unit.test
