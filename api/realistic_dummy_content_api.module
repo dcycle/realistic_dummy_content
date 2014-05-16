@@ -170,6 +170,7 @@ function realistic_dummy_content_api_improve_dummy_content(&$entity, $type, $fil
 function realistic_dummy_content_api_validate($entity, $type) {
   // Throw an exception here if an entity is not valid, for example if two users
   // have the same email address or name, or anything else.
+  // @TODO provide a hook for third-party modules to manage this.
 }
 
 /**
@@ -208,12 +209,14 @@ function realistic_dummy_content_api_realistic_dummy_content_api_class($entity, 
  */
 function realistic_dummy_content_api_realistic_dummy_content_api_dummy($entity, $type) {
   $return = FALSE;
+  // Any entity with the devel_generate property set should be considered
+  // dummy content. although not all dummy content has this flag set.
+  // See https://drupal.org/node/2252965
+  // See https://drupal.org/node/2257271
+  if (isset($entity->devel_generate)) {
+    return TRUE;
+  }
   switch ($type) {
-    case 'node':
-      if (isset($entity->devel_generate)) {
-        return TRUE;
-      }
-      break;
     case 'user':
       // devel_generate puts .invalid at the end of the generated user's
       // email address. This module should not be activated on a production
