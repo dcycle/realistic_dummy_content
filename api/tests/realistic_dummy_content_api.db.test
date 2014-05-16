@@ -57,8 +57,8 @@ class realistic_dummy_content_DatabaseTestCase extends DrupalWebTestCase {
     $user = user_load(1);
 
     // The node should have replaced the image with our own.
-    $filesize = $node->field_image[LANGUAGE_NONE][0]['filesize'];
-    $this->assertTrue($filesize == 186838, 'The image file was replaced as expected for node/article/field_image. We know this because the file_size corresponds to the file size of the first candidate image (' . $filesize . ' == 186838).');
+    $filename = $node->field_image[LANGUAGE_NONE][0]['filename'];
+    $this->assertTrue(drupal_substr($filename, 0, drupal_strlen('dummyfile')) == 'dummyfile', 'The image file was replaced as expected for node/article/field_image. We know this because the filename starts with the string "dummyfile"');
     $this->drupalGet('node/1');
 
     // for now I cannot manage to test the user profile, because it is always
