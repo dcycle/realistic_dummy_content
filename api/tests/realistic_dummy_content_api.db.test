@@ -48,7 +48,7 @@ class realistic_dummy_content_DatabaseTestCase extends DrupalWebTestCase {
     $user = (object)array(
       'name' => $this->randomName(),
       'mail' => $this->randomName() . '@example.com.invalid',
-      'picture' => NULL,
+      'picture' => array(),
     );
     user_save($user);
 
@@ -59,10 +59,8 @@ class realistic_dummy_content_DatabaseTestCase extends DrupalWebTestCase {
     // The node should have replaced the image with our own.
     $filename = $node->field_image[LANGUAGE_NONE][0]['filename'];
     $this->assertTrue(drupal_substr($filename, 0, drupal_strlen('dummyfile')) == 'dummyfile', 'The image file was replaced as expected for node/article/field_image. We know this because the filename starts with the string "dummyfile"');
-    $this->drupalGet('node/1');
 
     // for now I cannot manage to test the user profile, because it is always
     // NULL, see https://drupal.org/node/2266579
-    $this->drupalGet('user/1');
   }
 }
