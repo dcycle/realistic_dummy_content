@@ -40,8 +40,10 @@ function realistic_dummy_content_api_user_presave(&$edit, $account, $category) {
   // once with $edit['uid'] set to NULL (which causes us to do nothing) and
   // once with $edit['uid'] set to the UID of newly-created user object.
   // When the user is changed via the admin interface, this hook is invoked
-  // but $edit['uid'] is not set.
-  if (isset($edit['uid']) && $edit['uid']) {
+  // but $edit['uid'] is not set. $edit['uid'] is never set during testing,
+  // so we use $account->uid instead. $account->uid is set whether we are
+  // creating the user in our test code or it's created via devel_generate.
+  if (isset($account->uid) && $account->uid) {
     $filter = array(
       'include' => array(
         'picture',
@@ -223,7 +225,7 @@ function realistic_dummy_content_api_realistic_dummy_content_api_dummy($entity, 
       // site, or else anyone can put ".invalid" at the end of their email
       // address and their profile's content will be overridden.
       $suffix = '.invalid';
-      if (drupal_substr($entity->mail, strlen($entity->mail) - strlen($suffix)) == $suffix) {
+      if (isset($entity->mail) && drupal_substr($entity->mail, strlen($entity->mail) - strlen($suffix)) == $suffix) {
         return TRUE;
       }
       break;

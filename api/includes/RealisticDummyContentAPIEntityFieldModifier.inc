@@ -65,7 +65,8 @@ class RealisticDummyContentAPIFieldModifier extends RealisticDummyContentAPIEnti
       $files = $this->GetCandidateFiles($field);
       $this->ChangeField($files, $field);
     }
-    foreach ($this->GetProperties() as $field) {
+    $fields = $this->GetProperties();
+    foreach ($fields as $field) {
       $files = $this->GetCandidateFiles($field);
       $this->ChangeProperty($files, $field);
     }

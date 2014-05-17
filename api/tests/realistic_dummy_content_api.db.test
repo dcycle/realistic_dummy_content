@@ -25,7 +25,7 @@ class realistic_dummy_content_DatabaseTestCase extends DrupalWebTestCase {
    * Enable the module
    */
   public function setUp() {
-    parent::setUp('realistic_dummy_content_api', 'realistic_dummy_content');
+    parent::setUp('realistic_dummy_content_api', 'realistic_dummy_content', 'devel_generate');
 
     // Our test needs to check that a given content was replaced, so turn
     // off random number generator during the test.
@@ -44,23 +44,19 @@ class realistic_dummy_content_DatabaseTestCase extends DrupalWebTestCase {
     $node->devel_generate = array('whatever');
     node_save($node);
 
-    // Create a user with the email ending in .invalid
-    $user = (object)array(
-      'name' => $this->randomName(),
-      'mail' => $this->randomName() . '@example.com.invalid',
-      'picture' => array(),
-    );
-    user_save($user);
+    // Create a user with devel_generate
+    module_load_include('inc', 'devel_generate');
+    devel_create_users(1, 0);
 
     // Load the user and view
     $node = node_load(1);
-    $user = user_load(1);
+    $user = user_load(2);
 
     // The node should have replaced the image with our own.
     $filename = $node->field_image[LANGUAGE_NONE][0]['filename'];
     $this->assertTrue(drupal_substr($filename, 0, drupal_strlen('dummyfile')) == 'dummyfile', 'The image file was replaced as expected for node/article/field_image. We know this because the filename starts with the string "dummyfile"');
 
-    // for now I cannot manage to test the user profile, because it is always
-    // NULL, see https://drupal.org/node/2266579
+    $filename = $user->picture->filename;
+    $this->assertTrue(drupal_substr($filename, 0, drupal_strlen('dummyfile')) == 'dummyfile', 'The user\'s picture file was replaced as expected. We know this because the filename starts with the string "dummyfile"');
   }
 }
