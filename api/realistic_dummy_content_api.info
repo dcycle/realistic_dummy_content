@@ -11,4 +11,4 @@ files[] = includes/RealisticDummyContentAPIEntityFieldModifier.inc
 files[] = tests/realistic_dummy_content_api.db.test
 files[] = tests/realistic_dummy_content_api.unit.test
 
-test_dependencies[] = devel_generate
+test_dependencies[] = devel
