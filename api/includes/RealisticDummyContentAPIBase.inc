@@ -19,4 +19,12 @@
  * if you would like to help with this!
  */
 abstract class RealisticDummyContentAPIBase {
+  private $env;
+
+  function env() {
+    if (!$env) {
+      $env = new RealisticDummyContentAPILiveEnv;
+    }
+    return $env;
+  }
 }

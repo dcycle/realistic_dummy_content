@@ -143,8 +143,8 @@ class RealisticDummyContentAPIFieldModifier extends RealisticDummyContentAPIEnti
     if (count($files)) {
       $file = $files[$this->rand(0, count($files) - 1)];
       $filename = $file->filename;
-      $extension = pathinfo($filename, PATHINFO_EXTENSION);
-      $contents = file_get_contents($file->uri);
+      $extension = $this->env()->pathinfo($filename, PATHINFO_EXTENSION);
+      $contents = $this->env()->file_get_contents($file->uri);
       switch ($extension) {
         case 'txt':
           return array(
