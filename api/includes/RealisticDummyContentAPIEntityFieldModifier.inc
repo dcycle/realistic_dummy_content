@@ -143,7 +143,7 @@ class RealisticDummyContentAPIFieldModifier extends RealisticDummyContentAPIEnti
     if (count($files)) {
       $file = $files[$this->rand(0, count($files) - 1)];
       $filename = $file->filename;
-      $extension = $this->env()->pathinfo($filename, PATHINFO_EXTENSION);
+      $extension = pathinfo($filename, PATHINFO_EXTENSION);
       $contents = $this->env()->file_get_contents($file->uri);
       switch ($extension) {
         case 'txt':
@@ -158,7 +158,7 @@ class RealisticDummyContentAPIFieldModifier extends RealisticDummyContentAPIEnti
         case 'jpg':
         case 'gif':
           $random = md5($file->uri) . rand(1000000000, 9999999999);
-          $file = file_save_data($contents, 'public://dummyfile' . $random . '.' . $extension);
+          $file = $this->env()->file_save_data($contents, 'public://dummyfile' . $random . '.' . $extension);
           $file->uid = $this->GetUid();
           if ($is_array) {
             return (array)file_save($file);

@@ -14,10 +14,13 @@
  * class represents the live environment.
  */
 class RealisticDummyContentAPILiveEnv extends RealisticDummyContentAPIEnv {
-  function _pathinfo_($path, $options) {
-    return pathinfo($path, $options);
-  }
   function _file_get_contents_($filename) {
     return file_get_contents($filename);
+  }
+  function _file_save_data_($data, $destination = NULL) {
+    return file_save_data($data, $destination);
+  }
+  function _file_save_(stdClass $file) {
+    return file_save($file);
   }
 }
