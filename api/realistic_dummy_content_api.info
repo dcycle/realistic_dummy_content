@@ -10,6 +10,9 @@ files[] = includes/RealisticDummyContentAPIEntityFieldModifier.inc
 files[] = includes/RealisticDummyContentAPIEnv.inc
 files[] = includes/RealisticDummyContentAPILiveEnv.inc
 files[] = includes/RealisticDummyContentAPIDummyEnv.inc
+files[] = includes/RealisticDummyContentAPIRecipe.inc
+files[] = includes/RealisticDummyContentAPIDevelGenerateGenerator.inc
+files[] = includes/RealisticDummyContentAPIGenerator.inc
 
 files[] = tests/realistic_dummy_content_api.db.test
 files[] = tests/realistic_dummy_content_api.unit.test

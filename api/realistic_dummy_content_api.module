@@ -8,6 +8,14 @@
  */
 
 /**
+ * Interface for a log class
+ */
+interface RealisticDummyContentAPILog {
+  public function log($text, $vars = array());
+  public function error($text, $vars = array());
+}
+
+/**
  * Implements hook_entity_insert().
  */
 function realistic_dummy_content_api_entity_presave($entity, $type) {
@@ -243,4 +251,11 @@ function realistic_dummy_content_api_rand($start, $end) {
     return rand($start, $end);
   }
   return $start;
+}
+
+/**
+ * Attempts to generate all realistic content for the current site.
+ */
+function realistic_dummy_content_api_apply_recipe($log = NULL) {
+  RealisticDummyContentAPIRecipe::Run($log);
 }
