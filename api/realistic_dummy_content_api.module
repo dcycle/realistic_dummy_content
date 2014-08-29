@@ -35,6 +35,17 @@ function realistic_dummy_content_api_user_insert(&$edit, $account, $category) {
  * Implements hook_user_presave().
  */
 function realistic_dummy_content_api_user_presave(&$edit, $account, $category) {
+  // This hook is called when content is updated, in which case we don't want
+  // to tamper with it. When content is first created, the $account's is_new
+  // property is set to FALSE, se we can't depend on that to determine whether
+  // the user is new or not. However, $edit['picture_delete'] is _only_ set when
+  // users are updated, so we can check for that to determine whether or not to
+  // continue modifying the account.
+  if (isset($edit['picture_delete'])) {
+    // not a new account, don't mess with it.
+    return;
+  }
+  // At this point we know we are dealing with a new user.
   // $edit['uid'] can have several values:
   // This hook is invoked twice when content is created via devel_generate,
   // once with $edit['uid'] set to NULL (which causes us to do nothing) and
