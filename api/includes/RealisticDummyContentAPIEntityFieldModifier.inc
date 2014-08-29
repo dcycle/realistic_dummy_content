@@ -61,7 +61,8 @@ class RealisticDummyContentAPIFieldModifier extends RealisticDummyContentAPIEnti
    * Override RealisticDummyContentAPIEntityBase::Modify().
    */
   function Modify() {
-    foreach ($this->GetFields() as $field) {
+    $fields = $this->GetFields();
+    foreach ($fields as $field) {
       $files = $this->GetCandidateFiles($field);
       $this->ChangeField($files, $field);
     }
@@ -108,6 +109,9 @@ class RealisticDummyContentAPIFieldModifier extends RealisticDummyContentAPIEnti
     $value = $this->ValueFromFile($files);
     if ($value) {
       $entity = $this->GetEntity();
+      if (is_array($value) && isset($value['value'])) {
+        $value = $value['value'];
+      }
       $entity->{$property} = $value;
       $this->SetEntity($entity);
     }
