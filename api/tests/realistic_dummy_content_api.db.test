@@ -58,5 +58,9 @@ class realistic_dummy_content_DatabaseTestCase extends DrupalWebTestCase {
 
     $filename = $user->picture->filename;
     $this->assertTrue(drupal_substr($filename, 0, drupal_strlen('dummyfile')) == 'dummyfile', 'The user\'s picture file was replaced as expected. We know this because the filename starts with the string "dummyfile"');
+    $current_pictre = $user->picture;
+    user_save($user);
+    $user = user_load($user->uid);
+    $this->assertTrue($current_pictre == $user->picture, 'The dummy file generation happens when the user is first created, not when it is resaved.');
   }
 }
