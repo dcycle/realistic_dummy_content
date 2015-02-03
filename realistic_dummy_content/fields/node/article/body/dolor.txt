@@ -1,4 +1,4 @@
-Lorem
+Dolor
 
 <strong>lorem ipsum dolor sit amet</strong>
 

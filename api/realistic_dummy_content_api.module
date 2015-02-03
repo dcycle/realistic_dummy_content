@@ -8,6 +8,12 @@
  */
 
 /**
+ * Type of number generation.
+ */
+define('REALISTIC_DUMMY_CONTENT_SEQUENTIAL', FALSE);
+define('REALISTIC_DUMMY_CONTENT_RANDOM', TRUE);
+
+/**
  * Interface for a log class
  */
 interface RealisticDummyContentAPILog {
@@ -255,13 +261,52 @@ function realistic_dummy_content_api_realistic_dummy_content_api_dummy($entity, 
 }
 
 /**
- * Generate a random number, or during tests, give the first available number.
+ * Generate a random, or sequential, number
+ *
+ * By default, this function will return a random number between $start and $end
+ * inclusively. If you set the realistic_dummy_content_api_rand variable to
+ * REALISTIC_DUMMY_CONTENT_SEQUENTIAL, for example for automated tested or in a recipe
+ * (an example can be found at realistic_dummy_content/recipe/realistic_dummy_content.recipe.inc),
+ * then this function will return the starting number on every call until the hash is
+ * changed, at which case it returns the second number, and so on.
+ *
+ * @param $start
+ *   The first possible number in the range.
+ * @param $end
+ *   The last possible number in the range.
+ * @param $hash = NULL
+ *   This paramter is ignored unless you set the realistic_dummy_content_api_rand variable
+ *   to REALISTIC_DUMMY_CONTENT_SEQUENTIAL, in which case the number returned is in
+ *   sequence: each call to realistic_dummy_content_api_rand()'s return is incremented by
+ *   one, unless $hash is the same as in the last call, in which case the return will the
+ *   same as in the last call.
+ *
+ * @return
+ *   A random number by default, or a sequential number if you set the
+ *   realistic_dummy_content_api_rand variable to REALISTIC_DUMMY_CONTENT_SEQUENTIAL.
+ *   Please see the description of the $hash parameter, above.
  */
-function realistic_dummy_content_api_rand($start, $end) {
-  if (variable_get('realistic_dummy_content_api_rand', TRUE)) {
+function realistic_dummy_content_api_rand($start, $end, $hash = NULL) {
+  if (variable_get('realistic_dummy_content_api_rand', REALISTIC_DUMMY_CONTENT_RANDOM)) {
     return rand($start, $end);
   }
-  return $start;
+  static $static_hash = NULL;
+  if (!$static_hash) {
+    $static_hash = $hash;
+  }
+  static $current = NULL;
+  if (!$current) {
+    $current = $start;
+  }
+  if ($static_hash != $hash) {
+    $static_hash = $hash;
+    $current -= $start;
+    $current++;
+    $current %= ($end - $start + 1);
+    $current += $start;
+  }
+
+  return $current;
 }
 
 /**

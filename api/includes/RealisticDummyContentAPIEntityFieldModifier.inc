@@ -121,7 +121,7 @@ class RealisticDummyContentAPIFieldModifier extends RealisticDummyContentAPIEnti
    * Generate a random number, or during tests, give the first available number.
    */
   function rand($start, $end) {
-    return realistic_dummy_content_api_rand($start, $end);
+    return realistic_dummy_content_api_rand($start, $end, $this->GetHash());
   }
 
   /**

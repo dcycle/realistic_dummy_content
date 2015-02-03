@@ -14,6 +14,7 @@
  */
 
 abstract class RealisticDummyContentAPIEntityBase extends RealisticDummyContentAPIBase {
+  private $hash;
   private $entity;
   private $type;
   private $filter;
@@ -45,6 +46,7 @@ abstract class RealisticDummyContentAPIEntityBase extends RealisticDummyContentA
    */
   function __construct($entity, $type, $filter = array()) {
     $this->entity = $entity;
+    $this->hash = md5(serialize($entity));
     $this->type = $type;
     $this->filter = $filter;
   }
@@ -54,6 +56,13 @@ abstract class RealisticDummyContentAPIEntityBase extends RealisticDummyContentA
    */
   function GetEntity() {
     return $this->entity;
+  }
+
+  /**
+   * Getter for the hash which uniquely identifies this entity.
+   */
+  function GetHash() {
+    return $this->hash;
   }
 
   /**
