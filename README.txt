@@ -14,12 +14,16 @@ Extending this module
 This project contains two modules:
 
  * Realistic Dummy Content API (realistic\_dummy\_content\_api), which looks inside every enabled module for files which contain images or text, and replaces available fields.
- 
+
  * Realistic Dummy Content (realistic\_dummy\_content), which replaces user pictures and node article images with portraits and stock photography. You can reproduce the `realistic_dummy_content/realistic_dummy_content` directory structure in your own modules for better control of the realistic dummy content you want to generate. If you don't want the example stock images that ship with this module, you can disable Realistic Dummy Content (realistic\_dummy\_content) and leave Realistic Dummy Content API (realistic\_dummy\_content\_api) enabled.
- 
-Next steps
+
+Issue queue
 ----------
 
-This module is in early stages of development but should be working. See the [issue queue](https://drupal.org/project/issues/2253941?categories=All) if you have questions, bug reports or feature requests.
+See the [issue queue](https://drupal.org/project/issues/2253941?categories=All) if you have questions, bug reports or feature requests.
 
-*This module is sponsored by [CGI](http://cgi.com/)*
+Sponsors
+--------
+
+ * [The Linux Foundation](http://www.linuxfoundation.org/) (Current)
+ * [CGI](http://cgi.com/) (Initial development)
