@@ -152,7 +152,7 @@ class RealisticDummyContentAPIFieldModifier extends RealisticDummyContentAPIEnti
       switch ($extension) {
         case 'txt':
           return array(
-            'value' => $contents,
+            'value' => trim($contents),
             // @TODO this is not always the default, allow the user to change
             // this via a hook, or some other mechanism.
             'format' => 'filtered_html',
