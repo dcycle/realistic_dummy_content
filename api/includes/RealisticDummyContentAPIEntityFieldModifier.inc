@@ -206,9 +206,11 @@ class RealisticDummyContentAPIFieldModifier extends RealisticDummyContentAPIEnti
     $files = array();
     foreach ($candidate_files as $candidate_file) {
       if ($candidate_file->filename != 'README.txt') {
-        $files[] = $candidate_file;
+        $files[$candidate_file->filename] = $candidate_file;
       }
     }
-    return $files;
+    // We expect the files to be sorted alphabetically, which is not the case on all systems.
+    ksort($files);
+    return array_values($files);
   }
 }
