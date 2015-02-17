@@ -22,6 +22,19 @@ Issue queue
 
 See the [issue queue](https://drupal.org/project/issues/2253941?categories=All) if you have questions, bug reports or feature requests.
 
+Docker integration
+--------
+
+To test this module you can run:
+
+    ./scripts/test.sh
+
+To create a development environment, you can run:
+
+    ./scripts/dev.sh
+
+These scripts are meant to be used with [Docker](https://www.docker.com) and [CoreOS](https://coreos.com).
+
 Sponsors
 --------
 
