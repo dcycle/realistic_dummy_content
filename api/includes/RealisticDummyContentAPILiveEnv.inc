@@ -14,6 +14,9 @@
  * class represents the live environment.
  */
 class RealisticDummyContentAPILiveEnv extends RealisticDummyContentAPIEnv {
+  /**
+   * {@inheritdoc}
+   */
   function _file_get_contents_($filename) {
     return file_get_contents($filename);
   }

@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * @file
  * This file contains the testing code for this module
@@ -47,5 +47,38 @@ $this->assertTrue(realistic_dummy_content_api_realistic_dummy_content_api_dummy(
 
     unset($node->devel_generate);
 $this->assertFALSE(realistic_dummy_content_api_realistic_dummy_content_api_dummy($node, 'node'), 'Node with the devel_generate not set is considered non-dummy');
+
+    $this->assertSequential(0, 3, 'a', 0);
+    $this->assertSequential(0, 3, 'a', 0);
+    $this->assertSequential(0, 3, 'b', 1);
+    $this->assertSequential(0, 3, 'b', 1);
+    $this->assertSequential(0, 3, 'c', 2);
+    $this->assertSequential(0, 3, 'c', 2);
+    $this->assertSequential(0, 3, 'd', 3);
+    $this->assertSequential(0, 2, 'd', 2);
+    $this->assertSequential(10, 13, 'd', 10);
+    $this->assertSequential(11, 12, 'd', 11);
   }
+
+  /**
+   * Helper function to assert that the sequential number generator works.
+   *
+   * This calls realistic_dummy_content_api_sequential(), making sure that the result
+   * is as expected.
+   *
+   * @param $start
+   *   Start number passed to realistic_dummy_content_api_sequential()
+   * @param $end
+   *   End number passed to realistic_dummy_content_api_sequential()
+   * @param $hash
+   *   Hash passed to realistic_dummy_content_api_sequential()
+   * @param $expected
+   *   Expected result which realistic_dummy_content_api_sequential() is expected
+   *   to return.
+   */
+  function assertSequential($start, $end, $hash, $expected) {
+    $result = realistic_dummy_content_api_sequential($start, $end, $hash);
+    $this->assertTrue($result == $expected, 'Sequential number is as expected for ' . $start . ', ' . $end . ' with hash ' . $hash . ': [expected] ' . $expected . ' = [result] ' . $result);
+  }
+
 }

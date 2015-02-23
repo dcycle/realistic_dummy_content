@@ -121,7 +121,8 @@ class RealisticDummyContentAPIFieldModifier extends RealisticDummyContentAPIEnti
    * Generate a random number, or during tests, give the first available number.
    */
   function rand($start, $end) {
-    return realistic_dummy_content_api_rand($start, $end, $this->GetHash());
+    $return = realistic_dummy_content_api_rand($start, $end, $this->GetHash());
+    return $return;
   }
 
   /**
@@ -142,10 +143,14 @@ class RealisticDummyContentAPIFieldModifier extends RealisticDummyContentAPIEnti
    *   A file object or array, or an associative array with the keys "value" and
    *   "format", or NULL if there are no files to choose from or the files have
    *   the wrong extension.
+   *
+   * @throws
+   *   Exception.
    */
   function ValueFromFile($files, $is_array = FALSE) {
     if (count($files)) {
-      $file = $files[$this->rand(0, count($files) - 1)];
+      $rand_index = $this->rand(0, count($files) - 1);
+      $file = $files[$rand_index];
       $filename = $file->filename;
       $extension = pathinfo($filename, PATHINFO_EXTENSION);
       $contents = $this->env()->file_get_contents($file->uri);

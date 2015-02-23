@@ -21,6 +21,10 @@ class RealisticDummyContentAPIDummyEnv extends RealisticDummyContentAPIEnv {
     }
     $this->files[$path] = $data;
   }
+
+  /**
+   * {@inheritdoc}
+   */
   function _file_get_contents_($filename) {
     if (isset($this->files[$filename])) {
       return $this->files[$filename];
