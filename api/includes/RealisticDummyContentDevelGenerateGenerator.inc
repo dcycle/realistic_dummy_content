@@ -3,10 +3,10 @@
 /**
  * @file
  *
- * Define RealisticDummyContentAPIDevelGenerateGenerator autoload class.
+ * Define RealisticDummyContentDevelGenerateGenerator autoload class.
  */
 
-class RealisticDummyContentAPIDevelGenerateGenerator extends RealisticDummyContentAPIGenerator {
+class RealisticDummyContentDevelGenerateGenerator extends RealisticDummyContentGenerator {
   function _Generate_() {
     module_load_include('inc', 'devel_generate');
 

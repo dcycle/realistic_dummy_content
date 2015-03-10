@@ -3,10 +3,10 @@
 /**
  * @file
  *
- * Define RealisticDummyContentAPIRecipe autoload class.
+ * Define RealisticDummyContentRecipe autoload class.
  */
 
-abstract class RealisticDummyContentAPIRecipe {
+abstract class RealisticDummyContentRecipe {
   static $log;
 
   static function Run($log) {
@@ -43,7 +43,7 @@ abstract class RealisticDummyContentAPIRecipe {
   static function GetGenerator($type, $bundle, $count, $more) {
     if (in_array($type, array('user', 'node'))) {
       if (module_exists('devel_generate')) {
-        return new RealisticDummyContentAPIDevelGenerateGenerator($type, $bundle, $count, $more);
+        return new RealisticDummyContentDevelGenerateGenerator($type, $bundle, $count, $more);
       }
       else {
         self::$log->Error(t('Please enable devel\'s devel_generate module to generate users or nodes.'));

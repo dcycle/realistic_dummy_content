@@ -3,7 +3,7 @@
 /**
  * @file
  *
- * Define RealisticDummyContentAPIEntityBase autoload class.
+ * Define RealisticDummyContentEntityBase autoload class.
  */
 
 /**
@@ -13,7 +13,7 @@
  * access to entities in order to override demo content in them.
  */
 
-abstract class RealisticDummyContentAPIEntityBase extends RealisticDummyContentAPIBase {
+abstract class RealisticDummyContentEntityBase extends RealisticDummyContentBase {
   private $hash;
   private $entity;
   private $type;
@@ -124,7 +124,7 @@ abstract class RealisticDummyContentAPIEntityBase extends RealisticDummyContentA
   /**
    * Modify the entity.
    *
-   * Subclasses of RealisticDummyContentAPIEntityBase need to override
+   * Subclasses of RealisticDummyContentEntityBase need to override
    * this function to perform modifications on the entity.
    */
   abstract function Modify();

@@ -3,7 +3,7 @@
 /**
  * @file
  *
- * Define RealisticDummyContentAPILiveEnv autoload class.
+ * Define RealisticDummyContentLiveEnv autoload class.
  */
 
 /**
@@ -14,11 +14,11 @@
  * class defines abstract functions representing what the environment should
  * do.
  */
-abstract class RealisticDummyContentAPIEnv {
+abstract class RealisticDummyContentEnv {
   static private $env;
   static function Get() {
     if (!self::$env) {
-      self::$env = new RealisticDummyContentAPILiveEnv;
+      self::$env = new RealisticDummyContentLiveEnv;
     }
     return self::$env;
   }
@@ -47,7 +47,7 @@ abstract class RealisticDummyContentAPIEnv {
    * Internal function used to get the contents of a file.
    *
    * Wrapper around PHP's file_get_contents() (or a simulation thereof).
-   * This function will not return an exception. Please use RealisticDummyContentAPIEnv::
+   * This function will not return an exception. Please use RealisticDummyContentEnv::
    * file_get_contents(), instead.
    *
    * @param $filename

@@ -16,7 +16,7 @@ define('REALISTIC_DUMMY_CONTENT_RANDOM', TRUE);
 /**
  * Interface for a log class
  */
-interface RealisticDummyContentAPILog {
+interface RealisticDummyContentLog {
   public function log($text, $vars = array());
   public function error($text, $vars = array());
 }
@@ -43,6 +43,31 @@ function realistic_dummy_content_api_user_insert(&$edit, $account, $category) {
     ),
   );
   _realistic_dummy_content_api_entity_presave($account, 'user', $filter);
+}
+
+/**
+ * Implements hook_realistic_dummy_content_attribute_manipulator_alter().
+ */
+function realistic_dummy_content_api_realistic_dummy_content_attribute_manipulator_alter(&$class, &$type, &$machine_name) {
+  // If you want to implement a particular manipulator class for a field or property
+  // you can do so by implementing this hook and reproducing what's below for your
+  // own field or property type.
+  switch ($machine_name) {
+    case 'picture': // the user picture
+      $class = 'RealisticDummyContentUserPicture';
+      break;
+    case 'text_with_summary': // e.g. body
+      $class = 'RealisticDummyContentTextWithSummaryField';
+      break;
+    case 'taxonomy_term_reference': // e.g. tags on articles
+      $class = 'RealisticDummyContentTermReferenceField';
+      break;
+    case 'image': // e.g. images on articles
+      $class = 'RealisticDummyContentImageField';
+      break;
+    default:
+      break;
+  }
 }
 
 /**
@@ -201,7 +226,7 @@ function realistic_dummy_content_api_validate($entity, $type) {
 }
 
 /**
- * Validate that a class is a valid subclasss of RealisticDummyContentAPIBase
+ * Validate that a class is a valid subclasss of RealisticDummyContentBase
  *
  * @param $class
  *   A class name
@@ -213,8 +238,8 @@ function realistic_dummy_content_api_validate_class($class) {
   if (!class_exists($class)) {
     throw new Exception(t('@class is not a valid class; make sure you include its file or use Drupal\'s autoload mechanism: name your include file with the same name as the class, and add it to the .info file, then clear your cache.', array('@class' => $class)));
   }
-  if (!is_subclass_of($class, 'RealisticDummyContentAPIBase')) {
-    throw new Exception(t('@class is a valid class but it is not a subclass of RealisticDummyContentAPIBase.', array('@class' => $class)));
+  if (!is_subclass_of($class, 'RealisticDummyContentBase')) {
+    throw new Exception(t('@class is a valid class but it is not a subclass of RealisticDummyContentBase.', array('@class' => $class)));
   }
 }
 
@@ -226,8 +251,8 @@ function realistic_dummy_content_api_realistic_dummy_content_api_class($entity, 
     // Insert class names for all classes which can modify entities for the
     // given type. These classes must exist, either through Drupal's
     // autoload system or be included explictely, and they must be
-    // subclasses of RealisticDummyContentAPIBase
-    'RealisticDummyContentAPIFieldModifier',
+    // subclasses of RealisticDummyContentBase
+    'RealisticDummyContentFieldModifier',
   );
 }
 
@@ -352,5 +377,5 @@ function realistic_dummy_content_api_sequential($start, $end, $hash) {
  * Attempts to generate all realistic content for the current site.
  */
 function realistic_dummy_content_api_apply_recipe($log = NULL) {
-  RealisticDummyContentAPIRecipe::Run($log);
+  RealisticDummyContentRecipe::Run($log);
 }

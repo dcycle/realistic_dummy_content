@@ -17,6 +17,8 @@ This project contains two modules:
 
  * Realistic Dummy Content (realistic\_dummy\_content), which replaces user pictures and node article images with portraits and stock photography. You can reproduce the `realistic_dummy_content/realistic_dummy_content` directory structure in your own modules for better control of the realistic dummy content you want to generate. If you don't want the example stock images that ship with this module, you can disable Realistic Dummy Content (realistic\_dummy\_content) and leave Realistic Dummy Content API (realistic\_dummy\_content\_api) enabled.
 
+Developers can also extend Realistic Dummy Content by implementing hooks defined in `api/realistic_dummy_content_api.api.php`. Specifically, if you want to be able to define realistic dummy content for a custom field type and the standard technique is not working, you can submit an issue or patch to the [issue queue](https://drupal.org/project/issues/2253941?categories=All) for this module; but you can also implement the field modifier yourself by looking at Realistic Dummy Content API's implementation of `hook_realistic_dummy_content_attribute_manipulator_alter()`, and the classes which are referenced from there.
+
 Issue queue
 ----------
 
@@ -45,5 +47,5 @@ Continuous integration with Circle CI
 Sponsors
 --------
 
- * [The Linux Foundation](http://www.linuxfoundation.org/) (Current)
+ * [The Linux Foundation](http://www.linuxfoundation.org/) and [Dcycle](http://dcycleproject.org) (Current)
  * [CGI](http://cgi.com/) (Initial development)

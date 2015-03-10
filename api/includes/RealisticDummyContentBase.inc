@@ -3,7 +3,7 @@
 /**
  * @file
  *
- * Define RealisticDummyContentAPIBase autoload class.
+ * Define RealisticDummyContentBase autoload class.
  */
 
 /**
@@ -18,8 +18,8 @@
  * at https://drupal.org/project/issues/realistic_dummy_content
  * if you would like to help with this!
  */
-abstract class RealisticDummyContentAPIBase {
+abstract class RealisticDummyContentBase {
   function env() {
-    return RealisticDummyContentAPIEnv::Get();
+    return RealisticDummyContentEnv::Get();
   }
 }

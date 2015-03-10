@@ -7,8 +7,8 @@
 
 // We must call interface_exists here because during the call
 // to drush en RealisticDummyContent, the interface is not present yet.
-if (interface_exists('RealisticDummyContentAPILog')) {
-  class RealisticDummyContentDrushAPILog implements RealisticDummyContentAPILog {
+if (interface_exists('RealisticDummyContentLog')) {
+  class RealisticDummyContentDrushAPILog implements RealisticDummyContentLog {
     public function log($text, $vars = array()) {
       drush_log(dt($text, $vars), 'ok');
     }

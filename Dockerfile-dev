@@ -1,6 +1,5 @@
 FROM alberto56/docker-drupal:latest
 
-ADD . ./srv/drupal/www/sites/all/modules/realistic_dummy_content/
 RUN cd ./srv/drupal/www && /usr/bin/drush en simpletest realistic_dummy_content -y
 RUN cd ./srv/drupal/www && /usr/bin/drush uli
 

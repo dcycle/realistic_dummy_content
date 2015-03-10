@@ -7,9 +7,36 @@
  */
 
 /**
+ * @param $machine_name
+ *   The machine name of the field or property, for example "title",
+ *   "text_with_summary", or "picture".
+ */
+function hook_realistic_dummy_content_attribute_manipulator_alter(&$class, &$type, &$machine_name) {
+  // If you want to implement a particular manipulator class for a field or property
+  // you can do so by implementing this hook and reproducing what's below for your
+  // own field or property type.
+  switch ($machine_name) {
+    case 'picture': // the user picture
+      $class = 'RealisticDummyContentUserPicture';
+      break;
+    case 'text_with_summary': // e.g. body
+      $class = 'RealisticDummyContentTextWithSummaryField';
+      break;
+    case 'taxonomy_term_reference': // e.g. tags on articles
+      $class = 'RealisticDummyContentTermReferenceField';
+      break;
+    case 'image': // e.g. images on articles
+      $class = 'RealisticDummyContentImageField';
+      break;
+    default:
+      break;
+  }
+}
+
+/**
  * hook_realistic_dummy_content_api_class().
  *
- * Return any object which is a subclass of RealisticDummyContentAPIBase, which
+ * Return any object which is a subclass of RealisticDummyContentBase, which
  * will be used to modify content which is deemed to be dummy content.
  *
  * @param $entity
@@ -39,15 +66,15 @@
  *   the type of filter.
  *
  * @return
- *   Array of objects which are a subclass of RealisticDummyContentAPIBase.
+ *   Array of objects which are a subclass of RealisticDummyContentBase.
  */
 function hook_realistic_dummy_content_api_class($entity, $type, $filter = array()) {
   return array(
     // Insert class names for all classes which can modify entities for the
     // given type. These classes must exist, either through Drupal's
     // autoload system or be included explictely, and they must be
-    // subclasses of RealisticDummyContentAPIBase
-    'RealisticDummyContentAPIFieldModifier',
+    // subclasses of RealisticDummyContentBase
+    'RealisticDummyContentFieldModifier',
   );
 }
 

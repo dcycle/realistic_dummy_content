@@ -3,10 +3,10 @@
 /**
  * @file
  *
- * Define RealisticDummyContentAPIGenerator autoload class.
+ * Define RealisticDummyContentGenerator autoload class.
  */
 
-abstract class RealisticDummyContentAPIGenerator {
+abstract class RealisticDummyContentGenerator {
   private $type;
   private $bundle;
   private $num;

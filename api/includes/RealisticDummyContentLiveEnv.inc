@@ -3,7 +3,7 @@
 /**
  * @file
  *
- * Define RealisticDummyContentAPILiveEnv autoload class.
+ * Define RealisticDummyContentLiveEnv autoload class.
  */
 
 /**
@@ -13,7 +13,7 @@
  * system and such. However during testing we want to abstract that away. This
  * class represents the live environment.
  */
-class RealisticDummyContentAPILiveEnv extends RealisticDummyContentAPIEnv {
+class RealisticDummyContentLiveEnv extends RealisticDummyContentEnv {
   /**
    * {@inheritdoc}
    */

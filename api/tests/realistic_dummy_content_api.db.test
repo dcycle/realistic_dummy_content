@@ -33,9 +33,9 @@ class realistic_dummy_content_DatabaseTestCase extends DrupalWebTestCase {
   }
 
   /*
-   * Test case for realistic_dummy_content_api with the database.
+   * Test case for creating a node.
    */
-  public function testModule() {
+  public function testNode() {
     // Create a node with the devel_generate property set.
     $nids = array();
     for ($i = 1; $i <= 9; $i++) {
@@ -48,13 +48,8 @@ class realistic_dummy_content_DatabaseTestCase extends DrupalWebTestCase {
       $nids[$node->nid] = $node->nid;
     }
 
-    // Create a user with devel_generate
-    module_load_include('inc', 'devel_generate');
-    devel_create_users(1, 0);
-
-    // Load the user and view
+    // Load the nodes
     $nodes = node_load_multiple($nids);
-    $user = user_load(2);
 
     $expected_values = array(
       'title' => array(
@@ -67,26 +62,79 @@ class realistic_dummy_content_DatabaseTestCase extends DrupalWebTestCase {
         'I',
         'L',
       ),
+      'tag' => array(
+        'people',
+        'historical',
+        'events',
+      ),
     );
 
     foreach ($nodes as $nid => $node) {
       // The node should have replaced the image with our own.
+      $image_set = isset($node->field_image[LANGUAGE_NONE]);
+      $this->assertTrue($image_set, 'Node image is set. There exists an image for this node.');
+      if (!$image_set) {
+        continue;
+      }
       $filename = $node->field_image[LANGUAGE_NONE][0]['filename'];
       $this->assertTrue(drupal_substr($filename, 0, drupal_strlen('dummyfile')) == 'dummyfile', 'The image file was replaced as expected for node/article/field_image. We know this because the filename starts with the string "dummyfile"');
 
       $title = $node->title[0];
       $title_expected = $expected_values['title'][($nid - 1)%3];
+      $body_set = isset($node->body[LANGUAGE_NONE]);
+      $this->assertTrue($body_set, 'Node body is set. There exists a body for this node.');
+      if (!$body_set) {
+        continue;
+      }
       $body = $node->body[LANGUAGE_NONE][0]['value'][0];
       $body_expected = $expected_values['body'][($nid - 1)%3];
       $this->assertTrue($title == $title_expected, 'Title first letter (' . $title . ') is as expected (' . $title_expected . ') for this nid (' . $nid . ')');
       $this->assertTrue($body == $body_expected, 'Body first letter (' . $body . ') is as expected (' . $body_expected . ') for this nid (' . $nid . ')');
+      $this->assertTag($expected_values['tag'][($nid - 1)%3], $node);
     }
+  }
+
+  /**
+   * Assert that a node has a specified tag in its field_tags
+   *
+   * This will make sure the tag exists as the taxonomy term, and that it is referenced
+   * in $node's field_tags
+   *
+   * @param $tag_name
+   *   A string
+   * @param $node
+   *   A node object
+   */
+  public function assertTag($tag_name, $node) {
+    $term = taxonomy_get_term_by_name($tag_name);
+    $this->assertTrue($term, 'Term ' . $tag_name . ' exists');
+    $referenced_term = taxonomy_term_load($node->field_tags[LANGUAGE_NONE][0]['tid']);
+    if (isset($referenced_term->name)) {
+      $referenced_term = $referenced_term->name;
+    }
+    else {
+      $referenced_term = '[unknown term]';
+    }
+
+    $this->assertTrue(array_key_exists($node->field_tags[LANGUAGE_NONE][0]['tid'], $term), 'Term is referenced in node ' . $node->nid . ' (' . $referenced_term . ' == ' . $tag_name .')');
+  }
+
+  /*
+   * Test case for creating a user.
+   */
+  public function testUser() {
+    // Create a user with devel_generate
+    module_load_include('inc', 'devel_generate');
+    devel_create_users(1, 0);
+
+    // Load the user and view
+    $user = user_load(2);
 
     $filename = $user->picture->filename;
     $this->assertTrue(drupal_substr($filename, 0, drupal_strlen('dummyfile')) == 'dummyfile', 'The user\'s picture file was replaced as expected. We know this because the filename starts with the string "dummyfile"');
-    $current_pictre = $user->picture;
+    $current_picture = $user->picture;
     user_save($user);
     $user = user_load($user->uid);
-    $this->assertTrue($current_pictre == $user->picture, 'The dummy file generation happens when the user is first created, not when it is resaved.');
+    $this->assertTrue($current_picture == $user->picture, 'The dummy file generation happens when the user is first created, not when it is resaved.');
   }
 }
