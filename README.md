@@ -19,6 +19,11 @@ This project contains two modules:
 
 Developers can also extend Realistic Dummy Content by implementing hooks defined in `api/realistic_dummy_content_api.api.php`. Specifically, if you want to be able to define realistic dummy content for a custom field type and the standard technique is not working, you can submit an issue or patch to the [issue queue](https://drupal.org/project/issues/2253941?categories=All) for this module; but you can also implement the field modifier yourself by looking at Realistic Dummy Content API's implementation of `hook_realistic_dummy_content_attribute_manipulator_alter()`, and the classes which are referenced from there.
 
+Creating recipes
+----------------
+
+Often, sites require a set number of entities to be created in a specific sequence. For example, if your site defines schools which have [entity references](https://www.drupal.org/project/entityreference) to school boards, a realistic scenario may be to generate 3 school boards followed by 20 schools. You can define this type of recipe for your [site deployment module](http://dcycleproject.org/blog/44/what-site-deployment-module) (or any module), by creating a file called `./sites/*/modules/mymodule/realistic_dummy_content/recipe/mymodule.recipe.inc`. [An example is included herein](http://cgit.drupalcode.org/realistic_dummy_content/tree/realistic_dummy_content/recipe/realistic_dummy_content.recipe.inc).
+
 Issue queue
 ----------
 

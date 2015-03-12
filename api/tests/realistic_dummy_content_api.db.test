@@ -137,4 +137,17 @@ class realistic_dummy_content_DatabaseTestCase extends DrupalWebTestCase {
     $user = user_load($user->uid);
     $this->assertTrue($current_picture == $user->picture, 'The dummy file generation happens when the user is first created, not when it is resaved.');
   }
+
+  /*
+   * Test case for recipes.
+   */
+  public function testRecipe() {
+    module_load_include('inc', 'realistic_dummy_content_api', 'realistic_dummy_content_api.drush');
+    $this->assertTrue(class_exists('RealisticDummyContentDrushAPILog'), 'The drush log class exists; it is required when running drush generate-realistic or other drush commands');
+    realistic_dummy_content_api_apply_recipe();
+    $page = node_load(4);
+    $article = node_load(14);
+    $this->assertTrue($page->type == 'page', 'Node 4 is a page, as specified in the recipe.');
+    $this->assertTrue($page->type == 'article', 'Node 14 is an article, as specified in the recipe.');
+  }
 }
