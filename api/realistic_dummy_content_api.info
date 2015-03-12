@@ -11,6 +11,7 @@ files[] = includes/RealisticDummyContentEnv.inc
 files[] = includes/RealisticDummyContentLiveEnv.inc
 files[] = includes/RealisticDummyContentDummyEnv.inc
 files[] = includes/RealisticDummyContentRecipe.inc
+files[] = includes/RealisticDummyContentAPIRecipe.inc
 files[] = includes/RealisticDummyContentDevelGenerateGenerator.inc
 files[] = includes/RealisticDummyContentGenerator.inc
 files[] = includes/RealisticDummyContentAttribute.inc
