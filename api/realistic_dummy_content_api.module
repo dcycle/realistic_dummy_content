@@ -22,6 +22,19 @@ interface RealisticDummyContentLog {
 }
 
 /**
+ * This log class can be used whenever you need a RealisticDummyContentLog
+ */
+class RealisticDummyContentDebugLog implements RealisticDummyContentLog {
+  public function log($text, $vars = array()) {
+    debug(t($text, $vars));
+  }
+
+  public function error($text, $vars = array()) {
+    debug(t($text, $vars));
+  }
+}
+
+/**
  * Implements hook_entity_insert().
  */
 function realistic_dummy_content_api_entity_presave($entity, $type) {
@@ -375,7 +388,18 @@ function realistic_dummy_content_api_sequential($start, $end, $hash) {
 
 /**
  * Attempts to generate all realistic content for the current site.
+ *
+ * @param $log
+ *   A class which implements the interface RealisticDummyContentLog. Logging
+ *   will be different if you are using drush or in the context of an automated
+ *   test, for example.
  */
-function realistic_dummy_content_api_apply_recipe($log = NULL) {
-  RealisticDummyContentRecipe::Run($log);
+function realistic_dummy_content_api_apply_recipe($log) {
+  try {
+    RealisticDummyContentRecipe::Run($log);
+  }
+  catch (Exception $e) {
+    $log->log('An exception occurred while trying to apply a recipe');
+    $log->error($e->getMessage());
+  }
 }

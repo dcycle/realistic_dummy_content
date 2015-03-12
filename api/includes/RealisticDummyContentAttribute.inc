@@ -170,7 +170,7 @@ abstract class RealisticDummyContentAttribute {
     $candidate_files = array();
     foreach (module_list() as $module) {
       $filepath = DRUPAL_ROOT . '/' . drupal_get_path('module', $module) . '/realistic_dummy_content/fields/' . $this->GetEntityType() . '/' . $this->GetBundle() . '/' . $this->GetName();
-      $candidate_files = array_merge($candidate_files, array_values(file_scan_directory($filepath, '/.*\.(' . implode('|', $this->GetExtensions()). ')$/')));
+      $candidate_files = array_merge($candidate_files, array_values(file_scan_directory($filepath, '/.*\.(' . implode('|', $this->GetExtensions()) . ')$/')));
     }
     $files = array();
     foreach ($candidate_files as $candidate_file) {

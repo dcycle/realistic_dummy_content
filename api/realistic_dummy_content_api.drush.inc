@@ -12,7 +12,7 @@ if (interface_exists('RealisticDummyContentLog')) {
     public function log($text, $vars = array()) {
       drush_log(dt($text, $vars), 'ok');
     }
-  
+
     public function error($text, $vars = array()) {
       $this->log('RealisticDummyContent_FAILURE');
       drush_set_error('RealisticDummyContent_ERROR', dt($text, $vars));

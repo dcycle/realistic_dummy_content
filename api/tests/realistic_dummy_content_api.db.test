@@ -116,7 +116,7 @@ class realistic_dummy_content_DatabaseTestCase extends DrupalWebTestCase {
       $referenced_term = '[unknown term]';
     }
 
-    $this->assertTrue(array_key_exists($node->field_tags[LANGUAGE_NONE][0]['tid'], $term), 'Term is referenced in node ' . $node->nid . ' (' . $referenced_term . ' == ' . $tag_name .')');
+    $this->assertTrue(array_key_exists($node->field_tags[LANGUAGE_NONE][0]['tid'], $term), 'Term is referenced in node ' . $node->nid . ' (' . $referenced_term . ' == ' . $tag_name . ')');
   }
 
   /*
@@ -142,12 +142,13 @@ class realistic_dummy_content_DatabaseTestCase extends DrupalWebTestCase {
    * Test case for recipes.
    */
   public function testRecipe() {
-    module_load_include('inc', 'realistic_dummy_content_api', 'realistic_dummy_content_api.drush');
+    $this->assertTrue(module_load_include('inc', 'realistic_dummy_content_api', 'realistic_dummy_content_api.drush'), 'drush file exists');
     $this->assertTrue(class_exists('RealisticDummyContentDrushAPILog'), 'The drush log class exists; it is required when running drush generate-realistic or other drush commands');
-    realistic_dummy_content_api_apply_recipe();
+    $this->assertTrue(class_exists('RealisticDummyContentDebugLog'), 'aaa');
+    realistic_dummy_content_api_apply_recipe(new RealisticDummyContentDebugLog);
     $page = node_load(4);
     $article = node_load(14);
-    $this->assertTrue($page->type == 'page', 'Node 4 is a page, as specified in the recipe.');
-    $this->assertTrue($page->type == 'article', 'Node 14 is an article, as specified in the recipe.');
+    $this->assertTrue(isset($page->type) && $page->type == 'page', 'Node 4 is a page, as specified in the recipe.');
+    $this->assertTrue(isset($article->type) && $article->type == 'article', 'Node 14 is an article, as specified in the recipe.');
   }
 }

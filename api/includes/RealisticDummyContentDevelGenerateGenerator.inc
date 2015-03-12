@@ -7,6 +7,10 @@
  */
 
 class RealisticDummyContentDevelGenerateGenerator extends RealisticDummyContentGenerator {
+  /**
+   * @throws
+   *   Exception
+   */
   function _Generate_() {
     module_load_include('inc', 'devel_generate');
 
@@ -17,9 +21,7 @@ class RealisticDummyContentDevelGenerateGenerator extends RealisticDummyContentG
           $this->GetBundle() => $this->GetBundle(),
         ),
         'users' => array(
-          array(
-            1,
-          ),
+          1,
         ),
         'title_length' => 3,
       );
