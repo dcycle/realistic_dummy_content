@@ -2,7 +2,7 @@
 # and it does not allow us to use the -f flag to specify another filename (for
 # example Dockerfile-test). (See also ./scripts/test.sh).
 
-FROM alberto56/docker-drupal:latest
+FROM alberto56/docker-drupal:7.x-dev-2.0
 
 ADD . ./srv/drupal/www/sites/all/modules/realistic_dummy_content/
 RUN php -v

@@ -20,6 +20,6 @@
  */
 abstract class RealisticDummyContentBase {
   function env() {
-    return RealisticDummyContentEnv::Get();
+    return RealisticDummyContentEnvironment::Get();
   }
 }

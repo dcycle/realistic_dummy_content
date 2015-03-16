@@ -12,13 +12,14 @@ class RealisticDummyContentTermReferenceField extends RealisticDummyContentField
   /**
    * {@inheritdoc}
    */
-  function ValueFromFile($contents, $extension, $file) {
+  function ValueFromFile_($file) {
     try {
-      if (in_array($extension, $this->GetTextExtensions())) {
+      $termname = $file->Value();
+      if ($termname) {
         return array(
           LANGUAGE_NONE => array(
             array(
-              'tid' => $this->GetTid($contents),
+              'tid' => $this->GetTid($termname),
             ),
           ),
         );

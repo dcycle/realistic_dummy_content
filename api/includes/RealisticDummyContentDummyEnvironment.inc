@@ -3,7 +3,7 @@
 /**
  * @file
  *
- * Define RealisticDummyContentLiveEnv autoload class.
+ * Define RealisticDummyContentLiveEnvironment autoload class.
  */
 
 /**
@@ -13,7 +13,7 @@
  * system and such. However during testing we want to abstract that away. This
  * class represents the dummy environment which can be used during unit tests.
  */
-class RealisticDummyContentDummyEnv extends RealisticDummyContentEnv {
+class RealisticDummyContentDummyEnvironment extends RealisticDummyContentEnvironment {
   private $files;
   function createFile($path, $data) {
     if (!is_array($this->files)) {

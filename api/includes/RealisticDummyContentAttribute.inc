@@ -167,41 +167,58 @@ abstract class RealisticDummyContentAttribute {
    * Get all candidate files for a given field for this entity.
    */
   function GetCandidateFiles() {
-    $candidate_files = array();
+    $files = array();
     foreach (module_list() as $module) {
       $filepath = DRUPAL_ROOT . '/' . drupal_get_path('module', $module) . '/realistic_dummy_content/fields/' . $this->GetEntityType() . '/' . $this->GetBundle() . '/' . $this->GetName();
-      $candidate_files = array_merge($candidate_files, array_values(file_scan_directory($filepath, '/.*\.(' . implode('|', $this->GetExtensions()) . ')$/')));
+      $files = array_merge($files, RealisticDummyContentEnvironment::GetAllFileGroups($filepath, $this->GetExtensions()));
     }
-    $files = array();
-    foreach ($candidate_files as $candidate_file) {
-      if ($candidate_file->filename != 'README.txt') {
-        $files[$candidate_file->filename] = $candidate_file;
-      }
-    }
-    // We expect the files to be sorted alphabetically, which is not the case on all systems.
-    ksort($files);
-    return array_values($files);
+    return $files;
   }
 
   /**
-   * Given file contents, return a structured property to add to the entity.
+   * Given a RealisticDummyContentFileGroup object, get structured property if extentions ok.
+   *
+   * The structured property can then be added to the entity.
    *
    * For example, sometimes the appropriate property is array('value' => 'abc',
    * 'text_format' => 'filtered_html'); other times is it just a string. Subclasses
    * will determine what to do with the contents from the file.
    *
-   * @param $contents
-   *   File contents
-   * @param $extension
-   *   The origin file extenstion.
    * @param $file
    *   The actual file object.
    *
    * @return
-   *   In case of an error, return NULL; otherwise returns structured data to
-   *   be added to the entity object.
+   *   In case of an error or if the value does not apply or is empty, return NULL;
+   *   otherwise returns structured data to be added to the entity object.
    */
-  abstract function ValueFromFile($contents, $extension, $file);
+  function ValueFromFile($file) {
+    try {
+      if (in_array($file->GetRadicalExtension(), $this->GetExtensions())) {
+        return $this->ValueFromFile_($file);
+      }
+    }
+    catch (Exception $e) {
+      return NULL;
+    }
+  }
+
+  /**
+   * Given a RealisticDummyContentFileGroup object, get a structured property
+   *
+   * This function is not meant to called directly; rather, call ValueFromFile().
+   * This function must be overriden by subclasses.
+   *
+   * @param $file
+   *   An object of type RealisticDummyContentFileGroup.
+   *
+   * @return
+   *   Returns structured data to be added to the entity object, or NULL if such
+   *   data can't be creatd.
+   *
+   * @throws
+   *   Exception.
+   */
+  protected abstract function ValueFromFile_($file);
 
   /**
    * Given a list of files, return a value from one of them.
@@ -219,10 +236,7 @@ abstract class RealisticDummyContentAttribute {
       if (count($files)) {
         $rand_index = $this->rand(0, count($files) - 1);
         $file = $files[$rand_index];
-        $filename = $file->filename;
-        $extension = pathinfo($filename, PATHINFO_EXTENSION);
-        $contents = $this->env()->file_get_contents($file->uri);
-        return $this->ValueFromFile(trim($contents), $extension, $file);
+        return $this->ValueFromFile($file);
       }
     }
     catch (Exception $e) {
@@ -253,32 +267,39 @@ abstract class RealisticDummyContentAttribute {
   /**
    * Return an image file object if possible.
    *
-   * @param $contents
-   *   Contents of the file (can be binary)
-   * @param $extension
-   *   The original file extension
    * @param $file
-   *   The original file
+   *   The RealisticDummyContentFileGroup object
    *
    * @return
    *   NULL if the file is not an image, or if an error occurred; otherwise a
-   *   file object.
+   *   Drupal file object.
    */
-  function ImageSave($contents, $extension, $file) {
-    if (in_array($extension, $this->GetImageExtensions())) {
-      return $this->FileSave($contents, $extension, $file);
+  function ImageSave($file) {
+    try {
+      $exists = $file->Value();
+      if (!$exists) {
+        throw new RealisticDummyContentException('Please check if the file exists before attempting to save it');
+      }
+      $return = NULL;
+      if (in_array($file->GetRadicalExtension(), $this->GetImageExtensions())) {
+        $return = $this->FileSave($file);
+        $alt = $file->Attribute('alt');
+        if ($alt) {
+          $return->alt = $alt;
+        }
+      }
+      return $return;
+    }
+    catch (Exception $e) {
+      return NULL;
     }
   }
 
   /**
    * Return a file object.
    *
-   * @param $contents
-   *   Contents of the file (can be binary)
-   * @param $extension
-   *   The original file extension
    * @param $file
-   *   The original file
+   *   The original file, a RealisticDummyContentFileGroup object.
    *
    * @return
    *   A file object.
@@ -286,11 +307,18 @@ abstract class RealisticDummyContentAttribute {
    * @throws
    *   Exception.
    */
-  function FileSave($contents, $extension, $file) {
-    $random = md5($file->uri) . rand(1000000000, 9999999999);
-    $file = $this->env()->file_save_data($contents, 'public://dummyfile' . $random . '.' . $extension);
-    $file->uid = $this->GetUid();
-    $return = file_save($file);
+  function FileSave($file) {
+    $drupal_file = $file->GetFile();
+    if (!$drupal_file) {
+      throw new RealisticDummyContentException('Please check if the file exists before attempting to save it');
+    }
+    $uri = $drupal_file->uri;
+    //$random = md5($uri) . rand(1000000000, 9999999999);
+    // DO NOT RENAME FOR TESTING
+    $random = $file->GetRadical();
+    $drupal_file = $this->env()->file_save_data($file->Value(), 'public://dummyfile' . $random . '.' . $file->GetRadicalExtension());
+    $drupal_file->uid = $this->GetUid();
+    $return = file_save($drupal_file);
     return $return;
   }
 

@@ -14,12 +14,13 @@ class RealisticDummyContentValueField extends RealisticDummyContentField {
   /**
    * {@inheritdoc}
    */
-  function ValueFromFile($contents, $extension, $file) {
-    if (in_array($extension, $this->GetTextExtensions())) {
+  function ValueFromFile_($file) {
+    $value = $file->Value();
+    if ($value) {
       return array(
         LANGUAGE_NONE => array(
           array(
-            'value' => $contents,
+            'value' => $value,
           ),
         ),
       );;

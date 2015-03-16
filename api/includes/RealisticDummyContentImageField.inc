@@ -20,15 +20,20 @@ class RealisticDummyContentImageField extends RealisticDummyContentField {
   /**
    * {@inheritdoc}
    */
-  function ValueFromFile($contents, $extension, $file) {
-    $file = $this->ImageSave($contents, $extension, $file);
+  function ValueFromFile_($file) {
+    if (!$file->Value()) {
+      return NULL;
+    }
+    $return = NULL;
+    $file = $this->ImageSave($file);
     if ($file) {
-      return array(
+      $return = array(
         LANGUAGE_NONE => array(
           (array)$file,
         ),
       );
     }
+    return $return;
   }
 
 }

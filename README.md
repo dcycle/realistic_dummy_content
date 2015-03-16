@@ -24,6 +24,23 @@ Creating recipes
 
 Often, sites require a set number of entities to be created in a specific sequence. For example, if your site defines schools which have [entity references](https://www.drupal.org/project/entityreference) to school boards, a realistic scenario may be to generate 3 school boards followed by 20 schools. You can define this type of recipe for your [site deployment module](http://dcycleproject.org/blog/44/what-site-deployment-module) (or any module), by creating a file called `./sites/*/modules/mymodule/realistic_dummy_content/recipe/mymodule.recipe.inc`. [An example is included herein](http://cgit.drupalcode.org/realistic_dummy_content/tree/realistic_dummy_content/recipe/realistic_dummy_content.recipe.inc).
 
+Field meta data
+---------------
+
+Some fields have special meta data: body fields can have input formats in addition to body text; image fields can have alt text in addition to the image. This can be achieved using a specific naming scheme, and you will find an example in the enclosed data, which looks like:
+
+    realistic_dummy_content/fields/node/article/
+      - body/
+        - ipsum.txt
+        - ipsum.txt.format.txt
+        - lorem.txt
+     - field_image/
+        - 1.jpg
+        - 2.jpg
+        - 2.jpg.alt.txt
+
+In the above example, `realistic_dummy_content` sees two possible body values, _one of which with a specific input format_; and two possible images, _one of which with a specific alt text_. Meta data is never compulsory, and in the case where a meta attribute is needed, a reasonable fallback value is used, for example `filtered_html` will be used if no format is specified for the body.
+
 Issue queue
 ----------
 

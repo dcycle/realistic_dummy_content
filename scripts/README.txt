@@ -1,5 +1,8 @@
 This directory contains scripts used to set up dev and testing environments with Docker.
 
+These scripts are meant for developers of realistic_dummy_content, not for users or
+site developers.
+
 Usage
 
  * Install a CoreOS instance (using Vagrant for example)

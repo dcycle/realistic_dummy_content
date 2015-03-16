@@ -22,3 +22,8 @@ https://www.flickr.com/photos/lselibrary/4416711433
 (No known copyright restrictions)
 https://www.flickr.com/photos/nationalmaritimemuseum/2842843325
 (No known copyright restrictions)
+
+Alt Text
+--------
+
+Note that one of the photos has alt text, this is achieved using the attribute mechanism described in the documentation.

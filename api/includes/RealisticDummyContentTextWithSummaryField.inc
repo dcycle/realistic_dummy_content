@@ -14,14 +14,16 @@ class RealisticDummyContentTextWithSummaryField extends RealisticDummyContentFie
   /**
    * {@inheritdoc}
    */
-  function ValueFromFile($contents, $extension, $file) {
-    if (in_array($extension, $this->GetTextExtensions())) {
+  function ValueFromFile_($file) {
+    $value = $file->Value();
+    // @TODO use the site's default, not filtered_html, as the default format.
+    $format = $file->Attribute('format', 'filtered_html');
+    if ($value) {
       return array(
         LANGUAGE_NONE => array(
           array(
-            'value' => $contents,
-            // @TODO allow other formats
-            'format' => 'filtered_html',
+            'value' => $value,
+            'format' => $format,
           ),
         ),
       );

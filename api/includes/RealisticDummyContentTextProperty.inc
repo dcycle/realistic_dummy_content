@@ -13,10 +13,8 @@ class RealisticDummyContentTextProperty extends RealisticDummyContentProperty {
   /**
    * {@inheritdoc}
    */
-  function ValueFromFile($contents, $extension, $file) {
-    if (in_array($extension, $this->GetTextExtensions())) {
-      return $contents;
-    }
+  function ValueFromFile_($file) {
+    return $file->Value();
   }
 
 }

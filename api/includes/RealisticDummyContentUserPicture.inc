@@ -20,8 +20,8 @@ class RealisticDummyContentUserPicture extends RealisticDummyContentProperty {
   /**
    * {@inheritdoc}
    */
-  function ValueFromFile($contents, $extension, $file) {
-    $file = $this->ImageSave($contents, $extension, $file);
+  function ValueFromFile_($file) {
+    $file = $this->ImageSave($file);
     if ($file) {
       return $file;
     }
