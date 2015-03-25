@@ -33,6 +33,21 @@ class realistic_dummy_content_DatabaseTestCase extends DrupalWebTestCase {
   }
 
   /*
+   * Test that attributes work correctly
+   */
+  public function testAttributes() {
+    $node = $this->drupalCreateNode(array('type' => 'article'));
+    $modifier = new RealisticDummyContentFieldModifier($node, 'node');
+    $attributes = $modifier->GetAttributes();
+    $existing = array();
+    foreach ($attributes as $index => $attribute) {
+      $name = $attribute->GetName();
+      $this->assertFalse(in_array($name, $existing), 'Attribute ' . $name . ' only has one modifier');
+      $existing[] = $name;
+    }
+  }
+
+  /*
    * Test case for creating a node.
    */
   public function testNode() {

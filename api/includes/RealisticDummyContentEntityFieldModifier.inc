@@ -37,13 +37,15 @@ class RealisticDummyContentFieldModifier extends RealisticDummyContentEntityBase
    * Get properties for the entity, for example user's picture or node's name.
    *
    * @return
-   *   An array of RealisticDummyContentAttribute objects.
+   *   An array of RealisticDummyContentAttribute objects, keyed by attribute name,
+   *   e.g. title => [RealisticDummyContentAttribute], field_image =>
+   *   [RealisticDummyContentAttribute]
    */
   function GetProperties() {
     $modifiable_properties = array();
     $fields = $this->GetFields();
     foreach ((array)$this->GetEntity() as $property => $info) {
-      if (!in_array($property, $fields) && $this->filter($property)) {
+      if (!in_array($property, array_keys($fields)) && $this->filter($property)) {
         $this->AddModifier($modifiable_properties, 'property', $property);
       }
     }
@@ -54,7 +56,9 @@ class RealisticDummyContentFieldModifier extends RealisticDummyContentEntityBase
    * Get fields for the entity, for example body or field_image.
    *
    * @return
-   *   An array of RealisticDummyContentAttribute objects.
+   *   An array of RealisticDummyContentAttribute objects, keyed by attribute name,
+   *   e.g. title => [RealisticDummyContentAttribute], field_image =>
+   *   [RealisticDummyContentAttribute]
    */
   function GetFields() {
     $modifiable_fields = array();
@@ -131,7 +135,9 @@ class RealisticDummyContentFieldModifier extends RealisticDummyContentEntityBase
     }
 
     if (isset($modifier)) {
-      $modifiers[] = $modifier;
+      // It's OK to index by name because attributes and fields can never have
+      // the same names.
+      $modifiers[$name] = $modifier;
     }
   }
 
@@ -152,7 +158,9 @@ class RealisticDummyContentFieldModifier extends RealisticDummyContentEntityBase
    * which defines a common interface for dealing with them.
    *
    * @return
-   *   An array of classes of type RealisticDummyContentAttribute
+   *   An array of RealisticDummyContentAttribute objects, keyed by attribute name,
+   *   e.g. title => [RealisticDummyContentAttribute], field_image =>
+   *   [RealisticDummyContentAttribute]
    */
   function GetAttributes() {
     return array_merge($this->GetFields(), $this->GetProperties());
