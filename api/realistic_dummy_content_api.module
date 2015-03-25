@@ -396,6 +396,11 @@ function realistic_dummy_content_api_sequential($start, $end, $hash) {
  */
 function realistic_dummy_content_api_apply_recipe($log) {
   try {
+    if (!class_exists('RealisticDummyContentRecipe')) {
+      // When upgrading from beta3, class names may have changed, so rebuild the registry
+      // to avoid presenting a "class not found" fatal error.
+      registry_rebuild();
+    }
     RealisticDummyContentRecipe::Run($log);
   }
   catch (Exception $e) {
