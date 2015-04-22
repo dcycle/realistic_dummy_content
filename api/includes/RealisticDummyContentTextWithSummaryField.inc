@@ -18,6 +18,10 @@ class RealisticDummyContentTextWithSummaryField extends RealisticDummyContentFie
     $value = $file->Value();
     // @TODO use the site's default, not filtered_html, as the default format.
     $format = $file->Attribute('format', 'filtered_html');
+    // If the value cannot be determined, which is different from an empty string.
+    if ($value === NULL) {
+      return NULL;
+    }
     if ($value) {
       return array(
         LANGUAGE_NONE => array(
@@ -27,6 +31,9 @@ class RealisticDummyContentTextWithSummaryField extends RealisticDummyContentFie
           ),
         ),
       );
+    }
+    else {
+      return array();
     }
   }
 

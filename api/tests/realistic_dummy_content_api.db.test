@@ -57,6 +57,13 @@ class realistic_dummy_content_DatabaseTestCase extends DrupalWebTestCase {
       $node = (object)array(
         'title' => $this->randomName(),
         'type' => 'article',
+        'body' => array(
+          LANGUAGE_NONE => array(
+            array(
+              $this->randomName(), // This should always be replaced.
+            ),
+          ),
+        ),
       );
       $node->devel_generate = array('whatever');
       node_save($node);
@@ -75,7 +82,7 @@ class realistic_dummy_content_DatabaseTestCase extends DrupalWebTestCase {
       'body' => array(
         'D',
         'I',
-        'L',
+        NULL,
       ),
       'tag' => array(
         'people',
@@ -100,21 +107,21 @@ class realistic_dummy_content_DatabaseTestCase extends DrupalWebTestCase {
 
       $title = $node->title[0];
       $title_expected = $expected_values['title'][($nid - 1)%3];
-      $body_set = isset($node->body[LANGUAGE_NONE]);
-      $this->assertTrue($body_set, 'Node body is set. There exists a body for this node.');
-      if (!$body_set) {
-        continue;
-      }
-      $body = $node->body[LANGUAGE_NONE][0]['value'][0];
-      $body_expected = $expected_values['body'][($nid - 1)%3];
+      $body_expected = $expected_values['body'][($nid - 1)%count($expected_values['body'])];
       if ($body_expected == 'I') {
-        $this->assertTrue($node->body[LANGUAGE_NONE][0]['format'] == 'full_html', 'Using full html for node ' . $nid . ' as expected.');
+        $body_format = $node->body[LANGUAGE_NONE][0]['format'];
+        $this->assertTrue($body_format == 'full_html', 'Using full html for node ' . $nid . ' as expected (using ' . $body_format . ').');
       }
-      else {
+      elseif ($body_expected) {
         $this->assertTrue($node->body[LANGUAGE_NONE][0]['format'] == 'filtered_html', 'Using filtered html for node ' . $nid . ' as expected.');
       }
       $this->assertTrue($title == $title_expected, 'Title first letter (' . $title . ') is as expected (' . $title_expected . ') for this nid (' . $nid . ')');
-      $this->assertTrue($body == $body_expected, 'Body first letter (' . $body . ') is as expected (' . $body_expected . ') for this nid (' . $nid . ')');
+      if ($body_expected === NULL) {
+        $this->assertTrue($node->body == array(), 'Body is not set because we have an empty file.');
+      }
+      else {
+        $this->assertTrue($node->body[LANGUAGE_NONE][0]['value'][0] == $body_expected, 'Body first letter (' . $node->body[LANGUAGE_NONE][0]['value'][0] . ') is as expected (' . $body_expected . ') for this nid (' . $nid . ')');
+      }
       $this->assertTag($expected_values['tag'][($nid - 1)%3], $node);
     }
     $this->assertTrue(count($images_with_alt) == 3, 'Three images are expected to have an alt because even though several images exist, we are using the sequential method and therefore only cycling through the first three (because there are only three values to other fields); ' . count($images_with_alt) . ' have an alt text; ' . (count($nodes) - count($images_with_alt)) . ' do not have an alt text');

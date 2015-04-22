@@ -141,11 +141,14 @@ abstract class RealisticDummyContentAttribute {
    */
   function ChangeFromFiles($files) {
     $value = $this->ValueFromFiles($files);
-    if ($value) {
-      $entity = $this->GetEntity()->GetEntity();
-      $entity->{$this->GetName()} = $value;
-      $this->GetEntity()->SetEntity($entity);
+    if ($value === NULL) {
+      // NULL indicates we could not find a value with which to replace the
+      // current value. The value can still be '', or FALSE, etc.
+      return;
     }
+    $entity = $this->GetEntity()->GetEntity();
+    $entity->{$this->GetName()} = $value;
+    $this->GetEntity()->SetEntity($entity);
   }
 
   /**
