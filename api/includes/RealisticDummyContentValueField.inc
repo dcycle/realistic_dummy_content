@@ -16,15 +16,16 @@ class RealisticDummyContentValueField extends RealisticDummyContentField {
    */
   function ValueFromFile_($file) {
     $value = $file->Value();
-    if ($value) {
-      return array(
-        LANGUAGE_NONE => array(
-          array(
-            'value' => $value,
-          ),
-        ),
-      );;
+    if ($value === NULL) {
+      return;
     }
+    return array(
+      LANGUAGE_NONE => array(
+        array(
+          'value' => $value,
+        ),
+      ),
+    );;
   }
 
 }

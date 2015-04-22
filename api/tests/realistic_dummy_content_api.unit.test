@@ -5,6 +5,33 @@
  */
 
 /**
+ * Dummy file, used to test how fields manage files
+ */
+class RealisticDummyContentUnitTestCaseDummyFile {
+  private $value;
+
+  /**
+   * Constructor.
+   *
+   * @param $value
+   *   The value to return
+   */
+  function __construct($value) {
+    $this->value = $value;
+  }
+
+  /**
+   * Returns the dummy value.
+   *
+   * @return
+   *   The value we used when creating this object.
+   */
+  function Value() {
+    return $this->value;
+  }
+}
+
+/**
  * The test case
  */
 class realistic_dummy_content_UnitTestCase extends DrupalUnitTestCase {
@@ -116,5 +143,20 @@ $this->assertFALSE(realistic_dummy_content_api_realistic_dummy_content_api_dummy
     $this->assertTrue(is_object($parsed_images['three.png']['file']));
     $this->assertTrue(is_object($parsed_images['three.png']['attributes']['alt']));
     $this->assertTrue(is_object($parsed['two.notanattribute.txt']['file']));
+  }
+
+  /**
+   * Test that empty files and non-existing files are treated differently.
+   */
+  function testEmpty() {
+    module_load_include('inc', 'realistic_dummy_content_api', 'includes/RealisticDummyContentAttribute');
+    module_load_include('inc', 'realistic_dummy_content_api', 'includes/RealisticDummyContentField');
+    module_load_include('inc', 'realistic_dummy_content_api', 'includes/RealisticDummyContentValueField');
+    $field = new RealisticDummyContentValueField('ignore entity', 'ignore name');
+    $null = new RealisticDummyContentUnitTestCaseDummyFile(NULL);
+    $empty = new RealisticDummyContentUnitTestCaseDummyFile('');
+
+    $this->assertFalse(is_array($field->ValueFromFile_($null)), 'No applicable field value is represented by NULL.');
+    $this->assertTrue(is_array($field->ValueFromFile_($empty)), 'An empty string is considered a valid value.');
   }
 }
