@@ -64,7 +64,7 @@ Continuous integration with Circle CI
 
 [CircleCI](https://circleci.com/gh/alberto56/realistic_dummy_content) is a continuous integration platform for Drupal projects. In [Continuous integration with Circle CI and Docker for your Drupal project (Dcycle project, Feb. 20, 2015)](http://dcycleproject.org/blog/92/continuous-integration-circle-ci-and-docker-your-drupal-project), I documented how and why I set up continuous integration with Circle CI and Docker for Realistic Dummy Content.
 
-[See Circle CI status of the 7.x-1.x branch here](https://circleci.com/gh/alberto56/realistic_dummy_content/tree/7.x-1.x)
+[![Circle CI](https://circleci.com/gh/alberto56/realistic_dummy_content.svg?style=svg)](https://circleci.com/gh/alberto56/realistic_dummy_content)
 
 Sponsors
 --------
