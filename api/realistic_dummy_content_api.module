@@ -175,8 +175,9 @@ function _realistic_dummy_content_api_entity_presave($entity, $type, $filter = a
  *   The type of the information to change, for example 'user' or 'node'.
  *
  * @return
- *   TRUE if at least one module implemented hook_realistic_dummy_content_api_dummy
- *   and thinks the entity is a dummy objects; FALSE otherwise.
+ *   TRUE if at least one module implemented
+ *   hook_realistic_dummy_content_api_dummy and thinks the entity is a dummy
+ *   objects; FALSE otherwise.
  */
 function realistic_dummy_content_api_is_dummy($entity, $type) {
   foreach (module_invoke_all('realistic_dummy_content_api_dummy', $entity, $type) as $dummy) {
@@ -303,24 +304,28 @@ function realistic_dummy_content_api_realistic_dummy_content_api_dummy($entity, 
  *
  * By default, this function will return a random number between $start and $end
  * inclusively. If you set the realistic_dummy_content_api_rand variable to
- * REALISTIC_DUMMY_CONTENT_SEQUENTIAL, for example for automated tested or in a recipe
- * (an example can be found at realistic_dummy_content/recipe/realistic_dummy_content.recipe.inc),
+ * REALISTIC_DUMMY_CONTENT_SEQUENTIAL, for example for automated tested or in a
+ * recipe (an example can be found at
+ * realistic_dummy_content/recipe/realistic_dummy_content.recipe.inc),
  * then this will call realistic_dummy_content_api_sequential().
  *
- * See the documentation for realistic_dummy_content_api_sequential() for details.
+ * See the documentation for realistic_dummy_content_api_sequential() for
+ * details.
  *
  * @param $start
  *   The first possible number in the range.
  * @param $end
  *   The last possible number in the range.
  * @param $hash = NULL
- *   Ignored for random numbers; for sequential numbers, please se the documentation for
- *   realistic_dummy_content_api_sequential() for details.
+ *   Ignored for random numbers; for sequential numbers, please see the
+ *   documentation for realistic_dummy_content_api_sequential() for details.
  *
  * @return
  *   A random number by default, or a sequential number if you set the
- *   realistic_dummy_content_api_rand variable to REALISTIC_DUMMY_CONTENT_SEQUENTIAL.
- *   Please see the description of realistic_dummy_content_api_sequential() for details.
+ *   realistic_dummy_content_api_rand variable to
+ *   REALISTIC_DUMMY_CONTENT_SEQUENTIAL.
+ *   Please see the description of realistic_dummy_content_api_sequential() for
+ *   details.
  */
 function realistic_dummy_content_api_rand($start, $end, $hash = NULL) {
   if (variable_get('realistic_dummy_content_api_rand', REALISTIC_DUMMY_CONTENT_RANDOM)) {
@@ -332,14 +337,15 @@ function realistic_dummy_content_api_rand($start, $end, $hash = NULL) {
 /**
  * Generate sequential number based on a hash
  *
- * Returns the starting number on every call until the hash is changed, at which case it
- * returns the second number, and so on.
+ * Returns the starting number on every call until the hash is changed, in which
+ * case it returns the second number, and so on.
  *
  * The idea behind this is that for a single node, we might want to retrieve the
  * 3rd file for each field (they go together).
  *
- * In the above example, if the 3rd file does not exist, we will return the first file,
- * in order to never return a number which is outside the range of start to end.
+ * In the above example, if the 3rd file does not exist, we will return the
+ * first file, in order to never return a number which is outside the range of
+ * start to end.
  *
  * @param $start
  *   The first possible number in the range.
@@ -348,8 +354,8 @@ function realistic_dummy_content_api_rand($start, $end, $hash = NULL) {
  * @param $hash
  *   The number returned by this function will be in sequence: each call to
  *   realistic_dummy_content_api_sequential()'s return is incremented by
- *   one, unless $hash is the same as in the last call, in which case the return will the
- *   same as in the last call.
+ *   one, unless $hash is the same as in the last call, in which case the return
+ *   will be the same as in the last call.
  *
  * @return
  *   A sequential number based on the $hash.
@@ -397,8 +403,8 @@ function realistic_dummy_content_api_sequential($start, $end, $hash) {
 function realistic_dummy_content_api_apply_recipe($log) {
   try {
     if (!class_exists('RealisticDummyContentRecipe')) {
-      // When upgrading from beta3, class names may have changed, so rebuild the registry
-      // to avoid presenting a "class not found" fatal error.
+      // When upgrading from beta3, class names may have changed, so rebuild the
+      // registry to avoid presenting a "class not found" fatal error.
       registry_rebuild();
     }
     RealisticDummyContentRecipe::Run($log);

@@ -53,7 +53,7 @@ To test this module you can run:
 
     ./scripts/test.sh
 
-To create a development environment, you can run:
+To create a development environment for Drupal 7, make sure you have Docker installed (for example on a CoreOS vagrant machine on Mac OS), then you can run:
 
     ./scripts/dev.sh
 
@@ -71,7 +71,7 @@ Drupal 8 version
 
 Intial work has been completed on the Drupal 8 version. The roadmap is:
 
- * Tests are currently not passing. Make sure all tests pass. To run tests locally, install a [CoreOS virtual machine](https://github.com/dcycleproject/coreos-vagrant), git clone the 8.x-1.x branch, cd into and type `./scripts/test.sh`. To create a local environment, type `./scripts/dev.sh`. 
+ * Tests are currently not passing. Make sure all tests pass. To run tests locally, install a [CoreOS virtual machine](https://github.com/dcycleproject/coreos-vagrant), git clone the 8.x-1.x branch, cd into and type `./scripts/test.sh`. To create a local environment, type `./scripts/dev.sh`.
  * A 8.x-1.0-alpha1 version will be published.
  * The [critical issues for 8.x-1.x](https://www.drupal.org/project/issues/realistic_dummy_content?text=&status=Open&priorities=400&categories=All&version=8.x&component=All) needs to be zero.
  * A 8.x-1.0-beta1 version will be published and recommended for use.
