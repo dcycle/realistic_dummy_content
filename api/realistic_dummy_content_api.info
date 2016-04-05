@@ -26,6 +26,9 @@ files[] = includes/RealisticDummyContentTextWithSummaryField.inc
 files[] = includes/RealisticDummyContentTextProperty.inc
 files[] = includes/RealisticDummyContentUserPicture.inc
 
+files[] = src/cms/RealisticDummyContentCMS.php
+files[] = src/cms/RealisticDummyContentDrupal7.php
+
 files[] = tests/realistic_dummy_content_api.db.test
 files[] = tests/realistic_dummy_content_api.unit.test
 
