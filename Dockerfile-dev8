@@ -1,0 +1,7 @@
+# See https://github.com/alberto56/docker-drupal
+FROM alberto56/docker-drupal:8.0.x-dev-1.2-8.0.0-beta10
+
+RUN cd ./srv/drupal/www && drush dl devel -y
+RUN echo ''
+RUN echo 'To log into this environment, please call ./scripts/uli.sh'
+RUN echo ''
