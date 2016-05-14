@@ -5,9 +5,10 @@ which docker > /dev/null 2> /dev/null || { echo -e "[error] Calling which docker
 echo -e "About to destroy old containers named rdc_dev_d7, rdc_dev_d8 and rdc_dev_b1 if they exist."
 
 # Before destroying, keep a backup of our backdrop site.
-docker exec rdc_dev_b1 /bin/bash -c 'mysqldump backdrop > /var/www/html/modules/realistic_dummy_content/scripts/backdrop1-docker-resources/temp-database.sql'
-docker exec rdc_dev_b1 /bin/bash -c 'cp -r /var/www/html/files /var/www/html/modules/realistic_dummy_content/scripts/backdrop1-docker-resources/temp-files'
-docker exec rdc_dev_b1 /bin/bash -c 'cp -r /var/www/html/settings.php /var/www/html/modules/realistic_dummy_content/scripts/backdrop1-docker-resources/temp-settings.php'
+docker exec rdc_dev_b1 /bin/bash -c 'mkdir -p /var/www/html/modules/realistic_dummy_content/scripts/tmp/backdrop'
+docker exec rdc_dev_b1 /bin/bash -c 'mysqldump backdrop > /var/www/html/modules/realistic_dummy_content/scripts/tmp/backdrop/database.sql'
+docker exec rdc_dev_b1 /bin/bash -c 'cp -r /var/www/html/files /var/www/html/modules/realistic_dummy_content/scripts/tmp/backdrop/files'
+docker exec rdc_dev_b1 /bin/bash -c 'cp -r /var/www/html/settings.php /var/www/html/modules/realistic_dummy_content/scripts/tmp/backdrop/settings.php'
 
 docker kill rdc_dev_d7 > /dev/null 2> /dev/null || true
 docker kill rdc_dev_d8 > /dev/null 2> /dev/null || true
