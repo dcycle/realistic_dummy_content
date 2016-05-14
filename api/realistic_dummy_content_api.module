@@ -7,6 +7,79 @@
  * See the Realistic Dummy Content module for an example of how to use.
  */
 
+use Drupal\realistic_dummy_content_api\cms\CMS;
+use Drupal\realistic_dummy_content_api\cms\RealisticDummyContentRecipe;
+use Drupal\realistic_dummy_content_api\includes\RealisticDummyContentException;
+
+function realistic_dummy_content_api_argcheck($callbacks) {
+  $trace = debug_backtrace();
+  $checks = array();
+  $errors = FALSE;
+  foreach ($callbacks as $index => $callback) {
+    $argument = $trace[1]['args'][$index];
+    if (!$callback($argument)) {
+      $checks[] = t('Argument @index is a @realtype, so @callback returned FALSE.', array('@index' => $index, '@realtype' => gettype($argument), '@callback' => $callback));
+      $errors = TRUE;
+    }
+    $checks[] = t('Argument @index is OK: it is a @realtype, so @callback returned TRUE.', array('@index' => $index, '@realtype' => gettype($argument), '@callback' => $callback));
+  }
+  if ($errors) {
+    $calling_function = realistic_dummy_content_api_calling_function(3);
+    $called_function = realistic_dummy_content_api_calling_function(2);
+    throw new \Exception(t('@calling called @called with bad argument types: ', array('@calling' => $calling_function, '@called' => $called_function)) . implode('; ', $checks));
+  }
+}
+
+function realistic_dummy_content_api_version() {
+  if (defined('BACKDROP_BOOTSTRAP_SESSION')) {
+    return 'B1';
+  }
+  if (defined('VERSION')) {
+    return 'D7';
+  }
+  return 'D8';
+}
+
+/**
+ * Returns the calling function through a backtrace
+ */
+function realistic_dummy_content_api_calling_function($level = 2) {
+  // a funciton x has called a function y which called this
+  // see stackoverflow.com/questions/190421
+  $caller = debug_backtrace();
+  $caller = $caller[$level];
+  $r = $caller['function'] . '()';
+  if (isset($caller['class'])) {
+    $r .= ' in ' . $caller['class'];
+  }
+  if (isset($caller['object'])) {
+    $r .= ' (' . get_class($caller['object']) . ')';
+  }
+  return $r . ' in ' . $caller['file'] . ' (line ' . $caller['line'] . ')';
+}
+
+spl_autoload_register(function($class_name) {
+  if (realistic_dummy_content_api_version() == 'D8') {
+    return;
+  }
+  if (strpos($class_name, 'realistic_dummy_content') === FALSE) {
+    return;
+  }
+  try {
+    $parts = explode('\\', $class_name);
+    // remove "Drupal" from the beginning of the class name
+    array_shift($parts);
+    $module = array_shift($parts);
+    $path = 'src/' . implode('/', $parts);
+    if (!module_load_include('php', $module, $path)) {
+      throw new Exception('Expected to find ' . $class_name . ' at ' . $module . '/' . $path . '.php, but that file does not exist.');
+    }
+  }
+  catch (Exception $e) {
+    throw new Exception('Autoloader at ' . __FILE__ . ' was asked by ' . realistic_dummy_content_api_calling_function(4) . ' to autoload the class ' . $class_name . ' but found the followin error: ' . $e->getMessage());
+  }
+});
+
 /**
  * Type of number generation.
  */
@@ -35,19 +108,26 @@ class RealisticDummyContentDebugLog implements RealisticDummyContentLog {
 }
 
 /**
- * Implements hook_entity_entity_presave().
+ * Implements hook_entity_presave().
  */
 function realistic_dummy_content_api_entity_presave($entity, $type = NULL) {
-  // In Drupal 7, $entity and $type will be populated. In Drupal 8, only
-  // $entity will be populated.
-  RealisticDummyContentCMS::hookEntityPresave($entity, $type);
+  try {
+    // In Drupal 7, $entity and $type will be populated. In Drupal 8, only
+    // $entity will be populated.
+    CMS::hookEntityPresave($entity, $type);
+  }
+  // Hook implementations should never throw exceptions, so we'll catch them
+  // all here.
+  catch (Exception $e) {
+    drupal_set_message($e->getMessage());
+  }
 }
 
 /**
  * Implements hook_user_insert().
  */
 function realistic_dummy_content_api_user_insert(&$edit, $account, $category) {
-  RealisticDummyContentCMS::hookUserInsert($edit, $account, $category);
+  Drupal\realistic_dummy_content_api\cms\CMS::hookUserInsert($edit, $account, $category);
 }
 
 /**
@@ -59,16 +139,16 @@ function realistic_dummy_content_api_realistic_dummy_content_attribute_manipulat
   // below for your own field or property type.
   switch ($machine_name) {
     case 'picture': // the user picture
-      $class = 'RealisticDummyContentUserPicture';
+      $class = '\Drupal\realistic_dummy_content_api\includes\RealisticDummyContentUserPicture';
       break;
     case 'text_with_summary': // e.g. body
-      $class = 'RealisticDummyContentTextWithSummaryField';
+      $class = '\Drupal\realistic_dummy_content_api\includes\RealisticDummyContentTextWithSummaryField';
       break;
     case 'taxonomy_term_reference': // e.g. tags on articles
-      $class = 'RealisticDummyContentTermReferenceField';
+      $class = '\Drupal\realistic_dummy_content_api\includes\RealisticDummyContentTermReferenceField';
       break;
     case 'image': // e.g. images on articles
-      $class = 'RealisticDummyContentImageField';
+      $class = '\Drupal\realistic_dummy_content_api\includes\RealisticDummyContentImageField';
       break;
     default:
       break;
@@ -79,7 +159,7 @@ function realistic_dummy_content_api_realistic_dummy_content_attribute_manipulat
  * Implements hook_user_presave().
  */
 function realistic_dummy_content_api_user_presave(&$edit, $account, $category) {
-  RealisticDummyContentCMS::hookUserPresave($edit, $account, $category);
+  Drupal\realistic_dummy_content_api\cms\CMS::hookUserPresave($edit, $account, $category);
 }
 
 /**
@@ -97,7 +177,7 @@ function realistic_dummy_content_api_user_presave(&$edit, $account, $category) {
  *   objects; FALSE otherwise.
  */
 function realistic_dummy_content_api_is_dummy($entity, $type) {
-  foreach (RealisticDummyContentCMS::moduleInvokeAll('realistic_dummy_content_api_dummy', $entity, $type) as $dummy) {
+  foreach (Drupal\realistic_dummy_content_api\cms\CMS::moduleInvokeAll('realistic_dummy_content_api_dummy', $entity, $type) as $dummy) {
     if ($dummy) {
       return TRUE;
     }
@@ -138,10 +218,16 @@ function realistic_dummy_content_api_is_dummy($entity, $type) {
  *   Exception
  */
 function realistic_dummy_content_api_improve_dummy_content(&$entity, $type, $filter = array()) {
-  $modifiers = RealisticDummyContentCMS::moduleInvokeAll('realistic_dummy_content_api_class', $entity, $type, $filter);
+  CMS::debug('Entity is dummy content and needs to be improved.');
+  realistic_dummy_content_api_argcheck(array('is_object', 'is_string'));
+  $modifiers = Drupal\realistic_dummy_content_api\cms\CMS::moduleInvokeAll('realistic_dummy_content_api_class', $entity, $type, $filter);
+
+  CMS::debug(count($modifiers) . ' found through all implementations of hook_realistic_dummy_content_api_class.');
+
   foreach ($modifiers as $modifier_class) {
     realistic_dummy_content_api_validate_class($modifier_class);
     $modifier = new $modifier_class($entity, $type, $filter);
+    CMS::debug(get_class($modifier) . ' about to modify entity.');
     $modifier->Modify();
     $entity = $modifier->GetEntity();
   }
@@ -167,10 +253,11 @@ function realistic_dummy_content_api_validate($entity, $type) {
  */
 function realistic_dummy_content_api_validate_class($class) {
   if (!class_exists($class)) {
+    //new $class;
     throw new Exception(t('@class is not a valid class; make sure you include its file or use Drupal\'s autoload mechanism: name your include file with the same name as the class, and add it to the .info file, then clear your cache.', array('@class' => $class)));
   }
-  if (!is_subclass_of($class, 'RealisticDummyContentBase')) {
-    throw new Exception(t('@class is a valid class but it is not a subclass of RealisticDummyContentBase.', array('@class' => $class)));
+  if (!is_subclass_of($class, '\Drupal\realistic_dummy_content_api\includes\RealisticDummyContentBase')) {
+    throw new Exception(t('@class is a valid class but it is not a subclass of \Drupal\realistic_dummy_content_api\includes\RealisticDummyContentBase.', array('@class' => $class)));
   }
 }
 
@@ -183,7 +270,7 @@ function realistic_dummy_content_api_realistic_dummy_content_api_class($entity, 
     // given type. These classes must exist, either through Drupal's
     // autoload system or be included explictely, and they must be
     // subclasses of RealisticDummyContentBase
-    'RealisticDummyContentFieldModifier',
+    '\Drupal\realistic_dummy_content_api\includes\RealisticDummyContentFieldModifier',
   );
 }
 
@@ -191,7 +278,9 @@ function realistic_dummy_content_api_realistic_dummy_content_api_class($entity, 
  * Implements hook_realistic_dummy_content_api_dummy().
  */
 function realistic_dummy_content_api_realistic_dummy_content_api_dummy($entity, $type) {
-  return RealisticDummyContentCMS::entityIsDummy($entity, $type)
+  $return = CMS::entityIsDummy($entity, $type);
+
+  return $return;
 }
 
 /**
@@ -223,7 +312,7 @@ function realistic_dummy_content_api_realistic_dummy_content_api_dummy($entity, 
  *   details.
  */
 function realistic_dummy_content_api_rand($start, $end, $hash = NULL) {
-  if (RealisticDummyContentCMS::configGet('realistic_dummy_content_api_rand', REALISTIC_DUMMY_CONTENT_RANDOM)) {
+  if (CMS::configGet('realistic_dummy_content_api_rand', REALISTIC_DUMMY_CONTENT_RANDOM)) {
     return rand($start, $end);
   }
   else return realistic_dummy_content_api_sequential($start, $end, $hash);
@@ -297,8 +386,8 @@ function realistic_dummy_content_api_sequential($start, $end, $hash) {
  */
 function realistic_dummy_content_api_apply_recipe($log) {
   try {
-    if (!class_exists('RealisticDummyContentRecipe')) {
-      throw new Exception ('Cannot find the class RealisticDummyContentRecipe, this might be solved by uninstalling and reinstalling realistic_dummy_content or rebuilding the registry (Drupal 7), and has been known to happen when upgrading from beta3.');
+    if (!class_exists('\Drupal\realistic_dummy_content_api\includes\RealisticDummyContentRecipe')) {
+      throw new Exception ('Cannot find the class \Drupal\realistic_dummy_content_api\includes\RealisticDummyContentRecipe, this might be solved by uninstalling and reinstalling realistic_dummy_content or rebuilding the registry (Drupal 7), and has been known to happen when upgrading from beta3.');
     }
     RealisticDummyContentRecipe::Run($log);
   }

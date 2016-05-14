@@ -13,5 +13,5 @@ function realistic_dummy_content_api_uninstall() {
   // This is an internal variable used by tests to avoid using random
   // images. This is necessary in order to test that the image replacement
   // happens correctly.
-  variable_del('realistic_dummy_content_api_rand');
+  RealisticDummyContentCMS::variableDel('realistic_dummy_content_api_rand');
 }

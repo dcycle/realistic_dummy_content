@@ -1,3 +1,9 @@
+# This file tells the Circle CI continuous integration server how to run tests
+# for this project. See also the "Continuous integration" section in
+# ./README.md.
+# To run tests, you can ensure you have Docker installed and run
+# ./scripts/tests.sh
+
 machine:
   services:
     - docker

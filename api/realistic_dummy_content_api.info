@@ -2,34 +2,14 @@ name = Realistic Dummy Content API
 description = Allows enabled modules to generate kick-ass demo content (see the Realistic Dummy Content module for an example of how to do this). Do not enable on production sites.
 package = Development
 core = 7.x
+backdrop = 1.x
 tags[] = developer
 
-files[] = includes/RealisticDummyContentException.inc
-files[] = includes/RealisticDummyContentBase.inc
-files[] = includes/RealisticDummyContentEntityBase.inc
-files[] = includes/RealisticDummyContentEntityFieldModifier.inc
-files[] = includes/RealisticDummyContentEnvironment.inc
-files[] = includes/RealisticDummyContentLiveEnvironment.inc
-files[] = includes/RealisticDummyContentDummyEnvironment.inc
-files[] = includes/RealisticDummyContentRecipe.inc
-files[] = includes/RealisticDummyContentAPIRecipe.inc
-files[] = includes/RealisticDummyContentDevelGenerateGenerator.inc
-files[] = includes/RealisticDummyContentGenerator.inc
-files[] = includes/RealisticDummyContentAttribute.inc
-files[] = includes/RealisticDummyContentField.inc
-files[] = includes/RealisticDummyContentFileGroup.inc
-files[] = includes/RealisticDummyContentValueField.inc
-files[] = includes/RealisticDummyContentProperty.inc
-files[] = includes/RealisticDummyContentImageField.inc
-files[] = includes/RealisticDummyContentTaxonomyTermReferenceField.inc
-files[] = includes/RealisticDummyContentTextWithSummaryField.inc
-files[] = includes/RealisticDummyContentTextProperty.inc
-files[] = includes/RealisticDummyContentUserPicture.inc
+; Do not use Drupal 7's autoloading mechanism as it does not support namespaces.
 
-files[] = src/cms/RealisticDummyContentCMS.php
-files[] = src/cms/RealisticDummyContentDrupal7.php
-
-files[] = tests/realistic_dummy_content_api.db.test
-files[] = tests/realistic_dummy_content_api.unit.test
+; Fast, unit tests.
+files[] = tests/RealisticDummyContentDatabaseUnitTestCase.test
+; Slow, functional tests.
+files[] = tests/RealisticDummyContentDatabaseTestCase.test
 
 test_dependencies[] = devel

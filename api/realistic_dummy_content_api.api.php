@@ -17,16 +17,16 @@ function hook_realistic_dummy_content_attribute_manipulator_alter(&$class, &$typ
   // own field or property type.
   switch ($machine_name) {
     case 'picture': // the user picture
-      $class = 'RealisticDummyContentUserPicture';
+      $class = '\Drupal\realistic_dummy_content_api\includes\RealisticDummyContentUserPicture';
       break;
     case 'text_with_summary': // e.g. body
-      $class = 'RealisticDummyContentTextWithSummaryField';
+      $class = '\Drupal\realistic_dummy_content_api\includes\RealisticDummyContentTextWithSummaryField';
       break;
     case 'taxonomy_term_reference': // e.g. tags on articles
-      $class = 'RealisticDummyContentTermReferenceField';
+      $class = '\Drupal\realistic_dummy_content_api\includes\RealisticDummyContentTermReferenceField';
       break;
     case 'image': // e.g. images on articles
-      $class = 'RealisticDummyContentImageField';
+      $class = '\Drupal\realistic_dummy_content_api\includes\RealisticDummyContentImageField';
       break;
     default:
       break;
@@ -74,7 +74,7 @@ function hook_realistic_dummy_content_api_class($entity, $type, $filter = array(
     // given type. These classes must exist, either through Drupal's
     // autoload system or be included explictely, and they must be
     // subclasses of RealisticDummyContentBase
-    'RealisticDummyContentFieldModifier',
+    '\Drupal\realistic_dummy_content_api\includes\RealisticDummyContentFieldModifier',
   );
 }
 

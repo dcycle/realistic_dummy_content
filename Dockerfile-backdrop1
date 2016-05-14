@@ -1,0 +1,43 @@
+FROM ubuntu:trusty
+MAINTAINER Fernando Mayo <fernando@tutum.co>, Feng Honglin <hfeng@tutum.co>
+
+# Install packages
+ENV DEBIAN_FRONTEND noninteractive
+RUN apt-get update && \
+  apt-get -y install supervisor git apache2 libapache2-mod-php5 mysql-server php5-mysql pwgen php-apc php5-mcrypt && \
+  echo "ServerName localhost" >> /etc/apache2/apache2.conf
+
+# Add image configuration and scripts
+ADD scripts/backdrop1-docker-resources/start-apache2.sh /start-apache2.sh
+ADD scripts/backdrop1-docker-resources/start-mysqld.sh /start-mysqld.sh
+ADD scripts/backdrop1-docker-resources/run.sh /run.sh
+RUN chmod 755 /*.sh
+ADD scripts/backdrop1-docker-resources/my.cnf /etc/mysql/conf.d/my.cnf
+ADD scripts/backdrop1-docker-resources/supervisord-apache2.conf /etc/supervisor/conf.d/supervisord-apache2.conf
+ADD scripts/backdrop1-docker-resources/supervisord-mysqld.conf /etc/supervisor/conf.d/supervisord-mysqld.conf
+
+# Remove pre-installed database
+RUN rm -rf /var/lib/mysql/*
+
+# Add MySQL utils
+ADD scripts/backdrop1-docker-resources/create_mysql_admin_user.sh /create_mysql_admin_user.sh
+RUN chmod 755 /*.sh
+
+# Configure /app folder with sample app
+RUN git clone --depth 1 https://github.com/backdrop/backdrop.git /app
+RUN mkdir -p /app && rm -fr /var/www/html && ln -s /app /var/www/html
+
+# Environment variables to configure php
+ENV PHP_UPLOAD_MAX_FILESIZE 10M
+ENV PHP_POST_MAX_SIZE 10M
+
+# Fix some requirements in the instlaler.
+RUN chmod 777 /var/www/html/settings.php
+RUN apt-get install -y php5-gd
+RUN chmod 777 /var/www/html/files
+
+# Add volumes for MySQL
+VOLUME  ["/etc/mysql", "/var/lib/mysql" ]
+
+EXPOSE 80 3306
+CMD ["/run.sh"]

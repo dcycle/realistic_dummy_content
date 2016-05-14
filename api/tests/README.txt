@@ -1,1 +1,1 @@
-Automated Simpletest tests for Realistic Dummy Content.
+Automated Drupal 7 Simpletest tests for Realistic Dummy Content.

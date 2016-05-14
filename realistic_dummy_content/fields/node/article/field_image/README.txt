@@ -1,6 +1,6 @@
-The files herein are used by Realistic dummy content to replace generated content for image fields in article nodes (entity type: node; bundle: article; this is determined by the directory structure).
+The files herein are used by Realistic dummy content to replace generated content for image fields in article nodes (entity type: node; bundle: article; this is determined by the directory structure -- node/article/field_image).
 
-Some files contain non-latin characters and spaces on purpose so our test can make sure they are still imported correctly.
+Some files might contain special characters on purpose so our test can make sure they are still imported correctly.
 
 Licenses for these images:
 
@@ -26,4 +26,4 @@ https://www.flickr.com/photos/nationalmaritimemuseum/2842843325
 Alt Text
 --------
 
-Note that one of the photos has alt text, this is achieved using the attribute mechanism described in the documentation.
+Note that one of the photos has alt text, this is achieved using the attribute mechanism described in the documentation at ./README.md.

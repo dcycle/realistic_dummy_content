@@ -1,16 +1,18 @@
-#!/bin/bash
-if [ "$#" -ne  "1" ]
-  then
-    echo "Please supply exactly one argument, the hash of the container."
-    echo "The container's hash be found in the list below. If you can't find"
-    echo "it, please create a dev container by running ./scripts/dev.sh"
-    echo ""
-    echo "Usage:"
-    echo ""
-    echo "For container xyz123, get a one-time login link by typing"
-    echo ""
-    echo "./scripts/uli.sh xyz123"
-    docker ps
-else
-  docker exec $1 bash -c 'cd /srv/drupal/www && drush uli'
-fi
+D7PORT=$(docker ps|grep rdc_dev_d7|sed 's/.*0.0.0.0://g'|sed 's/->.*//g')
+D8PORT=$(docker ps|grep rdc_dev_d8|sed 's/.*0.0.0.0://g'|sed 's/->.*//g')
+B1PORT=$(docker ps|grep rdc_dev_b1|sed 's/.*0.0.0.0://g'|sed 's/->.*//g')
+echo -e "To log into your D7 environment go to:"
+echo -e ""
+echo -e ' ==> '$(./scripts/uli-for-container.sh rdc_dev_d7)|sed "s/default/172.17.8.101:$D7PORT/g"
+echo -e ""
+echo -e "To log into your D8 environment go to:"
+echo -e ""
+echo -e ' ==> '$(./scripts/uli-for-container.sh rdc_dev_d8)|sed "s/default/172.17.8.101:$D8PORT/g"
+echo -e ""
+echo -e "To log into your Backdrop 1 environment go to:"
+echo -e ""
+echo -e " ==> http://172.17.8.101:$B1PORT and you will need to create a new"
+echo -e '     site through the GUI for now due to'
+echo -e '     https://github.com/backdrop-contrib/drush/issues/34.'
+echo -e ""
+echo -e "Replace 172.17.8.101 with the IP address you use to access your development server."
