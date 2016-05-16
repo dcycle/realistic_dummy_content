@@ -5,10 +5,10 @@ which docker > /dev/null 2> /dev/null || { echo -e "[error] Calling which docker
 echo -e "About to destroy old containers named rdc_dev_d7, rdc_dev_d8 and rdc_dev_b1 if they exist."
 
 # Before destroying, keep a backup of our backdrop site.
-docker exec rdc_dev_b1 /bin/bash -c 'mkdir -p /var/www/html/modules/realistic_dummy_content/scripts/tmp/backdrop'
-docker exec rdc_dev_b1 /bin/bash -c 'mysqldump backdrop > /var/www/html/modules/realistic_dummy_content/scripts/tmp/backdrop/database.sql'
-docker exec rdc_dev_b1 /bin/bash -c 'cp -r /var/www/html/files /var/www/html/modules/realistic_dummy_content/scripts/tmp/backdrop/files'
-docker exec rdc_dev_b1 /bin/bash -c 'cp -r /var/www/html/settings.php /var/www/html/modules/realistic_dummy_content/scripts/tmp/backdrop/settings.php'
+docker exec rdc_dev_b1 /bin/bash -c 'mkdir -p /var/www/html/modules/realistic_dummy_content/scripts/tmp/backdrop' > /dev/null 2> /dev/null || true
+docker exec rdc_dev_b1 /bin/bash -c 'mysqldump backdrop > /var/www/html/modules/realistic_dummy_content/scripts/tmp/backdrop/database.sql' > /dev/null 2> /dev/null || true
+docker exec rdc_dev_b1 /bin/bash -c 'cp -r /var/www/html/files /var/www/html/modules/realistic_dummy_content/scripts/tmp/backdrop/files' > /dev/null 2> /dev/null || true
+docker exec rdc_dev_b1 /bin/bash -c 'cp /var/www/html/settings.php /var/www/html/modules/realistic_dummy_content/scripts/tmp/backdrop/settings.php' > /dev/null 2> /dev/null || true
 
 docker kill rdc_dev_d7 > /dev/null 2> /dev/null || true
 docker kill rdc_dev_d8 > /dev/null 2> /dev/null || true
@@ -48,10 +48,24 @@ echo -e ""
 echo -e "The same code for realistic_dummy_content can be used for"
 echo -e "Drupal 7, Drupal 8 and Backdrop 1. Changes you make to the code at "
 echo -e $(pwd)" will be reflected on all your environments."
-echo -e ""
-echo -e "You will have to install your Backdrop instance manually in the GUI"
-echo -e "because drush site-install is not working for Backdrop:"
-echo -e ""
-echo -e " => backdrop database: backdrop"
-echo -e " => backdrop mysql username: root"
-echo -e " => backdrop mysql password: <no password>"
+
+if [ -a ./scripts/tmp/backdrop/settings.php ]; then
+  docker exec -t -i rdc_dev_b1 /bin/bash -c 'mysql -u root backdrop < /var/www/html/modules/realistic_dummy_content/scripts/tmp/backdrop/database.sql'
+  docker exec -t -i rdc_dev_b1 /bin/bash -c 'cp /var/www/html/modules/realistic_dummy_content/scripts/tmp/backdrop/settings.php /var/www/html/settings.php'
+  docker exec -t -i rdc_dev_b1 /bin/bash -c 'cp -r /var/www/html/modules/realistic_dummy_content/scripts/tmp/backdrop/files/* /var/www/html/files/'
+  docker exec -t -i rdc_dev_b1 /bin/bash -c 'chmod -R 777 /var/www/html/files/'
+  echo -e ""
+  echo -e "Because we found ./scripts/tmp/backdrop/settings.php, we have used"
+  echo -e "settings, files, and database from your previous installation of"
+  echo -e "Backdrop. Everything should work, assuming you haven't forgotten"
+  echo -e "your password. If you have, you can delete ./scripts/tmp/backdrop"
+  echo -e "and reinstall Backdrop on the next run of this script."
+else
+  echo -e ""
+  echo -e "You will have to install your Backdrop instance manually in the GUI"
+  echo -e "because drush site-install is not working for Backdrop:"
+  echo -e ""
+  echo -e " => backdrop database: backdrop"
+  echo -e " => backdrop mysql username: root"
+  echo -e " => backdrop mysql password: <no password>"
+fi
