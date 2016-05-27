@@ -38,7 +38,7 @@ class RealisticDummyContentDummyEnvironment extends RealisticDummyContentEnviron
   }
   function _file_save_data_($data, $destination = NULL) {
     if (!$destination) {
-      throw new Exception('the dummy file system is not designed to use null destination');
+      throw new \Exception('the dummy file system is not designed to use null destination');
     }
     $parsed = parse_url($destination);
     $return_array = array(

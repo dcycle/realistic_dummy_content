@@ -36,12 +36,12 @@ abstract class RealisticDummyContentEnvironment {
    * default to a live environment if none is set. (During testing, a mock
    * environment will be set here so we can better control it.)
    *
-   * @return
+   * @return object
    *   An object of type RealisticDummyContentEnvironment
    */
   static function Get() {
     if (!self::$env) {
-      self::$env = new RealisticDummyContentLiveEnvironment;
+      self::$env = new RealisticDummyContentLiveEnvironment();
     }
     return self::$env;
   }
@@ -51,7 +51,7 @@ abstract class RealisticDummyContentEnvironment {
    *
    * See the comment on the private variable $env.
    *
-   * @param $environment
+   * @param object $environment
    *   An object of type RealisticDummyContentEnvironment
    */
   static function Set($environment) {
@@ -61,7 +61,7 @@ abstract class RealisticDummyContentEnvironment {
   /**
    * Get the contents of a file.
    *
-   * @param $filename
+   * @param string $filename
    *   A valid filename, for example /drupal/root/sites/all/modules/your_module/realistic_dummy_content/fields/node/blog/body/03.txt
    *
    * @throws
@@ -85,24 +85,24 @@ abstract class RealisticDummyContentEnvironment {
    * This function will not return an exception. Please use
    * RealisticDummyContentEnvironment::file_get_contents(), instead.
    *
-   * @param $filename
+   * @param string $filename
    *   A valid filename, for example /drupal/root/sites/all/modules/your_module/realistic_dummy_content/fields/node/blog/body/03.txt
    *
-   * @return
-   *   Undefined in case the filename is invalid; otherwise returns the contents of the
-   *   file.
+   * @return object
+   *   Undefined in case the filename is invalid; otherwise returns the contents
+   *   of the file.
    */
   abstract function _file_get_contents_($filename);
 
   /**
    * Save the file data to the real or test environment.
    *
-   * @param $data
+   * @param string $data
    *   The data
-   * @param $destination
-   *   Where to put
+   * @param string $destination
+   *   Where to put it
    *
-   * @return
+   * @return object
    *
    * @throws
    *   Exception
@@ -140,13 +140,13 @@ abstract class RealisticDummyContentEnvironment {
    * will also be represented as three files, but the second one will have two
    * attributes, attribute and attribute1.
    *
-   * @param $filepath
+   * @param string $filepath
    *   An absolute filepath on the system, for example /path/to/drupal/sites/all/
    *   modules/mymodule/realistic_dummy_content/fields/node/article/body
-   * @param $extensions
+   * @param array $extensions
    *   An array of extensions which should be taken into consideration.
    *
-   * @return
+   * @return array
    *   An empty array in case of an error, or an array of objects of type
    *   RealisticDummyContentFileGroup.
    */
@@ -171,7 +171,7 @@ abstract class RealisticDummyContentEnvironment {
   /**
    * Given a list of candidate files, sort them by names and parts.
    *
-   * @param $candidate_files
+   * @param array $candidate_files
    *   An array keyed by filename which contains drupal file objects, like this:
    *
    *     'one.txt' => [file object]
@@ -179,7 +179,8 @@ abstract class RealisticDummyContentEnvironment {
    *     'two.txt.attribute1.txt' => [file object]
    *     'three.txt' => [file object]
    *
-   * @param $extensions = NULL
+   * @param NULL|array $extensions
+   *   (Default is NULL).
    *   If set, only return file groups whose base file is in one of the
    *   extenstions. For example, given an extension jpg,png, and a file
    *   structure with
@@ -195,7 +196,7 @@ abstract class RealisticDummyContentEnvironment {
    *        attributes =>
    *          alt => [a.jpg.alt.txt]
    *
-   * @return
+   * @return array
    *   A sorted array which looks like:
    *
    *     one.txt => array('file' => [file object]),
@@ -238,13 +239,14 @@ abstract class RealisticDummyContentEnvironment {
   /**
    * Given a list of candidate files, sort them by names and parts.
    *
-   * @param $candidate_files
+   * @param array $candidate_files
    *   An array keyed by filename which contains drupal file objects. See
    *   SortCandidateFiles().
-   * @param $extensions = NULL
+   * @param array $extensions
+   *   (Default is NULL).
    *   If set, extensions to filter by. See SortCandidateFiles().
    *
-   * @return
+   * @return array
    *   A sorted array. See SortCandidateFiles().
    *
    * @throws
@@ -310,10 +312,10 @@ abstract class RealisticDummyContentEnvironment {
    *     a.b => NULL
    *     a => NULL
    *
-   * @param $filename
+   * @param string $filename
    *   A filename string, for example 'a.b.txt'
    *
-   * @return
+   * @return NULL|string
    *   Null if there is attribute to extract; otherwise the attribute name, for
    *   example "b".
    *
@@ -347,10 +349,10 @@ abstract class RealisticDummyContentEnvironment {
    *     a.b => a.b
    *     a => a
    *
-   * @param $filename
+   * @param string $filename
    *   A filename string, for example 'a.b.txt'
    *
-   * @return
+   * @return string
    *   The name radical of this file, for example a.txt.
    *
    * @throws
@@ -366,10 +368,10 @@ abstract class RealisticDummyContentEnvironment {
   /**
    * Returns the part of a string before the extension, in lowercase
    *
-   * @param $filename
+   * @param string $filename
    *   A filename string, e.g. rEadmE.txt
    *
-   * @return
+   * @return string
    *   The lowercase radical without the extension, e.g. readme
    */
   static function LowercaseRadicalNoExtension($filename) {
@@ -382,15 +384,15 @@ abstract class RealisticDummyContentEnvironment {
    * Helper function which runs a preg replace function on a filename and
    * returns the result
    *
-   * @param $filename
+   * @param string $filename
    *   A filename, for example a, a.b, a.b.c, a.b.c.d
-   * @param $replace
+   * @param string $replace
    *   A replacement pattern meant to be passed to preg_replace, where:
    *   \1 = everything before the next-to-last period
    *   \2 = everything between the next-to-last and last periods.
    *   \3 = everything after and including the last period
    *
-   * @return
+   * @return string
    *   The replaced filename, or the same filename in case of an error or if the
    *   pattern is not found.
    *
@@ -407,10 +409,10 @@ abstract class RealisticDummyContentEnvironment {
   /**
    * Returns the trimmed contents of a Drpual file object, or NULL if empty.
    *
-   * @param $file
+   * @param object $file
    *   A drupal file object
    *
-   * @return
+   * @return NULL|string
    *   NULL if no contents in file, or if an error occurred; otherwise a string
    *   with the trimmed contents of the file.
    */

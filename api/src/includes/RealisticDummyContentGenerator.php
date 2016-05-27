@@ -15,7 +15,7 @@ abstract class RealisticDummyContentGenerator {
   private $more;
 
   /**
-   * @param $more
+   * @param array $more
    *   Can contain:
    *     kill => TRUE|FALSE
    */

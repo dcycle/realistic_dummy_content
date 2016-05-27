@@ -44,7 +44,7 @@ class RealisticDummyContentFieldModifier extends RealisticDummyContentEntityBase
   /**
    * Get properties for the entity, for example user's picture or node's name.
    *
-   * @return
+   * @return array
    *   An array of RealisticDummyContentAttribute objects, keyed by attribute
    *   name, e.g. title => [RealisticDummyContentAttribute], field_image =>
    *   [RealisticDummyContentAttribute]
@@ -63,7 +63,7 @@ class RealisticDummyContentFieldModifier extends RealisticDummyContentEntityBase
   /**
    * Get fields for the entity, for example body or field_image.
    *
-   * @return
+   * @return array
    *   An array of RealisticDummyContentAttribute objects, keyed by attribute
    *   name, e.g. title => [RealisticDummyContentAttribute], field_image =>
    *   [RealisticDummyContentAttribute]
@@ -99,12 +99,12 @@ class RealisticDummyContentFieldModifier extends RealisticDummyContentEntityBase
    * a text format), and others. These are all defined in subclasses and can
    * be extended by module developers.
    *
-   * @param &$modifiers
+   * @param array &$modifiers
    *   Existing array of subclasses of RealisticDummyContentAttribute, to which
    *   new modifiers will be added.
-   * @param $type
+   * @param string $type
    *   Either 'property' or 'field'
-   * @param $name
+   * @param string $name
    *   Name of the property or field, for example 'body', 'picture', 'title',
    *  'field_image'.
    */
@@ -115,11 +115,13 @@ class RealisticDummyContentFieldModifier extends RealisticDummyContentEntityBase
         $original_class = '\Drupal\realistic_dummy_content_api\includes\RealisticDummyContentTextProperty';
         $attribute_type = $name;
         break;
+
       case 'field':
         $original_class = '\Drupal\realistic_dummy_content_api\includes\RealisticDummyContentValueField';
         $field_info = field_info_field($name);
         $attribute_type = $field_info['type'];
         break;
+
       default:
         return;
         break;
@@ -167,7 +169,7 @@ class RealisticDummyContentFieldModifier extends RealisticDummyContentEntityBase
    * We implement fields and properties as subclasses of the same parent class,
    * which defines a common interface for dealing with them.
    *
-   * @return
+   * @return array
    *   An array of RealisticDummyContentAttribute objects, keyed by attribute
    *   name, e.g. title => [RealisticDummyContentAttribute], field_image =>
    *   [RealisticDummyContentAttribute]
@@ -187,7 +189,7 @@ class RealisticDummyContentFieldModifier extends RealisticDummyContentEntityBase
   /**
    * Get the uid property of this entity, or 0.
    *
-   * @return
+   * @return int
    *   The uid of the associated entity.
    */
   function GetUid() {

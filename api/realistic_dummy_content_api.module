@@ -72,11 +72,11 @@ spl_autoload_register(function($class_name) {
     $module = array_shift($parts);
     $path = 'src/' . implode('/', $parts);
     if (!module_load_include('php', $module, $path)) {
-      throw new Exception('Expected to find ' . $class_name . ' at ' . $module . '/' . $path . '.php, but that file does not exist.');
+      throw new \Exception('Expected to find ' . $class_name . ' at ' . $module . '/' . $path . '.php, but that file does not exist.');
     }
   }
   catch (Exception $e) {
-    throw new Exception('Autoloader at ' . __FILE__ . ' was asked by ' . realistic_dummy_content_api_calling_function(4) . ' to autoload the class ' . $class_name . ' but found the followin error: ' . $e->getMessage());
+    throw new \Exception('Autoloader at ' . __FILE__ . ' was asked by ' . realistic_dummy_content_api_calling_function(4) . ' to autoload the class ' . $class_name . ' but found the following error: ' . $e->getMessage());
   }
 });
 
@@ -127,7 +127,10 @@ function realistic_dummy_content_api_entity_presave($entity, $type = NULL) {
  * Implements hook_user_insert().
  */
 function realistic_dummy_content_api_user_insert(&$edit, $account, $category) {
-  Drupal\realistic_dummy_content_api\cms\CMS::hookUserInsert($edit, $account, $category);
+  // This hook is only implemented by some CMSs, so we will call instance().
+  // Calling this function in a CMS that does not support it, for example Drupal
+  // 8, will result in a fatal error.
+  Drupal\realistic_dummy_content_api\cms\CMS::instance()->hookUserInsert($edit, $account, $category);
 }
 
 /**
@@ -141,15 +144,19 @@ function realistic_dummy_content_api_realistic_dummy_content_attribute_manipulat
     case 'picture': // the user picture
       $class = '\Drupal\realistic_dummy_content_api\includes\RealisticDummyContentUserPicture';
       break;
+
     case 'text_with_summary': // e.g. body
       $class = '\Drupal\realistic_dummy_content_api\includes\RealisticDummyContentTextWithSummaryField';
       break;
+
     case 'taxonomy_term_reference': // e.g. tags on articles
       $class = '\Drupal\realistic_dummy_content_api\includes\RealisticDummyContentTermReferenceField';
       break;
+
     case 'image': // e.g. images on articles
       $class = '\Drupal\realistic_dummy_content_api\includes\RealisticDummyContentImageField';
       break;
+
     default:
       break;
   }
@@ -159,19 +166,22 @@ function realistic_dummy_content_api_realistic_dummy_content_attribute_manipulat
  * Implements hook_user_presave().
  */
 function realistic_dummy_content_api_user_presave(&$edit, $account, $category) {
-  Drupal\realistic_dummy_content_api\cms\CMS::hookUserPresave($edit, $account, $category);
+  // This hook is only implemented by some CMSs, so we will call instance().
+  // Calling this function in a CMS that does not support it, for example Drupal
+  // 8, will result in a fatal error.
+  Drupal\realistic_dummy_content_api\cms\CMS::instance()->hookUserPresave($edit, $account, $category);
 }
 
 /**
  * Checks if a given entity is dummy content.
  *
- * @param $entity
+ * @param object $entity
  *   The object for a given entity type, for example this can be a user object
  *   or a node object.
- * @param $type
+ * @param string $type
  *   The type of the information to change, for example 'user' or 'node'.
  *
- * @return
+ * @return bool
  *   TRUE if at least one module implemented
  *   hook_realistic_dummy_content_api_dummy and thinks the entity is a dummy
  *   objects; FALSE otherwise.
@@ -188,12 +198,13 @@ function realistic_dummy_content_api_is_dummy($entity, $type) {
 /**
  * Insert or improve dummy data in an entity of a given type.
  *
- * @param $entity
+ * @param object $entity
  *   The object for a given type, for example this can be a user object
  *   or a node object.
- * @param $type
+ * @param string $type
  *   The type of the information to change, for example 'user' or 'node'.
- * @param $filter
+ * @param array $filter
+ *   (Default is array()).
  *   If set, only certain fields will be considered when manipulating
  *   the object. This can be useful, for example for users, because
  *   two separate manipulations need to be performed, depending on whether
@@ -245,7 +256,7 @@ function realistic_dummy_content_api_validate($entity, $type) {
 /**
  * Validate that a class is a valid subclasss of RealisticDummyContentBase
  *
- * @param $class
+ * @param string $class
  *   A class name
  *
  * @throws
@@ -253,11 +264,10 @@ function realistic_dummy_content_api_validate($entity, $type) {
  */
 function realistic_dummy_content_api_validate_class($class) {
   if (!class_exists($class)) {
-    //new $class;
-    throw new Exception(t('@class is not a valid class; make sure you include its file or use Drupal\'s autoload mechanism: name your include file with the same name as the class, and add it to the .info file, then clear your cache.', array('@class' => $class)));
+    throw new \Exception(t('@class is not a valid class; make sure you include its file or use Drupal\'s autoload mechanism: name your include file with the same name as the class, and add it to the .info file, then clear your cache.', array('@class' => $class)));
   }
   if (!is_subclass_of($class, '\Drupal\realistic_dummy_content_api\includes\RealisticDummyContentBase')) {
-    throw new Exception(t('@class is a valid class but it is not a subclass of \Drupal\realistic_dummy_content_api\includes\RealisticDummyContentBase.', array('@class' => $class)));
+    throw new \Exception(t('@class is a valid class but it is not a subclass of \Drupal\realistic_dummy_content_api\includes\RealisticDummyContentBase.', array('@class' => $class)));
   }
 }
 
@@ -296,15 +306,16 @@ function realistic_dummy_content_api_realistic_dummy_content_api_dummy($entity, 
  * See the documentation for realistic_dummy_content_api_sequential() for
  * details.
  *
- * @param $start
+ * @param int $start
  *   The first possible number in the range.
- * @param $end
+ * @param int $end
  *   The last possible number in the range.
- * @param $hash = NULL
+ * @param string $hash
+ *   (Default is NULL).
  *   Ignored for random numbers; for sequential numbers, please see the
  *   documentation for realistic_dummy_content_api_sequential() for details.
  *
- * @return
+ * @return int
  *   A random number by default, or a sequential number if you set the
  *   realistic_dummy_content_api_rand variable to
  *   REALISTIC_DUMMY_CONTENT_SEQUENTIAL.
@@ -331,17 +342,17 @@ function realistic_dummy_content_api_rand($start, $end, $hash = NULL) {
  * first file, in order to never return a number which is outside the range of
  * start to end.
  *
- * @param $start
+ * @param int $start
  *   The first possible number in the range.
- * @param $end
+ * @param int $end
  *   The last possible number in the range.
- * @param $hash
+ * @param string $hash
  *   The number returned by this function will be in sequence: each call to
  *   realistic_dummy_content_api_sequential()'s return is incremented by
  *   one, unless $hash is the same as in the last call, in which case the return
  *   will be the same as in the last call.
  *
- * @return
+ * @return int
  *   A sequential number based on the $hash.
  *   Please see the description of the $hash parameter, above.
  */
@@ -375,19 +386,18 @@ function realistic_dummy_content_api_sequential($start, $end, $hash) {
   return $return;
 }
 
-
 /**
  * Attempts to generate all realistic content for the current site.
  *
- * @param $log
- *   A class which implements the interface RealisticDummyContentLog. Logging
- *   will be different if you are using drush or in the context of an automated
- *   test, for example.
+ * @param object $log
+ *   An object of a class which implements the interface
+ *   RealisticDummyContentLog. Logging will be different if you are using drush
+ *   or in the context of an automated test, for example.
  */
 function realistic_dummy_content_api_apply_recipe($log) {
   try {
     if (!class_exists('\Drupal\realistic_dummy_content_api\includes\RealisticDummyContentRecipe')) {
-      throw new Exception ('Cannot find the class \Drupal\realistic_dummy_content_api\includes\RealisticDummyContentRecipe, this might be solved by uninstalling and reinstalling realistic_dummy_content or rebuilding the registry (Drupal 7), and has been known to happen when upgrading from beta3.');
+      throw new \Exception('Cannot find the class \Drupal\realistic_dummy_content_api\includes\RealisticDummyContentRecipe, this might be solved by uninstalling and reinstalling realistic_dummy_content or rebuilding the registry (Drupal 7), and has been known to happen when upgrading from beta3.');
     }
     RealisticDummyContentRecipe::Run($log);
   }
@@ -395,4 +405,8 @@ function realistic_dummy_content_api_apply_recipe($log) {
     $log->log('An exception occurred while trying to apply a recipe');
     $log->error($e->getMessage());
   }
+}
+
+function realistic_dummy_content_api_cms_selftest() {
+  return CMS::instance()->selfTest();
 }

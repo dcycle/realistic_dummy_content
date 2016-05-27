@@ -9,6 +9,7 @@
 namespace Drupal\realistic_dummy_content_api\includes;
 
 use Drupal\realistic_dummy_content_api\includes\RealisticDummyContentField;
+use Drupal\realistic_dummy_content_api\cms\CMS;
 
 /**
  */
@@ -29,7 +30,7 @@ class RealisticDummyContentTermReferenceField extends RealisticDummyContentField
         );
       }
     }
-    catch (Exception $e) {
+    catch (\Exception $e) {
       return NULL;
     }
   }
@@ -43,17 +44,17 @@ class RealisticDummyContentTermReferenceField extends RealisticDummyContentField
    * "location", then this function will return its tid. If not, the term will
    * be created, and then the tid will be returned.
    *
-   * @param $name
+   * @param string $name
    *   The string for the taxonomy term.
    *
-   * @return
+   * @return int
    *   The associated pre-existing or just-created tid.
    *
    * @throws
    *   Exception
    */
   function GetTid($name) {
-    $vocabularies = taxonomy_get_vocabularies();
+    $vocabularies = CMS::getAllVocabularies();
     $field_info = field_info_field($this->GetName());
     $candidate_existing_terms = array();
     foreach ($field_info['settings']['allowed_values'] as $vocabulary) {
@@ -71,7 +72,7 @@ class RealisticDummyContentTermReferenceField extends RealisticDummyContentField
     }
 
     if (!isset($vocabulary->vid)) {
-      throw new Exception('Expecting the taxonomy term reference to reference at least one vocabulary');
+      throw new \Exception('Expecting the taxonomy term reference to reference at least one vocabulary');
     }
 
     $term = new \stdClass();
@@ -82,7 +83,7 @@ class RealisticDummyContentTermReferenceField extends RealisticDummyContentField
       return $term->tid;
     }
     else {
-      throw new Exception('tid could not be determined');
+      throw new \Exception('tid could not be determined');
     }
   }
 

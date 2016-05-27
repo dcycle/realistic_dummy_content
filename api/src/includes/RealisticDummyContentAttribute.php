@@ -37,9 +37,9 @@ abstract class RealisticDummyContentAttribute {
   /**
    * Constructor.
    *
-   * @param $entity
-   *   Subclass of RealisticDummyContentEntityBase.
-   * @param $name
+   * @param object $entity
+   *   Object of a subclass of RealisticDummyContentEntityBase.
+   * @param string $name
    *   The name of the field, for example body or picture or field_image
    */
   function __construct($entity, $name) {
@@ -67,7 +67,7 @@ abstract class RealisticDummyContentAttribute {
    * The number should be the same for the same entity, so we need to know the
    * entity.
    *
-   * @return
+   * @return int
    *   A random or sequential number.
    */
   function rand($start, $end) {
@@ -84,7 +84,7 @@ abstract class RealisticDummyContentAttribute {
   /**
    * Gets the bundle of the associated entity.
    *
-   * @return
+   * @return string
    *   The bundle name.
    */
   function GetBundle() {
@@ -94,7 +94,7 @@ abstract class RealisticDummyContentAttribute {
   /**
    * Gets the UID of the associated entity.
    *
-   * @return
+   * @return int
    *   The UID.
    */
   function GetUid() {
@@ -104,8 +104,8 @@ abstract class RealisticDummyContentAttribute {
   /**
    * Get the entity type of the associated entity.
    *
-   * @return
-   *   The entity type as a string, node or user for example.
+   * @return string
+   *   The entity type as a string, 'node' or 'user' for example.
    */
   function GetEntityType() {
     return $this->GetEntity()->GetType();
@@ -118,7 +118,7 @@ abstract class RealisticDummyContentAttribute {
    * attributes of entities. Fields include body and field_image; properties include
    * title and the user picture.
    *
-   * @return
+   * @return string
    *   'property' or 'field'
    */
   abstract function GetType();
@@ -144,7 +144,7 @@ abstract class RealisticDummyContentAttribute {
   /**
    * Given candidate files, change value of this attribute based on one of them.
    *
-   * @param $files
+   * @param array $files
    *   An array of files.
    */
   function ChangeFromFiles($files) {
@@ -165,7 +165,7 @@ abstract class RealisticDummyContentAttribute {
    * For example, title attributes can be replaced by data in txt files, whereas
    * picture and field_image attributes require png, jpg, gif.
    *
-   * @return
+   * @return array
    *   An array of acceptable file extensions.
    */
   function GetExtensions() {
@@ -198,10 +198,10 @@ abstract class RealisticDummyContentAttribute {
    * 'text_format' => 'filtered_html'); other times is it just a string.
    * Subclasses will determine what to do with the contents from the file.
    *
-   * @param $file
+   * @param object $file
    *   The actual file object.
    *
-   * @return
+   * @return NULL|array
    *   In case of an error or if the value does not apply or is empty, return
    *   NULL; otherwise returns structured data to be added to the entity object.
    */
@@ -222,10 +222,10 @@ abstract class RealisticDummyContentAttribute {
    * This function is not meant to called directly; rather, call
    * ValueFromFile(). This function must be overriden by subclasses.
    *
-   * @param $file
+   * @param object $file
    *   An object of type RealisticDummyContentFileGroup.
    *
-   * @return
+   * @return NULL|array
    *   Returns structured data to be added to the entity object, or NULL if such
    *   data can't be creatd.
    *
@@ -237,10 +237,10 @@ abstract class RealisticDummyContentAttribute {
   /**
    * Given a list of files, return a value from one of them.
    *
-   * @param $files
+   * @param array $files
    *   An array of file objects
    *
-   * @return
+   * @return mixed
    *   A file object or array, or an associative array with the keys "value" and
    *   "format", or NULL if there are no files to choose from or the files have
    *   the wrong extension.
@@ -261,7 +261,7 @@ abstract class RealisticDummyContentAttribute {
   /**
    * Return acceptable image file extensions.
    *
-   * @return
+   * @return array
    *   An array of extension for image files.
    */
   function GetImageExtensions() {
@@ -271,7 +271,7 @@ abstract class RealisticDummyContentAttribute {
   /**
    * Return acceptable text file extensions.
    *
-   * @return
+   * @return array
    *   An array of extension for text files.
    */
   function GetTextExtensions() {
@@ -281,10 +281,10 @@ abstract class RealisticDummyContentAttribute {
   /**
    * Return an image file object if possible.
    *
-   * @param $file
+   * @param object $file
    *   The RealisticDummyContentFileGroup object
    *
-   * @return
+   * @return NULL|object
    *   NULL if the file is not an image, or if an error occurred; otherwise a
    *   Drupal file object.
    */
@@ -312,10 +312,10 @@ abstract class RealisticDummyContentAttribute {
   /**
    * Return a file object.
    *
-   * @param $file
+   * @param object $file
    *   The original file, a RealisticDummyContentFileGroup object.
    *
-   * @return
+   * @return object
    *   A file object.
    *
    * @throws
@@ -332,7 +332,12 @@ abstract class RealisticDummyContentAttribute {
     $random = $file->GetRadical();
     $drupal_file = $this->env()->file_save_data($file->Value(), 'public://dummyfile' . $random . '.' . $file->GetRadicalExtension());
     $drupal_file->uid = $this->GetUid();
-    $return = file_save($drupal_file);
+    $return = CMS::fileSave($drupal_file);
+
+    if (!is_object($return)) {
+      throw new \Exception('Internal error, ' . __FUNCTION__ . ' expecting to return an object');
+    }
+
     return $return;
   }
 

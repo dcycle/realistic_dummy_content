@@ -8,19 +8,30 @@
 // We must call interface_exists here because during the call
 // to drush en RealisticDummyContent, the interface is not present yet.
 if (interface_exists('RealisticDummyContentLog')) {
+  /**
+   * The Drush log, allows function to log messages to Drush.
+   */
   class RealisticDummyContentDrushAPILog implements RealisticDummyContentLog {
+
+    /**
+     * {@inheritdoc}
+     */
     public function log($text, $vars = array()) {
       drush_log(dt($text, $vars), 'ok');
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function error($text, $vars = array()) {
       $this->log('RealisticDummyContent_FAILURE');
       drush_set_error('RealisticDummyContent_ERROR', dt($text, $vars));
       drush_set_context('DRUSH_ERROR_CODE', 1);
-      // we need this for jenkins to get 1 to show up in $? With drush_die(1)
+      // We need this for jenkins to get 1 to show up in $? With drush_die(1).
       // $? returns 0 in the command line.
       die(1);
     }
+
   }
 }
 
@@ -36,8 +47,8 @@ function realistic_dummy_content_api_drush_command() {
 }
 
 /**
- * Callback: Generates realistic content
+ * Callback: Generates realistic content.
  */
 function drush_realistic_dummy_content_api_generate_realistic() {
-  realistic_dummy_content_api_apply_recipe(new RealisticDummyContentDrushAPILog);
+  realistic_dummy_content_api_apply_recipe(new RealisticDummyContentDrushAPILog());
 }

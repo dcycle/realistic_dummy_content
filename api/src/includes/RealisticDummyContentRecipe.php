@@ -33,14 +33,14 @@ abstract class RealisticDummyContentRecipe {
     foreach ($modules as $module) {
       $candidate = $module . '_realistic_dummy_content_recipe';
       if (module_load_include('inc', $module, 'realistic_dummy_content/recipe/' . $module . '.recipe') && class_exists($candidate)) {
-        $objects[] = new $candidate;
+        $objects[] = new $candidate();
       }
     }
     return $objects;
   }
 
   /**
-   * @param $more
+   * @param array $more
    *   Can contain:
    *     kill => TRUE|FALSE
    */

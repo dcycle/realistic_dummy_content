@@ -1,50 +1,62 @@
 <?php
 /**
  * @file
+ * Hook definitions for documentation purposes.
  *
- * Hook definitions. These functions are never called, and are included
+ * These functions are never called, and are included
  * here for documentation purposes only.
  */
 
 /**
- * @param $machine_name
+ * Returns a manipulator class name for a given field.
+ *
+ * @param string $machine_name
  *   The machine name of the field or property, for example "title",
  *   "text_with_summary", or "picture".
  */
 function hook_realistic_dummy_content_attribute_manipulator_alter(&$class, &$type, &$machine_name) {
-  // If you want to implement a particular manipulator class for a field or property
-  // you can do so by implementing this hook and reproducing what's below for your
-  // own field or property type.
+  // If you want to implement a particular manipulator class for a field or
+  // property you can do so by implementing this hook and reproducing what's
+  // below for your own field or property type.
   switch ($machine_name) {
-    case 'picture': // the user picture
+    case 'picture':
+      // The user picture.
       $class = '\Drupal\realistic_dummy_content_api\includes\RealisticDummyContentUserPicture';
       break;
-    case 'text_with_summary': // e.g. body
+
+    case 'text_with_summary':
+      // e.g. body.
       $class = '\Drupal\realistic_dummy_content_api\includes\RealisticDummyContentTextWithSummaryField';
       break;
-    case 'taxonomy_term_reference': // e.g. tags on articles
+
+    case 'taxonomy_term_reference':
+      // e.g. tags on articles.
       $class = '\Drupal\realistic_dummy_content_api\includes\RealisticDummyContentTermReferenceField';
       break;
-    case 'image': // e.g. images on articles
+
+    case 'image':
+      // e.g. images on articles.
       $class = '\Drupal\realistic_dummy_content_api\includes\RealisticDummyContentImageField';
       break;
+
     default:
       break;
   }
 }
 
 /**
- * hook_realistic_dummy_content_api_class().
+ * Get an object which will perform manipulation of dummy content.
  *
  * Return any object which is a subclass of RealisticDummyContentBase, which
  * will be used to modify content which is deemed to be dummy content.
  *
- * @param $entity
+ * @param object $entity
  *   The object for a given type, for example this can be a user object
  *   or a node object.
- * @param $type
+ * @param string $type
  *   The entity type of the information to change, for example 'user' or 'node'.
- * @param $filter
+ * @param array $filter
+ *   (Default is array()).
  *   If set, only certain fields will be considered when manipulating
  *   the object. This can be useful, for example for users, because
  *   two separate manipulations need to be performed, depending on whether
@@ -65,7 +77,7 @@ function hook_realistic_dummy_content_attribute_manipulator_alter(&$class, &$typ
  *   This allows hook implementations to return a different class based on
  *   the type of filter.
  *
- * @return
+ * @return array
  *   Array of objects which are a subclass of RealisticDummyContentBase.
  */
 function hook_realistic_dummy_content_api_class($entity, $type, $filter = array()) {
@@ -73,26 +85,26 @@ function hook_realistic_dummy_content_api_class($entity, $type, $filter = array(
     // Insert class names for all classes which can modify entities for the
     // given type. These classes must exist, either through Drupal's
     // autoload system or be included explictely, and they must be
-    // subclasses of RealisticDummyContentBase
+    // subclasses of RealisticDummyContentBase.
     '\Drupal\realistic_dummy_content_api\includes\RealisticDummyContentFieldModifier',
   );
 }
 
 /**
- * hook_realistic_dummy_content_api_dummy().
+ * Check whether an entity is dummy content or not.
  *
  * Return whether or not an object of a given type is a dummy object or not.
  * The motivation for this hook is for cases where you may not be using
  * devel_generate for nodes, or whether you have a specific technique for
  * determining whether or not a given object is dummy content or not.
  *
- * @param $entity
+ * @param object $entity
  *   The object for a given type, for example this can be a user object
  *   or a node object.
- * @param $type
+ * @param string $type
  *   The type of the information to change, for example 'user' or 'node'.
  *
- * @return
+ * @return bool
  *   Boolean value representing whether or not this object is a dummy object.
  *   FALSE means we were unable to ascertain that the entity is in fact
  *   a dummy object. Other modules which implement this hook might
@@ -106,6 +118,7 @@ function hook_realistic_dummy_content_api_dummy($entity, $type) {
         return TRUE;
       }
       break;
+
     case 'user':
       // devel_generate puts .invalid at the end of the generated user's
       // email address. This module should not be activated on a production
@@ -116,6 +129,7 @@ function hook_realistic_dummy_content_api_dummy($entity, $type) {
         return TRUE;
       }
       break;
+
     default:
       break;
   }

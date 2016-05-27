@@ -28,11 +28,11 @@ abstract class RealisticDummyContentEntityBase extends RealisticDummyContentBase
   /**
    * Constructor.
    *
-   * @param $entity
+   * @param object $entity
    *   The entity object.
    * @param string $type
    *   The entity type of the object, for example user or node.
-   * @param $filter
+   * @param array $filter
    *   If set, only certain fields will be considered when manipulating
    *   the object. This can be useful, for example for users, because
    *   two separate manipulations need to be performed, depending on whether
@@ -101,7 +101,7 @@ abstract class RealisticDummyContentEntityBase extends RealisticDummyContentBase
    * there must be a bundle even if there is only one: it is called user,
    * like the entity type.
    *
-   * @return
+   * @return string
    *   The entity type, for example "node" or "user".
    */
   function GetType() {
@@ -117,7 +117,7 @@ abstract class RealisticDummyContentEntityBase extends RealisticDummyContentBase
    * there must be a bundle even if there is only one: it is called user,
    * like the entity type.
    *
-   * @return
+   * @return string
    *   The bundle, for example "article" or "user". Is a bundle is not
    *   readily available, return the entity type.
    */

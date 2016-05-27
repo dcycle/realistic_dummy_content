@@ -137,7 +137,7 @@ class RealisticDummyContentDatabaseTestCase extends DrupalWebTestCase {
    * This will make sure the tag exists as the taxonomy term, and that it is
    * referenced in $node's field_tags
    *
-   * @param $tag_name
+   * @param string $tag_name
    *   A string
    * @param $node
    *   A node object
@@ -182,7 +182,7 @@ class RealisticDummyContentDatabaseTestCase extends DrupalWebTestCase {
     $this->assertTrue(module_load_include('inc', 'realistic_dummy_content_api', 'realistic_dummy_content_api.drush'), 'drush file exists');
     $this->assertTrue(class_exists('RealisticDummyContentDrushAPILog'), 'The drush log class exists; it is required when running drush generate-realistic or other drush commands');
     $this->assertTrue(class_exists('RealisticDummyContentDebugLog'), 'The RealisticDummyContentDebugLog class exists, thereby preventing a fatal error.');
-    realistic_dummy_content_api_apply_recipe(new RealisticDummyContentDebugLog);
+    realistic_dummy_content_api_apply_recipe(new RealisticDummyContentDebugLog());
     $page = node_load(4);
     $article = node_load(14);
     $this->assertTrue(isset($page->type) && $page->type == 'page', 'Node 4 is a page, as specified in the recipe.');

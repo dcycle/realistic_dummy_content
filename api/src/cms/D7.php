@@ -8,6 +8,16 @@ class D7 extends \Drupal\realistic_dummy_content_api\cms\CMS {
     }
   }
 
+  public function hookUserInsert(&$edit, $account, $category) {
+    static::addTestFlag('hookUserInsert called');
+    return $this->instance()->_hookUserInsert($edit, $account, $category);
+  }
+
+  public function hookUserPresave(&$edit, $account, $category) {
+    static::addTestFlag('hookUserPresave called');
+    return $this->instance()->_hookUserPresave($edit, $account, $category);
+  }
+
   function _hookUserInsert(&$edit, $account, $category) {
     // This hook is invoked only once when the user is first created, whether
     // by the administrator or by devel_generate. The hook is not invoked
@@ -18,6 +28,9 @@ class D7 extends \Drupal\realistic_dummy_content_api\cms\CMS {
       ),
     );
     $this->_realistic_dummy_content_api_entity_presave($account, 'user', $filter);
+  }
+
+  function _cmsSpecificTests(&$errors, &$tests) {
   }
 
   function _hookUserPresave(&$edit, $account, $category) {
@@ -59,13 +72,13 @@ class D7 extends \Drupal\realistic_dummy_content_api\cms\CMS {
    * subtle differences. This function aims to be more abstract and uses the
    * concept of a filter, see below.
    *
-   * @param $entity
+   * @param object $entity
    *   The object for a given type, for example this can be a user object
    *   or a node object.
-   * @param $type
+   * @param string $type
    *   The entity type of the information to change, for example 'user' or
    *   'node'.
-   * @param $filter
+   * @param array $filter
    *   If set, only certain fields will be considered when manipulating
    *   the object. This can be useful, for example for users, because
    *   two separate manipulations need to be performed, depending on whether
@@ -138,6 +151,7 @@ class D7 extends \Drupal\realistic_dummy_content_api\cms\CMS {
           return TRUE;
         }
         break;
+
       default:
         break;
     }
@@ -160,9 +174,67 @@ class D7 extends \Drupal\realistic_dummy_content_api\cms\CMS {
     $entity->{$property} = $value;
   }
 
+  public function _getEntityProperty(&$entity, $property) {
+    return $entity->{$property};
+  }
+
+  public function _createEntity($info) {
+    if (isset($info['entity_type'])) {
+      $entity_type = $info['entity_type'];
+    }
+    else {
+      $entity_type = 'node';
+    }
+    $entity = new \stdClass();
+    switch ($entity_type) {
+      case 'node':
+        $entity->title = rand(100000, 999999);
+        $entity->type = $this->getDefaultNodeType();
+        node_save($entity);
+        break;
+
+      case 'user':
+        $entity = user_save(drupal_anonymous_user(), array('name' => rand(1000000, 9999999)));
+        break;
+
+      default:
+        throw new \Exception('Unknown entity type ' . $entity_type);
+        break;
+    }
+    return $entity;
+  }
+
+  public function getDefaultNodeType() {
+    return 'article';
+  }
+
+  public function _test_getDefaultNodeType() {
+    return !is_string($this->getDefaultNodeType());
+  }
+
   public function _debug($message, $info) {
     dpm($message, $info);
   }
 
+  public function _getAllVocabularies() {
+    $return = taxonomy_get_vocabularies();
+    return $return;
+  }
+
+  function _fileSave($drupal_file) {
+    return file_save($drupal_file);
+  }
+
+  function _test_hookUserInsert() {
+    self::clearTestFlag('hookUserInsert called');
+    self::createEntity(array('entity_type' => 'user'));
+    return !static::getTestFlag('hookUserInsert called');
+  }
+
+  function _test_hookUserPresave() {
+    self::clearTestFlag('hookUserPresave called');
+    self::createEntity(array('entity_type' => 'user'));
+    return !static::getTestFlag('hookUserPresave called');
+  }
 
 }

@@ -68,14 +68,14 @@ class RealisticDummyContentFileGroup {
    *
    * have the same radical, a.c.
    *
-   * @param $radical
+   * @param string $radical
    *   The radical file name, which may or may not exist on the filesystem.
    *   For example, if the file is called a.b.c, the radical is a.c, even though
    *   a.c does not exist on the filesystem.
-   * @param $file
+   * @param object $file
    *   The radical drupal file object, or NULL if it does not exist on the file
    *   system.
-   * @param $attributes
+   * @param array $attributes
    *   An array in the format:
    *    array(
    *     'attribute_name' => [file object],
@@ -124,7 +124,7 @@ class RealisticDummyContentFileGroup {
   /**
    * Returns the value of the radical file if one exists.
    *
-   * @return
+   * @return NULL|object
    *   NULL if a radical file does not exist, if it does not have contents, or
    *   if an error occurred. Otherwise returns the contents of the file.
    */
@@ -146,12 +146,12 @@ class RealisticDummyContentFileGroup {
   /**
    * Return the value for an attribute name if possible
    *
-   * @param $name
+   * @param string $name
    *   The attribute name to fetch
    *
-   * @param $default
+   * @param mixed $default
    *
-   * @return
+   * @return mixed
    *   The default value if the attribute does not exist, if it's empty or if an
    *   error occurred, otherwise the contents of the attributes file.
    */
@@ -174,8 +174,11 @@ class RealisticDummyContentFileGroup {
   /**
    * Returns the extension of the radical filename.
    *
-   * @return
+   * @return string
    *   An extension, can be empty.
+   *
+   * @throws
+   *   Exception
    */
   function GetRadicalExtension() {
     $filename = $this->GetRadical();

@@ -7,6 +7,7 @@
  */
 
 namespace Drupal\realistic_dummy_content_api\includes;
+use Drupal\realistic_dummy_content_api\cms\CMS;
 
 // When returning the caller of the function which resulted in the exception
 // we need to go 4 levels deep. When returning the called function, we also
@@ -26,7 +27,7 @@ class RealisticDummyContentException extends \Exception {
   }
 
   function Log() {
-    debug($this->getMessage() . ' (' . $this->GetCaller() . ' called ' . $this->GetCalled() . ')');
+    CMS::debug($this->getMessage() . ' (' . $this->GetCaller() . ' called ' . $this->GetCalled() . ')');
   }
 
  /**

@@ -13,7 +13,7 @@ class RealisticDummyContentUnitTestCaseDummyFile {
   /**
    * Constructor.
    *
-   * @param $value
+   * @param mixed $value
    *   The value to return
    */
   function __construct($value) {
@@ -23,7 +23,7 @@ class RealisticDummyContentUnitTestCaseDummyFile {
   /**
    * Returns the dummy value.
    *
-   * @return
+   * @return mixed
    *   The value we used when creating this object.
    */
   function Value() {
@@ -90,18 +90,18 @@ $this->assertFALSE(realistic_dummy_content_api_realistic_dummy_content_api_dummy
   /**
    * Helper function to assert that the sequential number generator works.
    *
-   * This calls realistic_dummy_content_api_sequential(), making sure that the result
-   * is as expected.
+   * This calls realistic_dummy_content_api_sequential(), making sure that the
+   * result is as expected.
    *
-   * @param $start
+   * @param int $start
    *   Start number passed to realistic_dummy_content_api_sequential()
-   * @param $end
+   * @param int $end
    *   End number passed to realistic_dummy_content_api_sequential()
-   * @param $hash
+   * @param string $hash
    *   Hash passed to realistic_dummy_content_api_sequential()
-   * @param $expected
-   *   Expected result which realistic_dummy_content_api_sequential() is expected
-   *   to return.
+   * @param int $expected
+   *   Expected result which realistic_dummy_content_api_sequential() is
+   *   expected to return.
    */
   function assertSequential($start, $end, $hash, $expected) {
     $result = realistic_dummy_content_api_sequential($start, $end, $hash);
