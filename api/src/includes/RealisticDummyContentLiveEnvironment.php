@@ -1,14 +1,7 @@
 <?php
 
-/**
- * @file
- *
- * Define RealisticDummyContentLiveEnvironment autoload class.
- */
-
 namespace Drupal\realistic_dummy_content_api\includes;
 
-use Drupal\realistic_dummy_content_api\includes\RealisticDummyContentEnvironment;
 
 /**
  * The live environment.
@@ -18,16 +11,26 @@ use Drupal\realistic_dummy_content_api\includes\RealisticDummyContentEnvironment
  * class represents the live environment.
  */
 class RealisticDummyContentLiveEnvironment extends RealisticDummyContentEnvironment {
+
   /**
    * {@inheritdoc}
    */
   function _file_get_contents_($filename) {
     return file_get_contents($filename);
   }
+
+  /**
+   *
+   */
   function _file_save_data_($data, $destination = NULL) {
     return file_save_data($data, $destination);
   }
+
+  /**
+   *
+   */
   function _file_save_(stdClass $file) {
     return file_save($file);
   }
+
 }

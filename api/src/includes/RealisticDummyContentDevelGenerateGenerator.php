@@ -1,16 +1,11 @@
 <?php
 
-/**
- * @file
- *
- * Define RealisticDummyContentDevelGenerateGenerator autoload class.
- */
-
 namespace Drupal\realistic_dummy_content_api\includes;
-
-use Drupal\realistic_dummy_content_api\includes\RealisticDummyContentGenerator;
-
+/**
+ *
+ */
 class RealisticDummyContentDevelGenerateGenerator extends RealisticDummyContentGenerator {
+
   /**
    * @throws
    *   Exception
@@ -19,7 +14,7 @@ class RealisticDummyContentDevelGenerateGenerator extends RealisticDummyContentG
     module_load_include('inc', 'devel_generate');
 
     if ($this->GetType() == 'node') {
-      // see https://www.drupal.org/node/2324027
+      // See https://www.drupal.org/node/2324027
       $info = array(
         'node_types' => array(
           $this->GetBundle() => $this->GetBundle(),

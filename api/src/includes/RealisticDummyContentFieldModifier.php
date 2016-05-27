@@ -1,15 +1,8 @@
 <?php
 
-/**
- * @file
- *
- * Define RealisticDummyContentFieldModifier autoload class.
- */
-
 namespace Drupal\realistic_dummy_content_api\includes;
 
 use Drupal\realistic_dummy_content_api\cms\CMS;
-use Drupal\realistic_dummy_content_api\includes\RealisticDummyContentEntityBase;
 
 /**
  * Field modifier class.
@@ -41,6 +34,7 @@ use Drupal\realistic_dummy_content_api\includes\RealisticDummyContentEntityBase;
  * taxonomy_term_reference...).
  */
 class RealisticDummyContentFieldModifier extends RealisticDummyContentEntityBase {
+
   /**
    * Get properties for the entity, for example user's picture or node's name.
    *
@@ -52,7 +46,7 @@ class RealisticDummyContentFieldModifier extends RealisticDummyContentEntityBase
   function GetProperties() {
     $modifiable_properties = array();
     $fields = $this->GetFields();
-    foreach ((array)$this->GetEntity() as $property => $info) {
+    foreach ((array) $this->GetEntity() as $property => $info) {
       if (!in_array($property, array_keys($fields)) && $this->filter($property)) {
         $this->AddModifier($modifiable_properties, 'property', $property);
       }
@@ -106,7 +100,7 @@ class RealisticDummyContentFieldModifier extends RealisticDummyContentEntityBase
    *   Either 'property' or 'field'
    * @param string $name
    *   Name of the property or field, for example 'body', 'picture', 'title',
-   *  'field_image'.
+   *   'field_image'.
    */
   function AddModifier(&$modifiers, $type, $name) {
     $class = '';

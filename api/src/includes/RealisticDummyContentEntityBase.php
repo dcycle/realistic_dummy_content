@@ -1,16 +1,8 @@
 <?php
 
-/**
- * @file
- *
- * Define RealisticDummyContentEntityBase autoload class.
- */
-
 namespace Drupal\realistic_dummy_content_api\includes;
 
 use Drupal\realistic_dummy_content_api\cms\CMS;
-use Drupal\realistic_dummy_content_api\includes\RealisticDummyContentBase;
-use Drupal\realistic_dummy_content_api\includes\RealisticDummyContentException;
 
 /**
  * Generic entity manipulator.
@@ -18,7 +10,6 @@ use Drupal\realistic_dummy_content_api\includes\RealisticDummyContentException;
  * Class with an abstract Modify() method. Subclasses can have
  * access to entities in order to override demo content in them.
  */
-
 abstract class RealisticDummyContentEntityBase extends RealisticDummyContentBase {
   private $hash;
   private $entity;

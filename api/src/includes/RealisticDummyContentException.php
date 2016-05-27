@@ -1,11 +1,5 @@
 <?php
 
-/**
- * @file
- *
- * Define RealisticDummyContentException autoload class.
- */
-
 namespace Drupal\realistic_dummy_content_api\includes;
 use Drupal\realistic_dummy_content_api\cms\CMS;
 
@@ -18,24 +12,29 @@ define('REALISTIC_DUMMY_CONTENT_EXCEPTION_BACKTRACE_LEVEL', 4);
 /**
  * An Exception.
  */
-
 class RealisticDummyContentException extends \Exception {
 
+  /**
+   *
+   */
   function __construct($message) {
     parent::__construct($message);
     $this->Log();
   }
 
+  /**
+   *
+   */
   function Log() {
     CMS::debug($this->getMessage() . ' (' . $this->GetCaller() . ' called ' . $this->GetCalled() . ')');
   }
 
- /**
-  * Returns the calling function through a backtrace
-  */
+  /**
+   * Returns the calling function through a backtrace.
+   */
   static function GetCaller() {
-    // a funciton x has called a function y which called this
-    // see stackoverflow.com/questions/190421
+    // A funciton x has called a function y which called this
+    // see stackoverflow.com/questions/190421.
     $caller = debug_backtrace();
     $caller = $caller[REALISTIC_DUMMY_CONTENT_EXCEPTION_BACKTRACE_LEVEL];
     $r = $caller['function'] . '()';
@@ -48,12 +47,12 @@ class RealisticDummyContentException extends \Exception {
     return $r;
   }
 
- /**
-  * Returns the called function through a backtrace
-  */
+  /**
+   * Returns the called function through a backtrace.
+   */
   static function GetCalled() {
     // Get caller will return the called function because the simple fact
-    // of using another function will make the backtrace one-level deeper
+    // of using another function will make the backtrace one-level deeper.
     return self::GetCaller();
   }
 

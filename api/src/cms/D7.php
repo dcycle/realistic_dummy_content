@@ -1,23 +1,40 @@
 <?php
-namespace Drupal\realistic_dummy_content_api\cms;
+use Drupal\realistic_dummy_content_api\cms\CMS;
 
-class D7 extends \Drupal\realistic_dummy_content_api\cms\CMS {
+namespace Drupal\realistic_dummy_content_api\cms;
+/**
+ *
+ */
+class D7 extends CMS {
+
+  /**
+   *
+   */
   function _hookEntityPresave($entity, $type) {
     if ($type != 'user') {
       $this->_realistic_dummy_content_api_entity_presave($entity, $type);
     }
   }
 
+  /**
+   *
+   */
   public function hookUserInsert(&$edit, $account, $category) {
     static::addTestFlag('hookUserInsert called');
     return $this->instance()->_hookUserInsert($edit, $account, $category);
   }
 
+  /**
+   *
+   */
   public function hookUserPresave(&$edit, $account, $category) {
     static::addTestFlag('hookUserPresave called');
     return $this->instance()->_hookUserPresave($edit, $account, $category);
   }
 
+  /**
+   *
+   */
   function _hookUserInsert(&$edit, $account, $category) {
     // This hook is invoked only once when the user is first created, whether
     // by the administrator or by devel_generate. The hook is not invoked
@@ -30,9 +47,15 @@ class D7 extends \Drupal\realistic_dummy_content_api\cms\CMS {
     $this->_realistic_dummy_content_api_entity_presave($account, 'user', $filter);
   }
 
+  /**
+   *
+   */
   function _cmsSpecificTests(&$errors, &$tests) {
   }
 
+  /**
+   *
+   */
   function _hookUserPresave(&$edit, $account, $category) {
     // This hook is called when content is updated, in which case we don't want
     // to tamper with it. When content is first created, the $account's is_new
@@ -41,7 +64,7 @@ class D7 extends \Drupal\realistic_dummy_content_api\cms\CMS {
     // when users are updated, so we can check for that to determine whether or
     // not to continue modifying the account.
     if (isset($edit['picture_delete'])) {
-      // not a new account, don't mess with it.
+      // Not a new account, don't mess with it.
       return;
     }
     // At this point we know we are dealing with a new user.
@@ -59,16 +82,16 @@ class D7 extends \Drupal\realistic_dummy_content_api\cms\CMS {
           'picture',
         ),
       );
-      $user = (object)$edit;
+      $user = (object) $edit;
       $this->_realistic_dummy_content_api_entity_presave($user, 'user', $filter);
-      $edit = (array)$user;
+      $edit = (array) $user;
     }
   }
 
   /**
    * Generic function called by various hooks in Drupal.
    *
-   * hook_entity_insert(), hook_user_insert() and hook_user_presave() have
+   * Hook_entity_insert(), hook_user_insert() and hook_user_presave() have
    * subtle differences. This function aims to be more abstract and uses the
    * concept of a filter, see below.
    *
@@ -105,7 +128,7 @@ class D7 extends \Drupal\realistic_dummy_content_api\cms\CMS {
         $candidate = $entity;
         realistic_dummy_content_api_improve_dummy_content($candidate, $type, $filter);
         realistic_dummy_content_api_validate($candidate, $type);
-        //$entity = $candidate;
+        // $entity = $candidate;.
       }
     }
     catch (\Exception $e) {
@@ -113,24 +136,39 @@ class D7 extends \Drupal\realistic_dummy_content_api\cms\CMS {
     }
   }
 
+  /**
+   *
+   */
   public function _alter($type, &$data, &$context1 = NULL, &$context2 = NULL, &$context3 = NULL) {
     return drupal_alter($type, $data, $context1, $context2, $context3);
   }
 
+  /**
+   *
+   */
   public function _fieldInfoFields() {
     return field_info_fields();
   }
 
+  /**
+   *
+   */
   public function _moduleList() {
     return module_list();
   }
 
+  /**
+   *
+   */
   public function _moduleInvokeAll($hook) {
     $args = func_get_args();
     $object = self::instance();
     return call_user_func_array('module_invoke_all', $args);
   }
 
+  /**
+   *
+   */
   public function _entityIsDummy($entity, $type) {
     $return = FALSE;
     // Any entity with the devel_generate property set should be considered
@@ -158,26 +196,44 @@ class D7 extends \Drupal\realistic_dummy_content_api\cms\CMS {
     return $return;
   }
 
+  /**
+   *
+   */
   public function _getBundleName($entity) {
     return $entity->type;
   }
 
+  /**
+   *
+   */
   public function _configGet($name, $default) {
     return variable_get($name, $default);
   }
 
+  /**
+   *
+   */
   public function _stateGet($name, $default) {
     return variable_get($name, $default);
   }
 
+  /**
+   *
+   */
   public function _setEntityProperty(&$entity, $property, $value) {
     $entity->{$property} = $value;
   }
 
+  /**
+   *
+   */
   public function _getEntityProperty(&$entity, $property) {
     return $entity->{$property};
   }
 
+  /**
+   *
+   */
   public function _createEntity($info) {
     if (isset($info['entity_type'])) {
       $entity_type = $info['entity_type'];
@@ -204,33 +260,54 @@ class D7 extends \Drupal\realistic_dummy_content_api\cms\CMS {
     return $entity;
   }
 
+  /**
+   *
+   */
   public function getDefaultNodeType() {
     return 'article';
   }
 
+  /**
+   *
+   */
   public function _test_getDefaultNodeType() {
     return !is_string($this->getDefaultNodeType());
   }
 
+  /**
+   *
+   */
   public function _debug($message, $info) {
     dpm($message, $info);
   }
 
+  /**
+   *
+   */
   public function _getAllVocabularies() {
     $return = taxonomy_get_vocabularies();
     return $return;
   }
 
+  /**
+   *
+   */
   function _fileSave($drupal_file) {
     return file_save($drupal_file);
   }
 
+  /**
+   *
+   */
   function _test_hookUserInsert() {
     self::clearTestFlag('hookUserInsert called');
     self::createEntity(array('entity_type' => 'user'));
     return !static::getTestFlag('hookUserInsert called');
   }
 
+  /**
+   *
+   */
   function _test_hookUserPresave() {
     self::clearTestFlag('hookUserPresave called');
     self::createEntity(array('entity_type' => 'user'));

@@ -1,14 +1,7 @@
 <?php
 
-/**
- * @file
- *
- * Define RealisticDummyContentFieldModifier autoload class.
- */
-
 namespace Drupal\realistic_dummy_content_api\includes;
 
-use Drupal\realistic_dummy_content_api\includes\RealisticDummyContentField;
 
 
 /**
@@ -16,6 +9,7 @@ use Drupal\realistic_dummy_content_api\includes\RealisticDummyContentField;
  * array('value' => 'xyz').
  */
 class RealisticDummyContentValueField extends RealisticDummyContentField {
+
   /**
    * {@inheritdoc}
    */

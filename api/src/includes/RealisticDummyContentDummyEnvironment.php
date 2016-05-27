@@ -1,14 +1,7 @@
 <?php
 
-/**
- * @file
- *
- * Define RealisticDummyContentLiveEnvironment autoload class.
- */
-
 namespace Drupal\realistic_dummy_content_api\includes;
 
-use Drupal\realistic_dummy_content_api\includes\RealisticDummyContentEnvironment;
 
 /**
  * The dummy environment.
@@ -19,6 +12,10 @@ use Drupal\realistic_dummy_content_api\includes\RealisticDummyContentEnvironment
  */
 class RealisticDummyContentDummyEnvironment extends RealisticDummyContentEnvironment {
   private $files;
+
+  /**
+   *
+   */
   function createFile($path, $data) {
     if (!is_array($this->files)) {
       $this->files = array();
@@ -36,6 +33,10 @@ class RealisticDummyContentDummyEnvironment extends RealisticDummyContentEnviron
     trigger_error('file_get_contents(): failed to open stream');
     return NULL;
   }
+
+  /**
+   *
+   */
   function _file_save_data_($data, $destination = NULL) {
     if (!$destination) {
       throw new \Exception('the dummy file system is not designed to use null destination');
@@ -46,8 +47,12 @@ class RealisticDummyContentDummyEnvironment extends RealisticDummyContentEnviron
       'uri' => $destination,
       'filename' => $parsed['host'],
     );
-    return (object)$return;
+    return (object) $return;
   }
+
+  /**
+   *
+   */
   function _file_save_(stdClass $file) {
   }
 

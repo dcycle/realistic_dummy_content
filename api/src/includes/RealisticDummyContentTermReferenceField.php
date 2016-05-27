@@ -1,19 +1,13 @@
 <?php
 
-/**
- * @file
- *
- * Define RealisticDummyContentTermReferenceField autoload class.
- */
-
 namespace Drupal\realistic_dummy_content_api\includes;
 
-use Drupal\realistic_dummy_content_api\includes\RealisticDummyContentField;
 use Drupal\realistic_dummy_content_api\cms\CMS;
 
 /**
  */
 class RealisticDummyContentTermReferenceField extends RealisticDummyContentField {
+
   /**
    * {@inheritdoc}
    */

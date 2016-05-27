@@ -1,14 +1,7 @@
 <?php
 
-/**
- * @file
- *
- * Define RealisticDummyContentBase autoload class.
- */
-
 namespace Drupal\realistic_dummy_content_api\includes;
 
-use Drupal\realistic_dummy_content_api\includes\RealisticDummyContentEnvironment;
 
 /**
  * The most generic content manipulator.
@@ -23,6 +16,10 @@ use Drupal\realistic_dummy_content_api\includes\RealisticDummyContentEnvironment
  * if you would like to help with this!
  */
 abstract class RealisticDummyContentBase {
+
+  /**
+   *
+   */
   function env() {
     return RealisticDummyContentEnvironment::Get();
   }

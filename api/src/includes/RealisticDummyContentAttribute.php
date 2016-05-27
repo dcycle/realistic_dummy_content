@@ -1,15 +1,7 @@
 <?php
 
-/**
- * @file
- *
- * Define RealisticDummyContentAttribute autoload class.
- */
-
 namespace Drupal\realistic_dummy_content_api\includes;
 
-use Drupal\realistic_dummy_content_api\includes\RealisticDummyContentEnvironment;
-use Drupal\realistic_dummy_content_api\includes\RealisticDummyContentException;
 use Drupal\realistic_dummy_content_api\cms\CMS;
 
 /**
@@ -48,14 +40,14 @@ abstract class RealisticDummyContentAttribute {
   }
 
   /**
-   * Getter for $this->name
+   * Getter for $this->name.
    */
   function GetName() {
     return $this->name;
   }
 
   /**
-   * Getter for $this->entity
+   * Getter for $this->entity.
    */
   function GetEntity() {
     return $this->entity;
@@ -217,7 +209,7 @@ abstract class RealisticDummyContentAttribute {
   }
 
   /**
-   * Given a RealisticDummyContentFileGroup object, get a structured property
+   * Given a RealisticDummyContentFileGroup object, get a structured property.
    *
    * This function is not meant to called directly; rather, call
    * ValueFromFile(). This function must be overriden by subclasses.
@@ -327,8 +319,8 @@ abstract class RealisticDummyContentAttribute {
       throw new RealisticDummyContentException('Please check if the file exists before attempting to save it');
     }
     $uri = $drupal_file->uri;
-    //$random = md5($uri) . rand(1000000000, 9999999999);
-    // DO NOT RENAME FOR TESTING
+    // $random = md5($uri) . rand(1000000000, 9999999999);
+    // DO NOT RENAME FOR TESTING.
     $random = $file->GetRadical();
     $drupal_file = $this->env()->file_save_data($file->Value(), 'public://dummyfile' . $random . '.' . $file->GetRadicalExtension());
     $drupal_file->uid = $this->GetUid();

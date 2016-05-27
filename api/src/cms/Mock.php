@@ -1,6 +1,8 @@
 <?php
 namespace Drupal\realistic_dummy_content_api\cms;
-
+/**
+ *
+ */
 class Mock extends CMS {
 
   /**
@@ -24,6 +26,9 @@ class Mock extends CMS {
     }
   }
 
+  /**
+   *
+   */
   public function _moduleInvokeAll($hook) {
     $args = func_get_args();
     $hook = array_shift($args);
@@ -33,11 +38,17 @@ class Mock extends CMS {
     }
   }
 
+  /**
+   *
+   */
   public function _entityIsDummy($entity, $type) {
     $return = isset($entity->devel_generate);
     return $return;
   }
 
+  /**
+   *
+   */
   public function _fieldInfoFields() {
     return array(
       'some-field-name' => array(
@@ -48,6 +59,9 @@ class Mock extends CMS {
     );
   }
 
+  /**
+   *
+   */
   public function _moduleList() {
     return array(
       'realistic_dummy_content',
@@ -55,28 +69,46 @@ class Mock extends CMS {
     );
   }
 
+  /**
+   *
+   */
   public function _configGet($name, $default) {
     return (isset($this->config[$name])) ? $this->config[$name] : $default;
   }
 
+  /**
+   *
+   */
   public function _alter($type, &$data, &$context1 = NULL, &$context2 = NULL, &$context3 = NULL) {
     if ($type == 'realistic_dummy_content_attribute_manipulator') {
       return realistic_dummy_content_api_realistic_dummy_content_attribute_manipulator_alter($data, $context1, $context2);
     }
   }
 
+  /**
+   *
+   */
   public function _getBundleName($entity) {
     return $entity->bundle;
   }
 
+  /**
+   *
+   */
   public function _stateGet($name, $default) {
     return (isset($this->config[$name])) ? $this->config[$name] : $default;
   }
 
+  /**
+   *
+   */
   public function _setEntityProperty(&$entity, $property, $value) {
     $entity->$property = $value;
   }
 
+  /**
+   *
+   */
   public function _debug($message, $info) {
     $this->print('[debug] ' . $message . ' ' . $info);
   }

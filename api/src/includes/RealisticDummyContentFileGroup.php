@@ -1,15 +1,7 @@
 <?php
 
-/**
- * @file
- *
- * Define RealisticDummyContentFileGroup autoload class.
- */
-
 namespace Drupal\realistic_dummy_content_api\includes;
 
-use Drupal\realistic_dummy_content_api\includes\RealisticDummyContentException;
-use Drupal\realistic_dummy_content_api\includes\RealisticDummyContentEnvironment;
 
 /**
  * Represents files as groups.
@@ -58,7 +50,7 @@ class RealisticDummyContentFileGroup {
   private $attributes;
 
   /**
-   * Constructor for a file object
+   * Constructor for a file object.
    *
    * Several actual files can reside in the same file object if their names have
    * the same radical, for example:
@@ -144,7 +136,7 @@ class RealisticDummyContentFileGroup {
   }
 
   /**
-   * Return the value for an attribute name if possible
+   * Return the value for an attribute name if possible.
    *
    * @param string $name
    *   The attribute name to fetch

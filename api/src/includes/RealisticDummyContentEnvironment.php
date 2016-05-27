@@ -1,16 +1,7 @@
 <?php
 
-/**
- * @file
- *
- * Define RealisticDummyContentLiveEnvironment autoload class.
- */
-
 namespace Drupal\realistic_dummy_content_api\includes;
 
-use Drupal\realistic_dummy_content_api\includes\RealisticDummyContentLiveEnvironment;
-use Drupal\realistic_dummy_content_api\includes\RealisticDummyContentException;
-use Drupal\realistic_dummy_content_api\includes\RealisticDummyContentFileGroup;
 
 /**
  * The abstract base environment.
@@ -31,7 +22,7 @@ abstract class RealisticDummyContentEnvironment {
   /**
    * Get the current environment.
    *
-   * see the comment on the private variable $env.
+   * See the comment on the private variable $env.
    *
    * default to a live environment if none is set. (During testing, a mock
    * environment will be set here so we can better control it.)
@@ -47,7 +38,7 @@ abstract class RealisticDummyContentEnvironment {
   }
 
   /**
-   * Set the current environment
+   * Set the current environment.
    *
    * See the comment on the private variable $env.
    *
@@ -111,12 +102,23 @@ abstract class RealisticDummyContentEnvironment {
     $return = $this->_file_save_data_($data, $destination);
     return $return;
   }
+
+  /**
+   *
+   */
   abstract function _file_save_data_($data, $destination = NULL);
 
+  /**
+   *
+   */
   function file_save(stdClass $file) {
     $return = $this->_file_save_($file);
     return $return;
   }
+
+  /**
+   *
+   */
   abstract function _file_save_(stdClass $file);
 
   /**
@@ -265,6 +267,9 @@ abstract class RealisticDummyContentEnvironment {
     return $return;
   }
 
+  /**
+   *
+   */
   static function validCandidateFilename($name, $extensions = NULL) {
     if (self::LowercaseRadicalNoExtension($name) == 'readme') {
       return FALSE;
@@ -276,6 +281,9 @@ abstract class RealisticDummyContentEnvironment {
     return in_array($filparts['base_extension'], $extensions);
   }
 
+  /**
+   *
+   */
   static function getFileParts($name) {
     $return = array();
     $parts = explode('.', $name);
@@ -288,6 +296,9 @@ abstract class RealisticDummyContentEnvironment {
     return $return;
   }
 
+  /**
+   *
+   */
   static function addFileToArray(&$array, $name, $file) {
     $attribute_name = NULL;
     $attribute_extention = NULL;
@@ -302,7 +313,7 @@ abstract class RealisticDummyContentEnvironment {
   }
 
   /**
-   * Returns the attribute of a filename if one exists
+   * Returns the attribute of a filename if one exists.
    *
    * If >2 periods are present in the file name, then what is between the
    * last and next to last period is kept, for example:
@@ -366,7 +377,7 @@ abstract class RealisticDummyContentEnvironment {
   }
 
   /**
-   * Returns the part of a string before the extension, in lowercase
+   * Returns the part of a string before the extension, in lowercase.
    *
    * @param string $filename
    *   A filename string, e.g. rEadmE.txt
@@ -379,10 +390,10 @@ abstract class RealisticDummyContentEnvironment {
   }
 
   /**
-   * Returns part of a filename
+   * Returns part of a filename.
    *
    * Helper function which runs a preg replace function on a filename and
-   * returns the result
+   * returns the result.
    *
    * @param string $filename
    *   A filename, for example a, a.b, a.b.c, a.b.c.d
