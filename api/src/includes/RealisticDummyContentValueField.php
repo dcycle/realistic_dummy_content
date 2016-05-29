@@ -24,7 +24,7 @@ class RealisticDummyContentValueField extends RealisticDummyContentField {
           'value' => $value,
         ),
       ),
-    );;
+    );
   }
 
 }
