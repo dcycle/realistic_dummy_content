@@ -39,7 +39,6 @@ RUN cp /srv/drupal/www/sites/default/default.settings.php /srv/drupal/www/sites/
 RUN chmod a+w /srv/drupal/www/sites/default/settings.php
 RUN chown www-data:www-data /srv/data
 
-
 #RUN chmod a+w /srv/drupal/www/sites/default/files
 RUN cd /srv/drupal/www/ && drush -y site-install standard --account-name=admin --account-pass=test --db-url=sqlite:sites/default/files/.ht.sqlite
 
@@ -54,7 +53,6 @@ RUN cd /srv/drupal/www/ && drush -y vset page_cache_maximum_age 300 --yes
 
 RUN cd /srv/drupal/www/ && drush -y vset preprocess_css 1 --yes
 RUN cd /srv/drupal/www/ && drush -y vset preprocess_js  1 --yes
-
 
 RUN ls -al /srv/drupal/www/sites/default/files
 RUN chown -R www-data:www-data /srv/drupal/www/sites/default/files/.ht.sqlite

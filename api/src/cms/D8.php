@@ -1,14 +1,16 @@
 <?php
+
 namespace Drupal\realistic_dummy_content_api\cms;
+
 /**
- *
+ * Drupal 8-specific code.
  */
 class D8 extends CMS {
 
   /**
    * {@inheritdoc}
    */
-  function _hookEntityPresave($entity, $type) {
+  public function implementHookEntityPresave($entity, $type) {
     try {
       // $type is NULL in D8; we'll compute it here.
       if (get_class($entity) == 'Drupal\file\Entity\File') {
@@ -29,87 +31,89 @@ class D8 extends CMS {
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
-  public function _moduleInvokeAll($hook) {
+  public function implementModuleInvokeAll($hook) {
     $args = func_get_args();
     $hook = array_shift($args);
     return \Drupal::moduleHandler()->invokeAll($hook, $args);
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
-  public function _entityIsDummy($entity, $type) {
+  public function implementEntityIsDummy($entity, $type) {
     $return = isset($entity->devel_generate);
     return $return;
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
-  public function _fieldInfoFields() {
+  public function implementFieldInfoFields() {
     return \Drupal::entityManager()->getFieldMap();
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
-  public function _moduleList() {
+  public function implementModuleList() {
     $full_list = \Drupal::moduleHandler()->getModuleList();
     return array_keys($full_list);
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
-  public function _configGet($name, $default) {
-    dpm('NYI ' . __LINE__);
-    return;
+  public function implementConfigGet($name, $default) {
+    $this->debug('NYI ' . __LINE__);
     return variable_get($name, $default);
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
-  public function _alter($type, &$data, &$context1 = NULL, &$context2 = NULL, &$context3 = NULL) {
+  public function implementAlter($type, &$data, &$context1 = NULL, &$context2 = NULL, &$context3 = NULL) {
     return \Drupal::moduleHandler()->alter($type, $data, $context1, $context2);
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
-  public function _getBundleName($entity) {
+  public function implementGetBundleName($entity) {
     return $entity->bundle();
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
-  public function _stateGet($name, $default) {
-    dpm('NYI ' . __LINE__);
-    return;
+  public function implementStateGet($name, $default) {
+    $this->debug('NYI ' . __LINE__);
     return variable_get($name, $default);
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
-  public function _setEntityProperty(&$entity, $property, $value) {
+  public function implementSetEntityProperty(&$entity, $property, $value) {
     if ($property == 'title' && method_exists($entity, 'setTitle')) {
       $entity->setTitle($value);
     }
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
-  public function _debug($message, $info) {
+  public function implementDebug($message, $info) {
     if (is_string($message)) {
+      // @codingStandardsIgnoreStart
       dpm($message, $info);
+      // @codingStandardsIgnoreEnd
     }
     else {
+      // @codingStandardsIgnoreStart
       dpm($info . ' ==>');
+      // @codingStandardsIgnoreEnd
       ksm($message);
     }
   }

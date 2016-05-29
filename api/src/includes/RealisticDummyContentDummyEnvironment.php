@@ -2,7 +2,6 @@
 
 namespace Drupal\realistic_dummy_content_api\includes;
 
-
 /**
  * The dummy environment.
  *
@@ -14,9 +13,9 @@ class RealisticDummyContentDummyEnvironment extends RealisticDummyContentEnviron
   private $files;
 
   /**
-   *
+   * {@inheritdoc}
    */
-  function createFile($path, $data) {
+  public function createFile($path, $data) {
     if (!is_array($this->files)) {
       $this->files = array();
     }
@@ -26,7 +25,7 @@ class RealisticDummyContentDummyEnvironment extends RealisticDummyContentEnviron
   /**
    * {@inheritdoc}
    */
-  function _file_get_contents_($filename) {
+  public function fileGetContents($filename) {
     if (isset($this->files[$filename])) {
       return $this->files[$filename];
     }
@@ -35,9 +34,9 @@ class RealisticDummyContentDummyEnvironment extends RealisticDummyContentEnviron
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
-  function _file_save_data_($data, $destination = NULL) {
+  public function fileSaveData($data, $destination = NULL) {
     if (!$destination) {
       throw new \Exception('the dummy file system is not designed to use null destination');
     }
@@ -51,9 +50,9 @@ class RealisticDummyContentDummyEnvironment extends RealisticDummyContentEnviron
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
-  function _file_save_(stdClass $file) {
+  public function fileSave(stdClass $file) {
   }
 
 }

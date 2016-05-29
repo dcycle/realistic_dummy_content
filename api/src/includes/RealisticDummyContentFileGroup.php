@@ -2,7 +2,6 @@
 
 namespace Drupal\realistic_dummy_content_api\includes;
 
-
 /**
  * Represents files as groups.
  *
@@ -72,12 +71,11 @@ class RealisticDummyContentFileGroup {
    *    array(
    *     'attribute_name' => [file object],
    *   ),
-   *   (where attribute_name can be "b" as in the above example.)
+   *   (where attribute_name can be "b" as in the above example).
    *
-   * @throws
-   *   RealisticDummyContentException
+   * @throws RealisticDummyContentException
    */
-  function __construct($radical, $file, $attributes) {
+  public function __construct($radical, $file, $attributes) {
     if (!is_string($radical)) {
       throw new RealisticDummyContentException('Please use string for radical');
     }
@@ -95,21 +93,21 @@ class RealisticDummyContentFileGroup {
   /**
    * Getter for radical.
    */
-  public function GetRadical() {
+  public function getRadical() {
     return $this->radical;
   }
 
   /**
    * Getter for file.
    */
-  public function GetFile() {
+  public function getFile() {
     return $this->file;
   }
 
   /**
    * Getter for attributes.
    */
-  public function GetAttributes() {
+  public function getAttributes() {
     return $this->attributes;
   }
 
@@ -120,11 +118,11 @@ class RealisticDummyContentFileGroup {
    *   NULL if a radical file does not exist, if it does not have contents, or
    *   if an error occurred. Otherwise returns the contents of the file.
    */
-  function Value() {
+  public function value() {
     try {
-      $file = $this->GetFile();
+      $file = $this->getFile();
       if (isset($file->uri)) {
-        return trim(RealisticDummyContentEnvironment::Get()->file_get_contents($file->uri));
+        return trim(RealisticDummyContentEnvironment::get()->fileGetContents($file->uri));
       }
       else {
         return NULL;
@@ -139,19 +137,19 @@ class RealisticDummyContentFileGroup {
    * Return the value for an attribute name if possible.
    *
    * @param string $name
-   *   The attribute name to fetch
-   *
+   *   The attribute name to fetch.
    * @param mixed $default
+   *   The default value.
    *
    * @return mixed
    *   The default value if the attribute does not exist, if it's empty or if an
    *   error occurred, otherwise the contents of the attributes file.
    */
-  function Attribute($name, $default = NULL) {
+  public function attribute($name, $default = NULL) {
     try {
-      $attributes = $this->GetAttributes();
+      $attributes = $this->getAttributes();
       if (isset($attributes[$name]->uri)) {
-        $return = trim(RealisticDummyContentEnvironment::Get()->file_get_contents($attributes[$name]->uri));
+        $return = trim(RealisticDummyContentEnvironment::get()->fileGetContents($attributes[$name]->uri));
         return $return;
       }
       else {
@@ -169,11 +167,10 @@ class RealisticDummyContentFileGroup {
    * @return string
    *   An extension, can be empty.
    *
-   * @throws
-   *   Exception
+   * @throws \Exception
    */
-  function GetRadicalExtension() {
-    $filename = $this->GetRadical();
+  public function getRadicalExtension() {
+    $filename = $this->getRadical();
     $extension = pathinfo($filename, PATHINFO_EXTENSION);
     if (!$extension) {
       throw new RealisticDummyContentException('Files require extensions.');

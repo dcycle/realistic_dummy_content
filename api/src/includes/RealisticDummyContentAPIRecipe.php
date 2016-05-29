@@ -1,8 +1,11 @@
 <?php
 
 namespace Drupal\realistic_dummy_content_api\includes;
+
 /**
+ * Legacy base class for recipes.
  *
+ * Included for backward-compatibility.
  */
 abstract class RealisticDummyContentAPIRecipe extends RealisticDummyContentRecipe {
   // Prior to beta4, RealisticDummyContentAPIRecipe was used. To avoid modifying

@@ -15,6 +15,8 @@ use Drupal\realistic_dummy_content_api\cms\CMS;
  */
 abstract class RealisticDummyContentAttribute {
   /**
+   * Entity managed by this class.
+   *
    * The entity is set on construction and is a subclass of
    * RealisticDummyContentEntityBase. It contains information about the
    * entity to which this field instance is attached.
@@ -32,9 +34,9 @@ abstract class RealisticDummyContentAttribute {
    * @param object $entity
    *   Object of a subclass of RealisticDummyContentEntityBase.
    * @param string $name
-   *   The name of the field, for example body or picture or field_image
+   *   The name of the field, for example body or picture or field_image.
    */
-  function __construct($entity, $name) {
+  public function __construct($entity, $name) {
     $this->entity = $entity;
     $this->name = $name;
   }
@@ -42,14 +44,14 @@ abstract class RealisticDummyContentAttribute {
   /**
    * Getter for $this->name.
    */
-  function GetName() {
+  public function getName() {
     return $this->name;
   }
 
   /**
    * Getter for $this->entity.
    */
-  function GetEntity() {
+  public function getEntity() {
     return $this->entity;
   }
 
@@ -62,15 +64,15 @@ abstract class RealisticDummyContentAttribute {
    * @return int
    *   A random or sequential number.
    */
-  function rand($start, $end) {
-    return $this->GetEntity()->rand($start, $end);
+  public function rand($start, $end) {
+    return $this->getEntity()->rand($start, $end);
   }
 
   /**
    * Returns the appropriate environment, real or testing.
    */
-  function env() {
-    return $this->GetEntity()->env();
+  public function env() {
+    return $this->getEntity()->env();
   }
 
   /**
@@ -79,8 +81,8 @@ abstract class RealisticDummyContentAttribute {
    * @return string
    *   The bundle name.
    */
-  function GetBundle() {
-    return $this->GetEntity()->GetBundle();
+  public function getBundle() {
+    return $this->getEntity()->getBundle();
   }
 
   /**
@@ -89,8 +91,8 @@ abstract class RealisticDummyContentAttribute {
    * @return int
    *   The UID.
    */
-  function GetUid() {
-    return $this->GetEntity()->GetUid();
+  public function getUid() {
+    return $this->getEntity()->getUid();
   }
 
   /**
@@ -99,21 +101,21 @@ abstract class RealisticDummyContentAttribute {
    * @return string
    *   The entity type as a string, 'node' or 'user' for example.
    */
-  function GetEntityType() {
-    return $this->GetEntity()->GetType();
+  public function getEntityType() {
+    return $this->getEntity()->etType();
   }
 
   /**
    * Returns the type of this attribute.
    *
    * Drupal uses fields (managed by the field system) and properties to define
-   * attributes of entities. Fields include body and field_image; properties include
-   * title and the user picture.
+   * attributes of entities. Fields include body and field_image; properties
+   * include title and the user picture.
    *
    * @return string
    *   'property' or 'field'
    */
-  abstract function GetType();
+  public abstract function getType();
 
   /**
    * Changes this attribute by looking for data in files.
@@ -124,13 +126,13 @@ abstract class RealisticDummyContentAttribute {
    *
    * This function checks the filesystem for compatible files (for example, only
    * image files are acceptable candidate files for field_image), choose one
-   * through the selection mechanism (random or sequential), and then procedes to
-   * change the data for the associated field for this class.
+   * through the selection mechanism (random or sequential), and then procedes
+   * to change the data for the associated field for this class.
    */
-  function Change() {
-    $files = $this->GetCandidateFiles();
+  public function change() {
+    $files = $this->getCandidateFiles();
     CMS::debug('Found ' . count($files) . ' files which have realistic dummy data.');
-    $this->ChangeFromFiles($files);
+    $this->changeFromFiles($files);
   }
 
   /**
@@ -139,16 +141,16 @@ abstract class RealisticDummyContentAttribute {
    * @param array $files
    *   An array of files.
    */
-  function ChangeFromFiles($files) {
-    $value = $this->ValueFromFiles($files);
+  public function changeFromFiles($files) {
+    $value = $this->valueFromFiles($files);
     if ($value === NULL) {
       // NULL indicates we could not find a value with which to replace the
       // current value. The value can still be '', or FALSE, etc.
       return;
     }
-    $entity = $this->GetEntity()->GetEntity();
-    CMS::setEntityProperty($entity, $this->GetName(), $value);
-    $this->GetEntity()->SetEntity($entity);
+    $entity = $this->getEntity()->getEntity();
+    CMS::setEntityProperty($entity, $this->getName(), $value);
+    $this->getEntity()->setEntity($entity);
   }
 
   /**
@@ -160,22 +162,22 @@ abstract class RealisticDummyContentAttribute {
    * @return array
    *   An array of acceptable file extensions.
    */
-  function GetExtensions() {
-    // By default, use only text files. Other manipulators, say, for image fields
-    // or file fields, can specify other extension types.
+  public function getExtensions() {
+    // By default, use only text files. Other manipulators, say, for image
+    // fields or file fields, can specify other extension types.
     return array('txt');
   }
 
   /**
    * Get all candidate files for a given field for this entity.
    */
-  function GetCandidateFiles() {
+  public function getCandidateFiles() {
     $files = array();
     $filepaths = array();
     foreach (CMS::moduleList() as $module) {
-      $filepath = DRUPAL_ROOT . '/' . drupal_get_path('module', $module) . '/realistic_dummy_content/fields/' . $this->GetEntityType() . '/' . $this->GetBundle() . '/' . $this->GetName();
+      $filepath = DRUPAL_ROOT . '/' . drupal_get_path('module', $module) . '/realistic_dummy_content/fields/' . $this->getEntityType() . '/' . $this->getBundle() . '/' . $this->getName();
       $filepaths[] = $filepath;
-      $files = array_merge($files, RealisticDummyContentEnvironment::GetAllFileGroups($filepath, $this->GetExtensions()));
+      $files = array_merge($files, RealisticDummyContentEnvironment::getAllFileGroups($filepath, $this->getExtensions()));
     }
     CMS::debug($filepaths, 'Searching in');
     return $files;
@@ -197,10 +199,10 @@ abstract class RealisticDummyContentAttribute {
    *   In case of an error or if the value does not apply or is empty, return
    *   NULL; otherwise returns structured data to be added to the entity object.
    */
-  function ValueFromFile($file) {
+  public function valueFromFile($file) {
     try {
-      if (in_array($file->GetRadicalExtension(), $this->GetExtensions())) {
-        return $this->ValueFromFile_($file);
+      if (in_array($file->getRadicalExtension(), $this->getExtensions())) {
+        return $this->implementValueFromFile($file);
       }
     }
     catch (Exception $e) {
@@ -221,28 +223,27 @@ abstract class RealisticDummyContentAttribute {
    *   Returns structured data to be added to the entity object, or NULL if such
    *   data can't be creatd.
    *
-   * @throws
-   *   Exception.
+   * @throws \Exception.
    */
-  protected abstract function ValueFromFile_($file);
+  protected abstract function implementValueFromFile($file);
 
   /**
    * Given a list of files, return a value from one of them.
    *
    * @param array $files
-   *   An array of file objects
+   *   An array of file objects.
    *
    * @return mixed
    *   A file object or array, or an associative array with the keys "value" and
    *   "format", or NULL if there are no files to choose from or the files have
    *   the wrong extension.
    */
-  function ValueFromFiles($files) {
+  public function valueFromFiles($files) {
     try {
       if (count($files)) {
         $rand_index = $this->rand(0, count($files) - 1);
         $file = $files[$rand_index];
-        return $this->ValueFromFile($file);
+        return $this->valueFromFile($file);
       }
     }
     catch (Exception $e) {
@@ -256,7 +257,7 @@ abstract class RealisticDummyContentAttribute {
    * @return array
    *   An array of extension for image files.
    */
-  function GetImageExtensions() {
+  public function getImageExtensions() {
     return array('gif', 'png', 'jpg');
   }
 
@@ -266,7 +267,7 @@ abstract class RealisticDummyContentAttribute {
    * @return array
    *   An array of extension for text files.
    */
-  function GetTextExtensions() {
+  public function getTextExtensions() {
     return array('txt');
   }
 
@@ -274,22 +275,22 @@ abstract class RealisticDummyContentAttribute {
    * Return an image file object if possible.
    *
    * @param object $file
-   *   The RealisticDummyContentFileGroup object
+   *   The RealisticDummyContentFileGroup object.
    *
    * @return NULL|object
    *   NULL if the file is not an image, or if an error occurred; otherwise a
    *   Drupal file object.
    */
-  function ImageSave($file) {
+  public function imageSave($file) {
     try {
-      $exists = $file->Value();
+      $exists = $file->value();
       if (!$exists) {
         throw new RealisticDummyContentException('Please check if the file exists before attempting to save it');
       }
       $return = NULL;
-      if (in_array($file->GetRadicalExtension(), $this->GetImageExtensions())) {
-        $return = $this->FileSave($file);
-        $alt = $file->Attribute('alt');
+      if (in_array($file->getRadicalExtension(), $this->getImageExtensions())) {
+        $return = $this->fileSave($file);
+        $alt = $file->attribute('alt');
         if ($alt) {
           $return->alt = $alt;
         }
@@ -310,20 +311,19 @@ abstract class RealisticDummyContentAttribute {
    * @return object
    *   A file object.
    *
-   * @throws
-   *   Exception.
+   * @throws \Exception.
    */
-  function FileSave($file) {
-    $drupal_file = $file->GetFile();
+  public function fileSave($file) {
+    $drupal_file = $file->getFile();
     if (!$drupal_file) {
       throw new RealisticDummyContentException('Please check if the file exists before attempting to save it');
     }
     $uri = $drupal_file->uri;
     // $random = md5($uri) . rand(1000000000, 9999999999);
     // DO NOT RENAME FOR TESTING.
-    $random = $file->GetRadical();
-    $drupal_file = $this->env()->file_save_data($file->Value(), 'public://dummyfile' . $random . '.' . $file->GetRadicalExtension());
-    $drupal_file->uid = $this->GetUid();
+    $random = $file->getRadical();
+    $drupal_file = $this->env()->file_save_data($file->value(), 'public://dummyfile' . $random . '.' . $file->getRadicalExtension());
+    $drupal_file->uid = $this->getUid();
     $return = CMS::fileSave($drupal_file);
 
     if (!is_object($return)) {

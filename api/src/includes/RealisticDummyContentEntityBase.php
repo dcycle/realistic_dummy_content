@@ -41,10 +41,9 @@ abstract class RealisticDummyContentEntityBase extends RealisticDummyContentBase
    *   ('include' => array(picture)). Therefore taken together these two
    *   hooks manipulate the entire user object, but in two phases.
    *
-   * @throws
-   *   Exception
+   * @throws \Exception
    */
-  function __construct($entity, $type, $filter = array()) {
+  public function __construct($entity, $type, $filter = array()) {
     realistic_dummy_content_api_argcheck(array('is_object', 'is_string'));
     $this->entity = $entity;
     $this->hash = md5(serialize($entity));
@@ -55,21 +54,21 @@ abstract class RealisticDummyContentEntityBase extends RealisticDummyContentBase
   /**
    * Getter for the entity.
    */
-  function GetEntity() {
+  public function getEntity() {
     return $this->entity;
   }
 
   /**
    * Getter for the hash which uniquely identifies this entity.
    */
-  function GetHash() {
+  public function getHash() {
     return $this->hash;
   }
 
   /**
    * Getter for the filter.
    */
-  function GetFilter() {
+  public function getFilter() {
     return $this->filter;
   }
 
@@ -80,7 +79,7 @@ abstract class RealisticDummyContentEntityBase extends RealisticDummyContentBase
    * are done with the manipulations, they update the entity using this
    * function.
    */
-  function SetEntity($entity) {
+  public function setEntity($entity) {
     $this->entity = $entity;
   }
 
@@ -95,7 +94,7 @@ abstract class RealisticDummyContentEntityBase extends RealisticDummyContentBase
    * @return string
    *   The entity type, for example "node" or "user".
    */
-  function GetType() {
+  public function getType() {
     $return = $this->type;
     return $return;
   }
@@ -112,13 +111,13 @@ abstract class RealisticDummyContentEntityBase extends RealisticDummyContentBase
    *   The bundle, for example "article" or "user". Is a bundle is not
    *   readily available, return the entity type.
    */
-  function GetBundle() {
-    $entity = $this->GetEntity();
+  public function getBundle() {
+    $entity = $this->getEntity();
     if (isset($entity->type)) {
       return CMS::getBundleName($entity);
     }
     else {
-      return $this->GetType();
+      return $this->getType();
     }
   }
 
@@ -128,7 +127,7 @@ abstract class RealisticDummyContentEntityBase extends RealisticDummyContentBase
    * Subclasses of RealisticDummyContentEntityBase need to override
    * this function to perform modifications on the entity.
    */
-  abstract function Modify();
+  public abstract function modify();
 
   /**
    * Check if a field should or shouldn't be manipulated.
@@ -140,9 +139,9 @@ abstract class RealisticDummyContentEntityBase extends RealisticDummyContentBase
    * To get around this, the manipulator objects are called twice, but
    * each time filtered to change only certain parts of the user entity.
    */
-  function filter($field) {
+  public function filter($field) {
     $return = TRUE;
-    $filter = $this->GetFilter();
+    $filter = $this->getFilter();
     if (isset($filter['include'])) {
       if (!in_array($field, $filter['include'])) {
         $return = FALSE;

@@ -2,7 +2,6 @@
 
 namespace Drupal\realistic_dummy_content_api\includes;
 
-
 /**
  * The abstract base environment.
  *
@@ -30,7 +29,7 @@ abstract class RealisticDummyContentEnvironment {
    * @return object
    *   An object of type RealisticDummyContentEnvironment
    */
-  static function Get() {
+  public static function get() {
     if (!self::$env) {
       self::$env = new RealisticDummyContentLiveEnvironment();
     }
@@ -43,9 +42,9 @@ abstract class RealisticDummyContentEnvironment {
    * See the comment on the private variable $env.
    *
    * @param object $environment
-   *   An object of type RealisticDummyContentEnvironment
+   *   An object of type RealisticDummyContentEnvironment.
    */
-  static function Set($environment) {
+  public static function set($environment) {
     self::$env = $environment;
   }
 
@@ -53,19 +52,19 @@ abstract class RealisticDummyContentEnvironment {
    * Get the contents of a file.
    *
    * @param string $filename
-   *   A valid filename, for example /drupal/root/sites/all/modules/your_module/realistic_dummy_content/fields/node/blog/body/03.txt
+   *   A valid filename, for example /drupal/root/sites/all/modules/
+   *   your_module/realistic_dummy_content/fields/node/blog/body/03.txt.
    *
-   * @throws
-   *   Exception
+   * @throws \Exception
    */
-  function file_get_contents($filename) {
+  public function fileGetContents($filename) {
     if (!$filename) {
       throw new RealisticDummyContentException('Please use valid filename');
     }
     if (strpos($filename, '/') === FALSE) {
       throw new RealisticDummyContentException('Please use an absolute filename including its path, which must always contain at least one slash. You are using ' . $filename);
     }
-    $return = $this->_file_get_contents_($filename);
+    $return = $this->implementFileGetContents($filename);
     return $return;
   }
 
@@ -77,49 +76,50 @@ abstract class RealisticDummyContentEnvironment {
    * RealisticDummyContentEnvironment::file_get_contents(), instead.
    *
    * @param string $filename
-   *   A valid filename, for example /drupal/root/sites/all/modules/your_module/realistic_dummy_content/fields/node/blog/body/03.txt
+   *   A valid filename, for example /drupal/root/sites/all/modules/your_module/
+   *   realistic_dummy_content/fields/node/blog/body/03.txt.
    *
    * @return object
    *   Undefined in case the filename is invalid; otherwise returns the contents
    *   of the file.
    */
-  abstract function _file_get_contents_($filename);
+  public abstract function implementFileGetContents($filename);
 
   /**
    * Save the file data to the real or test environment.
    *
    * @param string $data
-   *   The data
+   *   The data.
    * @param string $destination
-   *   Where to put it
+   *   Where to put it.
    *
    * @return object
+   *   The file object.
    *
-   * @throws
-   *   Exception
+   * @throws \Exception
    */
-  function file_save_data($data, $destination = NULL) {
-    $return = $this->_file_save_data_($data, $destination);
+  public function fileSaveData($data, $destination = NULL) {
+    $return = $this->implementFileSaveData($data, $destination);
     return $return;
   }
 
   /**
-   *
+   * Implements $this->fileSaveData().
    */
-  abstract function _file_save_data_($data, $destination = NULL);
+  public abstract function implementFileSaveData($data, $destination = NULL);
 
   /**
-   *
+   * Saves a file.
    */
-  function file_save(stdClass $file) {
-    $return = $this->_file_save_($file);
+  public function fileSave(stdClass $file) {
+    $return = $this->implementFileSave($file);
     return $return;
   }
 
   /**
-   *
+   * Implements $this->fileSave().
    */
-  abstract function _file_save_(stdClass $file);
+  public abstract function implementFileSave(stdClass $file);
 
   /**
    * Returns all files with a given extension for a given filepath.
@@ -143,8 +143,9 @@ abstract class RealisticDummyContentEnvironment {
    * attributes, attribute and attribute1.
    *
    * @param string $filepath
-   *   An absolute filepath on the system, for example /path/to/drupal/sites/all/
-   *   modules/mymodule/realistic_dummy_content/fields/node/article/body
+   *   An absolute filepath on the system, for example
+   *   /path/to/drupal/sites/all/
+   *   modules/mymodule/realistic_dummy_content/fields/node/article/body.
    * @param array $extensions
    *   An array of extensions which should be taken into consideration.
    *
@@ -152,11 +153,11 @@ abstract class RealisticDummyContentEnvironment {
    *   An empty array in case of an error, or an array of objects of type
    *   RealisticDummyContentFileGroup.
    */
-  static function GetAllFileGroups($filepath, $extensions) {
+  public static function getAllFileGroups($filepath, $extensions) {
     try {
       $candidate_files = file_scan_directory($filepath, '/.*$/', array('key' => 'filename'));
 
-      $files = self::SortCandidateFiles($candidate_files, $extensions);
+      $files = self::sortCandidateFiles($candidate_files, $extensions);
 
       $return = array();
       foreach ($files as $radical => $attributes) {
@@ -179,8 +180,7 @@ abstract class RealisticDummyContentEnvironment {
    *     'one.txt' => [file object]
    *     'two.txt.attribute.txt' => [file object]
    *     'two.txt.attribute1.txt' => [file object]
-   *     'three.txt' => [file object]
-   *
+   *     'three.txt' => [file object].
    * @param NULL|array $extensions
    *   (Default is NULL).
    *   If set, only return file groups whose base file is in one of the
@@ -196,7 +196,7 @@ abstract class RealisticDummyContentEnvironment {
    *      a.jpg =>
    *        file => [a.jpg]
    *        attributes =>
-   *          alt => [a.jpg.alt.txt]
+   *          alt => [a.jpg.alt.txt].
    *
    * @return array
    *   A sorted array which looks like:
@@ -210,10 +210,9 @@ abstract class RealisticDummyContentEnvironment {
    *     ),
    *     three.txt => array('file' => [file object]),
    *
-   * @throws
-   *   RealisticDummyContentException
+   * @throws RealisticDummyContentException
    */
-  static function SortCandidateFiles($candidate_files, $extensions = NULL) {
+  public static function sortCandidateFiles($candidate_files, $extensions = NULL) {
     foreach ($candidate_files as $candidate_filename => $candidate_file) {
       if (!is_string($candidate_filename)) {
         // Explicitly load the Exception class, because during unit tests the
@@ -234,7 +233,7 @@ abstract class RealisticDummyContentEnvironment {
         throw new RealisticDummyContentException('Please do not pass file paths with slashes (/) to ' . __FUNCTION__);
       }
     }
-    $return = self::SortCandidateFiles_($candidate_files, $extensions);
+    $return = self::implementSortCandidateFiles($candidate_files, $extensions);
     return $return;
   }
 
@@ -251,27 +250,26 @@ abstract class RealisticDummyContentEnvironment {
    * @return array
    *   A sorted array. See SortCandidateFiles().
    *
-   * @throws
-   *   Exception
+   * @throws \Exception
    */
-  static function SortCandidateFiles_($candidate_files, $extensions = NULL) {
+  public static function implementSortCandidateFiles($candidate_files, $extensions = NULL) {
     $return = array();
     foreach ($candidate_files as $candidate_filename => $candidate_file) {
       if (self::validCandidateFilename($candidate_filename, $extensions)) {
         self::addFileToArray($return, $candidate_filename, $candidate_file);
       }
     }
-    // We expect the files to be sorted alphabetically, which is not the case on all
-    // systems.
+    // We expect the files to be sorted alphabetically, which is not the case on
+    // all systems.
     ksort($return);
     return $return;
   }
 
   /**
-   *
+   * Checks if a filename is valid.
    */
-  static function validCandidateFilename($name, $extensions = NULL) {
-    if (self::LowercaseRadicalNoExtension($name) == 'readme') {
+  public static function validCandidateFilename($name, $extensions = NULL) {
+    if (self::lowercaseRadicalNoExtension($name) == 'readme') {
       return FALSE;
     }
     if (!$extensions) {
@@ -282,9 +280,9 @@ abstract class RealisticDummyContentEnvironment {
   }
 
   /**
-   *
+   * Retrieves the parts constituting a filename.
    */
-  static function getFileParts($name) {
+  public static function getFileParts($name) {
     $return = array();
     $parts = explode('.', $name);
     if (count($parts) >= 4) {
@@ -297,9 +295,9 @@ abstract class RealisticDummyContentEnvironment {
   }
 
   /**
-   *
+   * Adds a file to an array of file group parts.
    */
-  static function addFileToArray(&$array, $name, $file) {
+  public static function addFileToArray(&$array, $name, $file) {
     $attribute_name = NULL;
     $attribute_extention = NULL;
 
@@ -324,17 +322,16 @@ abstract class RealisticDummyContentEnvironment {
    *     a => NULL
    *
    * @param string $filename
-   *   A filename string, for example 'a.b.txt'
+   *   A filename string, for example 'a.b.txt'.
    *
    * @return NULL|string
    *   Null if there is attribute to extract; otherwise the attribute name, for
    *   example "b".
    *
-   * @throws
-   *   Exception
+   * @throws \Exception
    */
-  static function AttributeName($filename) {
-    $replaced = self::Replace($filename, '\2');
+  public static function attributeName($filename) {
+    $replaced = self::replace($filename, '\2');
     if ($replaced != $filename) {
       return $replaced;
     }
@@ -361,31 +358,30 @@ abstract class RealisticDummyContentEnvironment {
    *     a => a
    *
    * @param string $filename
-   *   A filename string, for example 'a.b.txt'
+   *   A filename string, for example 'a.b.txt'.
    *
    * @return string
    *   The name radical of this file, for example a.txt.
    *
-   * @throws
-   *   RealisticDummyContentException
+   * @throws RealisticDummyContentException
    */
-  static function FilenameRadical($filename) {
+  public static function filenameRadical($filename) {
     if (!is_string($filename)) {
       throw new RealisticDummyContentException('Please pass ' . __FUNCTION__ . ' a string as a filename, not a ' . gettype($filename));
     }
-    return self::Replace($filename, '\1\3');
+    return self::replace($filename, '\1\3');
   }
 
   /**
    * Returns the part of a string before the extension, in lowercase.
    *
    * @param string $filename
-   *   A filename string, e.g. rEadmE.txt
+   *   A filename string, e.g. rEadmE.txt.
    *
    * @return string
    *   The lowercase radical without the extension, e.g. readme
    */
-  static function LowercaseRadicalNoExtension($filename) {
+  public static function lowercaseRadicalNoExtension($filename) {
     return drupal_strtolower(trim(preg_replace('/\.[^\.]*$/', '', $filename)));
   }
 
@@ -396,21 +392,20 @@ abstract class RealisticDummyContentEnvironment {
    * returns the result.
    *
    * @param string $filename
-   *   A filename, for example a, a.b, a.b.c, a.b.c.d
+   *   A filename, for example a, a.b, a.b.c, a.b.c.d.
    * @param string $replace
    *   A replacement pattern meant to be passed to preg_replace, where:
    *   \1 = everything before the next-to-last period
    *   \2 = everything between the next-to-last and last periods.
-   *   \3 = everything after and including the last period
+   *   \3 = everything after and including the last period.
    *
    * @return string
    *   The replaced filename, or the same filename in case of an error or if the
    *   pattern is not found.
    *
-   * @throws
-   *   RealisticDummyContentException
+   * @throws RealisticDummyContentException
    */
-  static function Replace($filename, $replace) {
+  public static function replace($filename, $replace) {
     if (!is_string($filename)) {
       throw new RealisticDummyContentException('Please pass ' . __FUNCTION__ . ' a string as a filename, not a ' . gettype($filename));
     }
@@ -421,18 +416,18 @@ abstract class RealisticDummyContentEnvironment {
    * Returns the trimmed contents of a Drpual file object, or NULL if empty.
    *
    * @param object $file
-   *   A drupal file object
+   *   A drupal file object.
    *
    * @return NULL|string
    *   NULL if no contents in file, or if an error occurred; otherwise a string
    *   with the trimmed contents of the file.
    */
-  static function GetFileContents($file) {
+  public static function getFileContents($file) {
     try {
       if (!is_object($file)) {
         throw new RealisticDummyContentException('Please use a file object');
       }
-      return trim(self::Get()->file_get_contents($file->uri));
+      return trim(self::get()->fileGetContents($file->uri));
     }
     catch (Exception $e) {
       return NULL;

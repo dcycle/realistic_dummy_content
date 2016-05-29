@@ -4,14 +4,20 @@ use Drupal\realistic_dummy_content_api\cms\B1;
 use Drupal\realistic_dummy_content_api\cms\D7;
 
 namespace Drupal\realistic_dummy_content_api\cms;
+
 /**
+ * The abstract entry point for the CMS.
  *
+ * Using this class as opposed, for example, to Drupal 7-specific functions,
+ * allows the code logic to work with more than one CMS. Specific CMSs such as
+ * Backdrop 1, Drupal 7 or Drupal 8, are represented by subclasses of this
+ * class.
  */
 abstract class CMS {
   static private $testFlag;
 
   /**
-   *
+   * Retrieves a class representing the current CMS.
    */
   static public function instance() {
     $cms = realistic_dummy_content_api_version();
@@ -19,76 +25,72 @@ abstract class CMS {
       case 'D7':
         module_load_include('php', 'realistic_dummy_content_api', 'src/cms/D7');
         return new D7();
-        break;
 
       case 'B1':
         module_load_include('php', 'realistic_dummy_content_api', 'src/cms/B1');
         return new B1();
-        break;
 
       case 'D8':
         return new D8();
-        break;
 
       default:
         throw new \Exception('No CMS implementation class available for the CMS ' . $cms);
-        break;
     }
   }
 
   /**
-   *
+   * Test for self::instance().
    */
-  static public function _test_instance() {
+  static public function testInstance() {
     return !is_a(self::instance(), '\Drupal\realistic_dummy_content_api\cms\CMS');
   }
 
   /**
-   *
+   * React to an entity just before it is saved.
    */
   static public function hookEntityPresave($entity, $type) {
-    $return = self::instance()->_hookEntityPresave($entity, $type);
+    $return = self::instance()->implementHookEntityPresave($entity, $type);
     static::addTestFlag('hookEntityPresave called');
     return $return;
   }
 
   /**
-   *
+   * Implements self::hookEntityPresave().
    */
-  abstract function _hookEntityPresave($entity, $type);
+  public abstract function implementHookEntityPresave($entity, $type);
 
   /**
-   *
+   * Test self::hookEntityPresave().
    */
-  static public function _test_hookEntityPresave() {
+  static public function testHookEntityPresave() {
     self::createEntity();
     return !static::getTestFlag('hookEntityPresave called');
   }
 
   /**
-   *
+   * Create an entity.
    */
   static public function createEntity($info = array()) {
-    $return = self::instance()->_createEntity($info);
+    $return = self::instance()->implementCreateEntity($info);
     self::assertReturnedObject($return);
     return $return;
   }
 
   /**
-   *
+   * Implements self::createEntity().
    */
-  abstract function _createEntity($info);
+  public abstract function implementCreateEntity($info);
 
   /**
-   *
+   * Implements self::createEntity().
    */
-  static public function _test_createEntity() {
+  static public function testCreateEntity() {
     $entity = self::createEntity();
     return !is_object($entity);
   }
 
   /**
-   *
+   * Adds a flag during execution for testing.
    */
   static public function addTestFlag($flag) {
     if (!is_array(self::$testFlag)) {
@@ -98,85 +100,85 @@ abstract class CMS {
   }
 
   /**
-   *
+   * Tests self::addTestFlag().
    */
-  static public function _test_addTestFlag() {
+  static public function testAddTestFlag() {
     self::addTestFlag('whatever');
     return !self::getTestFlag('whatever');
   }
 
   /**
-   *
+   * Retrieves whether or not a given test flag is set.
    */
   static public function getTestFlag($flag) {
     return isset(self::$testFlag[$flag]);
   }
 
   /**
-   *
+   * Clears all test flags.
    */
   static public function clearTestFlag($flag) {
     unset(self::$testFlag[$flag]);
   }
 
   /**
-   *
+   * Tests self::clearTestFlag().
    */
-  public function _test_clearTestFlag() {
+  public function testClearTestFlag() {
     self::addTestFlag('whatever');
     self::clearTestFlag('whatever');
     return self::getTestFlag('whatever');
   }
 
   /**
-   *
+   * Tests self::getTestFlag().
    */
-  static public function _test_getTestFlag() {
+  static public function testGetTestFlag() {
     return self::_test_addTestFlag();
   }
 
   /**
-   *
+   * Sets the property of an entity.
    */
   static public function setEntityProperty(&$entity, $property, $value) {
-    return self::instance()->_setEntityProperty($entity, $property, $value);
+    return self::instance()->implementSetEntityProperty($entity, $property, $value);
   }
 
   /**
-   *
+   * Implements self::setEntityProperty().
    */
-  abstract function _setEntityProperty(&$entity, $property, $value);
+  public abstract function implementSetEntityProperty(&$entity, $property, $value);
 
   /**
-   *
+   * Retrives the property value for an entity.
    */
   static public function getEntityProperty(&$entity, $property) {
-    return self::instance()->_getEntityProperty($entity, $property);
+    return self::instance()->implementGetEntityProperty($entity, $property);
   }
 
   /**
-   *
+   * Implements self::getEntityProperty().
    */
-  abstract function _getEntityProperty(&$entity, $property);
+  public abstract function implementGetEntityProperty(&$entity, $property);
 
   /**
-   *
+   * Tests self::getEntityProperty().
    */
-  static public function _test_getEntityProperty() {
-    return self::_test_setEntityProperty();
+  static public function testGetEntityProperty() {
+    return self::testSetEntityProperty();
   }
 
   /**
-   *
+   * Tests self::setEntityProperty().
    */
-  static public function _test_setEntityProperty() {
+  static public function testSetEntityProperty() {
     $entity = self::createEntity();
     self::setEntityProperty($entity, 'title', 'whatever');
     return self::getEntityProperty($entity, 'title') != 'whatever';
   }
 
   /**
-   *
+   * Invokes all hooks.
    */
   static public function moduleInvokeAll($hook) {
     $args = func_get_args();
@@ -186,80 +188,80 @@ abstract class CMS {
   }
 
   /**
-   *
+   * Tests self::moduleInvokeAll().
    */
-  public function _test_moduleInvokeAll() {
+  public function testModuleInvokeAll() {
     self::clearTestFlag('moduleInvokeAll called');
     realistic_dummy_content_api_is_dummy($this->createEntity(), 'node');
     return !self::getTestFlag('moduleInvokeAll called');
   }
 
   /**
-   *
+   * Implements self::moduleInvokeAll().
    */
-  abstract function _moduleInvokeAll($hook);
+  public abstract function implementModuleInvokeAll($hook);
 
   /**
-   *
+   * Checks whether an entity should be considered dummy content.
    */
   static public function entityIsDummy($entity, $type) {
-    $return = self::instance()->_entityIsDummy($entity, $type);
+    $return = self::instance()->implementEntityIsDummy($entity, $type);
     return $return;
   }
 
   /**
-   *
+   * Implements self::entityIsDummy().
    */
-  abstract function _entityIsDummy($entity, $type);
+  public abstract function implementEntityIsDummy($entity, $type);
 
   /**
-   *
+   * Tests self::entityIsDummy().
    */
-  public function _test_entityIsDummy() {
+  public function testEntityIsDummy() {
     return $this->entityIsDummy('whatever', 'whatever') || !$this->entityIsDummy((object) array('devel_generate' => TRUE), 'whatever');
   }
 
   /**
-   *
+   * Allows third-party modules to alter data.
    */
   static public function alter($type, &$data, &$context1 = NULL, &$context2 = NULL, &$context3 = NULL) {
-    return self::instance()->_alter($type, $data, $context1, $context2, $context3);
+    return self::instance()->implementAlter($type, $data, $context1, $context2, $context3);
   }
 
   /**
-   *
+   * Implements self::alter().
    */
-  abstract function _alter($type, &$data, &$context1 = NULL, &$context2 = NULL, &$context3 = NULL);
+  public abstract function implementAlter($type, &$data, &$context1 = NULL, &$context2 = NULL, &$context3 = NULL);
 
   /**
-   *
+   * Prints debugging information.
    */
   static public function debug($message, $info = NULL) {
-    return self::instance()->_debug($message, $info);
+    return self::instance()->implementDebug($message, $info);
   }
 
   /**
-   *
+   * Implements self::debug().
    */
-  abstract function _debug($message, $info);
+  public abstract function implementDebug($message, $info);
 
   /**
-   *
+   * Gets a list of modules.
    */
   static public function moduleList() {
-    return self::instance()->_moduleList();
+    return self::instance()->implementModuleList();
   }
 
   /**
-   *
+   * Implements self::moduleList().
    */
-  abstract function _moduleList();
+  public abstract function implementModuleList();
 
   /**
-   *
+   * Saves a file to disk.
    */
   static public function fileSave($drupal_file) {
-    $return = self::instance()->_fileSave($drupal_file);
+    $return = self::instance()->implementFileSave($drupal_file);
     self::assertReturnedObject($return, array('fid'));
     return $return;
   }
@@ -267,7 +269,7 @@ abstract class CMS {
   /**
    * Returns the calling function through a backtrace.
    */
-  static function getCallingFunction() {
+  public static function getCallingFunction() {
     // A funciton x has called a function y which called this
     // see stackoverflow.com/questions/190421.
     $caller = debug_backtrace();
@@ -276,11 +278,11 @@ abstract class CMS {
   }
 
   /**
-   *
+   * Makes sure that an implementor returns data of the correct type.
    */
   static public function assertReturnedObject($data, $properties = array()) {
     $class = get_class(self::instance());
-    $function = '_' . self::getCallingFunction();
+    $function = 'implement' . self::getCallingFunction();
     $caller = $class . '::' . $function;
 
     if (!is_object($data)) {
@@ -294,82 +296,82 @@ abstract class CMS {
   }
 
   /**
-   *
+   * Implements self::fileSave().
    */
-  abstract function _fileSave($drupal_file);
+  public abstract function implementFileSave($drupal_file);
 
   /**
-   *
+   * Gets the bundle name of an entity.
    */
   static public function getBundleName($entity) {
-    return self::instance()->_getBundleName($entity);
+    return self::instance()->implementGetBundleName($entity);
   }
 
   /**
-   *
+   * Implements self::getBundleName().
    */
-  abstract function _getBundleName($entity);
+  public abstract function implementGetBundleName($entity);
 
   /**
-   *
+   * Gets configuration value.
    */
   static public function configGet($name, $default = NULL) {
-    return self::instance()->_configGet($name, $default);
+    return self::instance()->implementConfigGet($name, $default);
   }
 
   /**
-   *
+   * Implements self::configGet().
    */
-  abstract function _configGet($name, $default);
+  public abstract function implementConfigGet($name, $default);
 
   /**
-   *
+   * Get information about fields.
    */
   static public function fieldInfoFields() {
-    return self::instance()->_fieldInfoFields();
+    return self::instance()->implementFieldInfoFields();
   }
 
   /**
-   *
+   * Implements self::fieldInfoFields().
    */
-  abstract function _fieldInfoFields();
+  public abstract function implementFieldInfoFields();
 
   /**
-   *
+   * Gets state information.
    */
   static public function stateGet($name, $default = NULL) {
-    return self::instance()->_stateGet($name, $default);
+    return self::instance()->implementStateGet($name, $default);
   }
 
   /**
-   *
+   * Implements self::stateGet().
    */
-  abstract function _stateGet($name, $default);
+  public abstract function implementStateGet($name, $default);
 
   /**
-   *
+   * Retrieves all available vocabularies.
    */
   static public function getAllVocabularies() {
-    return self::instance()->_getAllVocabularies();
+    return self::instance()->implementGetAllVocabularies();
   }
 
   /**
-   *
+   * Implements self::getAllVocabularies().
    */
-  abstract function _getAllVocabularies();
+  public abstract function implementGetAllVocabularies();
 
   /**
-   *
+   * Tests all functions in the class.
    */
   public function selfTest() {
     $all = get_class_methods(get_class($this));
     $errors = array();
     $tests = array();
     foreach ($all as $method_name) {
-      if (substr($method_name, 0, 1) == '_') {
+      if (substr($method_name, 0, strlen('implement')) == 'implement' || substr($method_name, 0, strlen('test')) == 'test') {
         continue;
       }
-      $candidate = '_test_' . $method_name;
+      $candidate = 'test' . $method_name;
       if (!in_array($candidate, $all)) {
         $errors[] = 'There should be a status method called CMS::' . $candidate . '()';
       }
@@ -388,7 +390,7 @@ abstract class CMS {
         }
       }
     }
-    $this->_cmsSpecificTests($errors, $tests);
+    $this->cmsSpecificTests($errors, $tests);
     self::debug('Errors:');
     self::debug($errors);
     self::debug('Passed tests:');
@@ -397,9 +399,9 @@ abstract class CMS {
   }
 
   /**
-   *
+   * Perform CMS-specific tests, if any.
    */
-  function _cmsSpecificTests(&$errors, &$tests) {
+  public function cmsSpecificTests(&$errors, &$tests) {
   }
 
 }

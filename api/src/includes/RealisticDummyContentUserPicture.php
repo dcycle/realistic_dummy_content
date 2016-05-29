@@ -2,7 +2,6 @@
 
 namespace Drupal\realistic_dummy_content_api\includes;
 
-
 /**
  * Represents the user picture.
  */
@@ -11,15 +10,15 @@ class RealisticDummyContentUserPicture extends RealisticDummyContentProperty {
   /**
    * {@inheritdoc}
    */
-  function GetExtensions() {
-    return $this->GetImageExtensions();
+  public function getExtensions() {
+    return $this->getImageExtensions();
   }
 
   /**
    * {@inheritdoc}
    */
-  function ValueFromFile_($file) {
-    $file = $this->ImageSave($file);
+  public function implementValueFromFile($file) {
+    $file = $this->imageSave($file);
     if ($file) {
       return $file;
     }

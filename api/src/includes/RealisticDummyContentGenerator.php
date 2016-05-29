@@ -1,8 +1,12 @@
 <?php
 
 namespace Drupal\realistic_dummy_content_api\includes;
+
 /**
+ * Abstract dummy content generator class.
  *
+ * This module can generate dummy content using an extensible system of
+ * "generators", which are subclasses of this class.
  */
 abstract class RealisticDummyContentGenerator {
   private $type;
@@ -11,11 +15,13 @@ abstract class RealisticDummyContentGenerator {
   private $more;
 
   /**
+   * Constructor.
+   *
    * @param array $more
    *   Can contain:
-   *     kill => TRUE|FALSE
+   *     kill => TRUE|FALSE.
    */
-  function __construct($type, $bundle, $num, $more) {
+  public function __construct($type, $bundle, $num, $more) {
     $this->type = $type;
     $this->bundle = $bundle;
     $this->num = $num;
@@ -28,38 +34,38 @@ abstract class RealisticDummyContentGenerator {
   }
 
   /**
-   *
+   * Getter for the bundle property.
    */
-  function GetBundle() {
+  public function getBundle() {
     return $this->bundle;
   }
 
   /**
-   *
+   * Getter for the type property.
    */
-  function GetType() {
+  public function getType() {
     return $this->type;
   }
 
   /**
-   *
+   * Getter for the kill property.
    */
-  function GetKill() {
+  public function getKill() {
     return $this->kill;
   }
 
   /**
-   *
+   * Getter for the num propert.
    */
-  function GetNum() {
+  public function getNum() {
     return $this->num;
   }
 
   /**
-   *
+   * Generate content.
    */
-  function Generate() {
-    $this->_Generate_();
+  public function generate() {
+    $this->implementGenerate();
   }
 
 }

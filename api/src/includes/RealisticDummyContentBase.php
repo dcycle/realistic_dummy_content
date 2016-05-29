@@ -2,7 +2,6 @@
 
 namespace Drupal\realistic_dummy_content_api\includes;
 
-
 /**
  * The most generic content manipulator.
  *
@@ -18,10 +17,10 @@ namespace Drupal\realistic_dummy_content_api\includes;
 abstract class RealisticDummyContentBase {
 
   /**
-   *
+   * Retrieves the current environment class.
    */
-  function env() {
-    return RealisticDummyContentEnvironment::Get();
+  public function env() {
+    return RealisticDummyContentEnvironment::get();
   }
 
 }

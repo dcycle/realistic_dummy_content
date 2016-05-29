@@ -2,7 +2,6 @@
 
 namespace Drupal\realistic_dummy_content_api\includes;
 
-
 /**
  * Field modifier for image fields.
  */
@@ -11,19 +10,19 @@ class RealisticDummyContentImageField extends RealisticDummyContentField {
   /**
    * {@inheritdoc}
    */
-  function GetExtensions() {
-    return $this->GetImageExtensions();
+  public function getExtensions() {
+    return $this->getImageExtensions();
   }
 
   /**
    * {@inheritdoc}
    */
-  function ValueFromFile_($file) {
-    if (!$file->Value()) {
+  public function implementValueFromFile($file) {
+    if (!$file->value()) {
       return NULL;
     }
     $return = NULL;
-    $file = $this->ImageSave($file);
+    $file = $this->imageSave($file);
     if ($file) {
       $return = array(
         LANGUAGE_NONE => array(

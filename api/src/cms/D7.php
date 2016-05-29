@@ -2,40 +2,41 @@
 use Drupal\realistic_dummy_content_api\cms\CMS;
 
 namespace Drupal\realistic_dummy_content_api\cms;
+
 /**
- *
+ * Drupal 7-specific code.
  */
 class D7 extends CMS {
 
   /**
-   *
+   * {@inheritdoc}
    */
-  function _hookEntityPresave($entity, $type) {
+  public function implementHookEntityPresave($entity, $type) {
     if ($type != 'user') {
-      $this->_realistic_dummy_content_api_entity_presave($entity, $type);
+      $this->genericEntityPresave($entity, $type);
     }
   }
 
   /**
-   *
+   * Drupal-7 specific insert hook for users.
    */
   public function hookUserInsert(&$edit, $account, $category) {
     static::addTestFlag('hookUserInsert called');
-    return $this->instance()->_hookUserInsert($edit, $account, $category);
+    return $this->instance()->implementHookUserInsert($edit, $account, $category);
   }
 
   /**
-   *
+   * Drupal-7 specific presave hook for users.
    */
   public function hookUserPresave(&$edit, $account, $category) {
     static::addTestFlag('hookUserPresave called');
-    return $this->instance()->_hookUserPresave($edit, $account, $category);
+    return $this->instance()->implementHookUserPresave($edit, $account, $category);
   }
 
   /**
-   *
+   * Implements $this->hookUserInsert().
    */
-  function _hookUserInsert(&$edit, $account, $category) {
+  public function implementHookUserInsert(&$edit, $account, $category) {
     // This hook is invoked only once when the user is first created, whether
     // by the administrator or by devel_generate. The hook is not invoked
     // thereafter.
@@ -44,19 +45,19 @@ class D7 extends CMS {
         'picture',
       ),
     );
-    $this->_realistic_dummy_content_api_entity_presave($account, 'user', $filter);
+    $this->genericEntityPresave($account, 'user', $filter);
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
-  function _cmsSpecificTests(&$errors, &$tests) {
+  public function cmsSpecificTests(&$errors, &$tests) {
   }
 
   /**
-   *
+   * Implements $this->hookUserPresave().
    */
-  function _hookUserPresave(&$edit, $account, $category) {
+  public function implementHookUserPresave(&$edit, $account, $category) {
     // This hook is called when content is updated, in which case we don't want
     // to tamper with it. When content is first created, the $account's is_new
     // property is set to FALSE, se we can't depend on that to determine whether
@@ -83,7 +84,7 @@ class D7 extends CMS {
         ),
       );
       $user = (object) $edit;
-      $this->_realistic_dummy_content_api_entity_presave($user, 'user', $filter);
+      $this->genericEntityPresave($user, 'user', $filter);
       $edit = (array) $user;
     }
   }
@@ -122,7 +123,7 @@ class D7 extends CMS {
    *   This allows hook implementations to return a different class based on
    *   the type of filter.
    */
-  function _realistic_dummy_content_api_entity_presave($entity, $type, $filter = array()) {
+  public function genericEntityPresave($entity, $type, $filter = array()) {
     try {
       if (realistic_dummy_content_api_is_dummy($entity, $type)) {
         $candidate = $entity;
@@ -137,39 +138,39 @@ class D7 extends CMS {
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
-  public function _alter($type, &$data, &$context1 = NULL, &$context2 = NULL, &$context3 = NULL) {
+  public function implementAlter($type, &$data, &$context1 = NULL, &$context2 = NULL, &$context3 = NULL) {
     return drupal_alter($type, $data, $context1, $context2, $context3);
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
-  public function _fieldInfoFields() {
+  public function implementFieldInfoFields() {
     return field_info_fields();
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
-  public function _moduleList() {
+  public function implementModuleList() {
     return module_list();
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
-  public function _moduleInvokeAll($hook) {
+  public function implementModuleInvokeAll($hook) {
     $args = func_get_args();
     $object = self::instance();
     return call_user_func_array('module_invoke_all', $args);
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
-  public function _entityIsDummy($entity, $type) {
+  public function implementEntityIsDummy($entity, $type) {
     $return = FALSE;
     // Any entity with the devel_generate property set should be considered
     // dummy content. although not all dummy content has this flag set.
@@ -197,44 +198,44 @@ class D7 extends CMS {
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
-  public function _getBundleName($entity) {
+  public function implementGetBundleName($entity) {
     return $entity->type;
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
-  public function _configGet($name, $default) {
+  public function implementConfigGet($name, $default) {
     return variable_get($name, $default);
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
-  public function _stateGet($name, $default) {
+  public function implementStateGet($name, $default) {
     return variable_get($name, $default);
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
-  public function _setEntityProperty(&$entity, $property, $value) {
+  public function implementSetEntityProperty(&$entity, $property, $value) {
     $entity->{$property} = $value;
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
-  public function _getEntityProperty(&$entity, $property) {
+  public function implementGetEntityProperty(&$entity, $property) {
     return $entity->{$property};
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
-  public function _createEntity($info) {
+  public function implementCreateEntity($info) {
     if (isset($info['entity_type'])) {
       $entity_type = $info['entity_type'];
     }
@@ -255,60 +256,61 @@ class D7 extends CMS {
 
       default:
         throw new \Exception('Unknown entity type ' . $entity_type);
-        break;
     }
     return $entity;
   }
 
   /**
-   *
+   * Retrieves the default node type for this CMS.
    */
   public function getDefaultNodeType() {
     return 'article';
   }
 
   /**
-   *
+   * Tests $this->getDefaultNodeType().
    */
-  public function _test_getDefaultNodeType() {
+  public function testsGetDefaultNodeType() {
     return !is_string($this->getDefaultNodeType());
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
-  public function _debug($message, $info) {
+  public function implementDebug($message, $info) {
+    // @codingStandardsIgnoreStart
     dpm($message, $info);
+    // @codingStandardsIgnoreEnd
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
-  public function _getAllVocabularies() {
+  public function implementGetAllVocabularies() {
     $return = taxonomy_get_vocabularies();
     return $return;
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
-  function _fileSave($drupal_file) {
+  public function implementFileSave($drupal_file) {
     return file_save($drupal_file);
   }
 
   /**
-   *
+   * Tests $this->hookUserInsert().
    */
-  function _test_hookUserInsert() {
+  public function testHookUserInsert() {
     self::clearTestFlag('hookUserInsert called');
     self::createEntity(array('entity_type' => 'user'));
     return !static::getTestFlag('hookUserInsert called');
   }
 
   /**
-   *
+   * Tests $this->hookUserPresave().
    */
-  function _test_hookUserPresave() {
+  public function testHookUserPresave() {
     self::clearTestFlag('hookUserPresave called');
     self::createEntity(array('entity_type' => 'user'));
     return !static::getTestFlag('hookUserPresave called');

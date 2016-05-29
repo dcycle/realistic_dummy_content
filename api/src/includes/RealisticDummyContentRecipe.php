@@ -1,30 +1,39 @@
 <?php
 
 namespace Drupal\realistic_dummy_content_api\includes;
+
 /**
+ * Abstract base "recipe" class.
  *
+ * Recipes are sequential dummy content generators, for example if a system
+ * defines "school board" and "school" content types, we might want to generate
+ * five dummy school boards followed by 20 dummy schools.
+ *
+ * Custom modules can extend this class to create their own recipes; an example
+ * can be found in this module at
+ * ./realistic_dummy_content/recipe/realistic_dummy_content.recipe.inc.
  */
 abstract class RealisticDummyContentRecipe {
-  static $log;
+  private static $log;
 
   /**
-   *
+   * Run this recipe.
    */
-  static function Run($log) {
-    self::StartTime('run');
+  public static function run($log) {
+    self::startTime('run');
     self::$log = $log;
-    $objects = self::FindObjects();
+    $objects = self::findObjects();
 
     foreach ($objects as $object) {
       $object->_Run_();
     }
-    self::$log->log(t('Realistic dummy content generation operation completed in @time milliseconds', array('@time' => self::StopTime('run'))));
+    self::$log->log(t('Realistic dummy content generation operation completed in @time milliseconds', array('@time' => self::stopTime('run'))));
   }
 
   /**
-   *
+   * Find all recipe objects defined by all modules.
    */
-  static function FindObjects() {
+  public static function findObjects() {
     $objects = array();
     // We need to cycle through all active modules and look for those
     // which contain a class module_name_realistic_dummy_content_recipe
@@ -40,50 +49,57 @@ abstract class RealisticDummyContentRecipe {
   }
 
   /**
+   * Return a concrete generator class to generate content.
+   *
    * @param array $more
    *   Can contain:
-   *     kill => TRUE|FALSE
+   *     kill => TRUE|FALSE.
    */
-  static function GetGenerator($type, $bundle, $count, $more) {
+  public static function getGenerator($type, $bundle, $count, $more) {
     if (in_array($type, array('user', 'node'))) {
       if (module_exists('devel_generate')) {
         return new RealisticDummyContentDevelGenerateGenerator($type, $bundle, $count, $more);
       }
       else {
-        self::$log->Error(t('Please enable devel\'s devel_generate module to generate users or nodes.'));
+        self::$log->error(t("Please enable devel's devel_generate module to generate users or nodes."));
       }
     }
     else {
-      self::$log->Error(t('Entity types other than user and node are not supported for realistic dummy content recipe.'));
+      self::$log->error(t('Entity types other than user and node are not supported for realistic dummy content recipe.'));
     }
   }
 
   /**
-   *
+   * Create new entities.
    */
-  function NewEntities($type, $bundle, $count, $more = array()) {
-    self::StartTime(array($type, $bundle, $count));
-    if ($generator = self::GetGenerator($type, $bundle, $count, $more)) {
-      $generator->Generate();
+  public function newEntities($type, $bundle, $count, $more = array()) {
+    self::startTime(array($type, $bundle, $count));
+    if ($generator = self::getGenerator($type, $bundle, $count, $more)) {
+      $generator->generate();
     }
     else {
-      self::$log->Error(t('Could not find a generator for @type @bundle.', array('@type' => $type, '@bundle' => $bundle)));
+      self::$log->error(t('Could not find a generator for @type @bundle.', array('@type' => $type, '@bundle' => $bundle)));
     }
-    $time = self::StopTime(array($type, $bundle, $count));
-    self::$log->log(t('@type @bundle: @n created in @time milliseconds', array('@type' => $type, '@bundle' => $bundle, '@n' => $count, '@time' => $time)));
+    $time = self::stopTime(array($type, $bundle, $count));
+    self::$log->log(t('@type @bundle: @n created in @time milliseconds', array(
+      '@type' => $type,
+      '@bundle' => $bundle,
+      '@n' => $count,
+      '@time' => $time,
+    )));
   }
 
   /**
-   *
+   * Log the start time.
    */
-  static function StartTime($id) {
+  public static function startTime($id) {
     timer_start(serialize($id));
   }
 
   /**
-   *
+   * Get the end time.
    */
-  static function StopTime($id) {
+  public static function stopTime($id) {
     $timer = timer_stop(serialize($id));
     return $timer['time'];
   }

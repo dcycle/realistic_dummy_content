@@ -7,6 +7,10 @@
 /**
  * An example recipe. This one creates four pages, and then 10 articles.
  */
+// @codingStandardsIgnoreStart
+// We cannot Make this file conform to coding standards because existing
+// projects might have used this as an example and we need to continue
+// supporting this technique for defining recipes.
 class realistic_dummy_content_realistic_dummy_content_recipe extends RealisticDummyContentRecipe {
 
   /**
@@ -19,5 +23,6 @@ class realistic_dummy_content_realistic_dummy_content_recipe extends RealisticDu
     $this->NewEntities('node', 'page', 4, array('kill' => TRUE));
     $this->NewEntities('node', 'article', 10, array('kill' => TRUE));
   }
+// @codingStandardsIgnoreEnd
 
 }

@@ -16,7 +16,7 @@ class RealisticDummyContentUnitTestCaseDummyFile {
    * @param mixed $value
    *   The value to return
    */
-  function __construct($value) {
+  public function __construct($value) {
     $this->value = $value;
   }
 
@@ -26,7 +26,7 @@ class RealisticDummyContentUnitTestCaseDummyFile {
    * @return mixed
    *   The value we used when creating this object.
    */
-  function Value() {
+  public function value() {
     return $this->value;
   }
 }
@@ -103,7 +103,7 @@ $this->assertFALSE(realistic_dummy_content_api_realistic_dummy_content_api_dummy
    *   Expected result which realistic_dummy_content_api_sequential() is
    *   expected to return.
    */
-  function assertSequential($start, $end, $hash, $expected) {
+  public function assertSequential($start, $end, $hash, $expected) {
     $result = realistic_dummy_content_api_sequential($start, $end, $hash);
     $this->assertTrue($result == $expected, 'Sequential number is as expected for ' . $start . ', ' . $end . ' with hash ' . $hash . ': [expected] ' . $expected . ' = [result] ' . $result);
   }
@@ -111,7 +111,7 @@ $this->assertFALSE(realistic_dummy_content_api_realistic_dummy_content_api_dummy
   /**
    * Test that file names are properly parsed and combined.
    */
-  function testFiles() {
+  public function testFiles() {
     module_load_include('inc', 'realistic_dummy_content_api', 'includes/RealisticDummyContentEnvironment');
     $data = array(
       'one.txt' => new stdClass(),
@@ -126,8 +126,8 @@ $this->assertFALSE(realistic_dummy_content_api_realistic_dummy_content_api_dummy
       'three.png.alt.txt' => new stdClass(),
     );
     try {
-      $parsed = RealisticDummyContentEnvironment::SortCandidateFiles($data);
-      $parsed_images = RealisticDummyContentEnvironment::SortCandidateFiles($data, array('png'));
+      $parsed = RealisticDummyContentEnvironment::sortCandidateFiles($data);
+      $parsed_images = RealisticDummyContentEnvironment::sortCandidateFiles($data, array('png'));
     }
     catch (Exception $e) {
       $this->assertFalse(TRUE, 'Got exception ' . $e->getMessage());
@@ -148,7 +148,7 @@ $this->assertFALSE(realistic_dummy_content_api_realistic_dummy_content_api_dummy
   /**
    * Test that empty files and non-existing files are treated differently.
    */
-  function testEmpty() {
+  public function testEmpty() {
     module_load_include('inc', 'realistic_dummy_content_api', 'includes/RealisticDummyContentAttribute');
     module_load_include('inc', 'realistic_dummy_content_api', 'includes/RealisticDummyContentField');
     module_load_include('inc', 'realistic_dummy_content_api', 'includes/RealisticDummyContentValueField');
@@ -156,7 +156,7 @@ $this->assertFALSE(realistic_dummy_content_api_realistic_dummy_content_api_dummy
     $null = new RealisticDummyContentUnitTestCaseDummyFile(NULL);
     $empty = new RealisticDummyContentUnitTestCaseDummyFile('');
 
-    $this->assertFalse(is_array($field->ValueFromFile_($null)), 'No applicable field value is represented by NULL.');
-    $this->assertTrue(is_array($field->ValueFromFile_($empty)), 'An empty string is considered a valid value.');
+    $this->assertFalse(is_array($field->implementValueFromFile($null)), 'No applicable field value is represented by NULL.');
+    $this->assertTrue(is_array($field->implementValueFromFile($empty)), 'An empty string is considered a valid value.');
   }
 }

@@ -1,15 +1,20 @@
 <?php
 namespace Drupal\realistic_dummy_content_api\cms;
+
 /**
+ * Represents a mock CMS.
  *
+ * Because all CMS-specific code is abstracted out of our module's logic, we are
+ * able to implement a mock CMS which can be used to test our code's logic
+ * outside of the context of a specific CMS.
  */
 class Mock extends CMS {
 
   /**
-   *
+   * {@inheritdoc}
    */
-  function _newEntity($entity) {
-    $this->_hookEntityPresave($entity, $entity->type);
+  public function implementNewEntity($entity) {
+    $this->implementHookEntityPresave($entity, $entity->type);
     $id = rand();
     $this->entites[$id] = $entity;
     return $id;
@@ -18,7 +23,7 @@ class Mock extends CMS {
   /**
    * {@inheritdoc}
    */
-  function _hookEntityPresave($entity, $type) {
+  public function implementHookEntityPresave($entity, $type) {
     $this->print('[info] About to save ' . $this->toString($entity) . ' of type ' . $type);
     if (realistic_dummy_content_api_is_dummy($entity, $type)) {
       $this->print('[info] Determined that ' . $this->toString($entity) . ' of type ' . $type . ' is dummy, about to improve it');
@@ -27,9 +32,9 @@ class Mock extends CMS {
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
-  public function _moduleInvokeAll($hook) {
+  public function implementModuleInvokeAll($hook) {
     $args = func_get_args();
     $hook = array_shift($args);
     $this->print('[info] About to let all modules apply hook ' . $hook . ' with arguments ' . serialize($args);
@@ -39,17 +44,17 @@ class Mock extends CMS {
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
-  public function _entityIsDummy($entity, $type) {
+  public function implementEntityIsDummy($entity, $type) {
     $return = isset($entity->devel_generate);
     return $return;
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
-  public function _fieldInfoFields() {
+  public function implementFieldInfoFields() {
     return array(
       'some-field-name' => array(
         'node' => array(
@@ -60,9 +65,9 @@ class Mock extends CMS {
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
-  public function _moduleList() {
+  public function implementModuleList() {
     return array(
       'realistic_dummy_content',
       'realistic_dummy_content_api',
@@ -70,46 +75,46 @@ class Mock extends CMS {
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
-  public function _configGet($name, $default) {
+  public function implementConfigGet($name, $default) {
     return (isset($this->config[$name])) ? $this->config[$name] : $default;
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
-  public function _alter($type, &$data, &$context1 = NULL, &$context2 = NULL, &$context3 = NULL) {
+  public function implementAlter($type, &$data, &$context1 = NULL, &$context2 = NULL, &$context3 = NULL) {
     if ($type == 'realistic_dummy_content_attribute_manipulator') {
       return realistic_dummy_content_api_realistic_dummy_content_attribute_manipulator_alter($data, $context1, $context2);
     }
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
-  public function _getBundleName($entity) {
+  public function implementGetBundleName($entity) {
     return $entity->bundle;
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
-  public function _stateGet($name, $default) {
+  public function implelentStateGet($name, $default) {
     return (isset($this->config[$name])) ? $this->config[$name] : $default;
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
-  public function _setEntityProperty(&$entity, $property, $value) {
+  public function implementSetEntityProperty(&$entity, $property, $value) {
     $entity->$property = $value;
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
-  public function _debug($message, $info) {
+  public function implementDebug($message, $info) {
     $this->print('[debug] ' . $message . ' ' . $info);
   }
 

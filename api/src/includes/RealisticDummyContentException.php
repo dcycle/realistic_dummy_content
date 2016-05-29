@@ -15,24 +15,24 @@ define('REALISTIC_DUMMY_CONTENT_EXCEPTION_BACKTRACE_LEVEL', 4);
 class RealisticDummyContentException extends \Exception {
 
   /**
-   *
+   * Constructor.
    */
-  function __construct($message) {
+  public function __construct($message) {
     parent::__construct($message);
-    $this->Log();
+    $this->log();
   }
 
   /**
-   *
+   * Logs a message.
    */
-  function Log() {
-    CMS::debug($this->getMessage() . ' (' . $this->GetCaller() . ' called ' . $this->GetCalled() . ')');
+  public function log() {
+    CMS::debug($this->getMessage() . ' (' . $this->getCaller() . ' called ' . $this->getCalled() . ')');
   }
 
   /**
    * Returns the calling function through a backtrace.
    */
-  static function GetCaller() {
+  public static function getCaller() {
     // A funciton x has called a function y which called this
     // see stackoverflow.com/questions/190421.
     $caller = debug_backtrace();
@@ -50,10 +50,10 @@ class RealisticDummyContentException extends \Exception {
   /**
    * Returns the called function through a backtrace.
    */
-  static function GetCalled() {
+  public static function getCalled() {
     // Get caller will return the called function because the simple fact
     // of using another function will make the backtrace one-level deeper.
-    return self::GetCaller();
+    return self::getCaller();
   }
 
 }

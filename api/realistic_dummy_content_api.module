@@ -239,8 +239,8 @@ function realistic_dummy_content_api_improve_dummy_content(&$entity, $type, $fil
     realistic_dummy_content_api_validate_class($modifier_class);
     $modifier = new $modifier_class($entity, $type, $filter);
     CMS::debug(get_class($modifier) . ' about to modify entity.');
-    $modifier->Modify();
-    $entity = $modifier->GetEntity();
+    $modifier->modify();
+    $entity = $modifier->getEntity();
   }
 }
 
@@ -399,7 +399,7 @@ function realistic_dummy_content_api_apply_recipe($log) {
     if (!class_exists('\Drupal\realistic_dummy_content_api\includes\RealisticDummyContentRecipe')) {
       throw new \Exception('Cannot find the class \Drupal\realistic_dummy_content_api\includes\RealisticDummyContentRecipe, this might be solved by uninstalling and reinstalling realistic_dummy_content or rebuilding the registry (Drupal 7), and has been known to happen when upgrading from beta3.');
     }
-    RealisticDummyContentRecipe::Run($log);
+    RealisticDummyContentRecipe::run($log);
   }
   catch (Exception $e) {
     $log->log('An exception occurred while trying to apply a recipe');

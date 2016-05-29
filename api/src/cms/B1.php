@@ -13,7 +13,7 @@ class B1 extends D7 {
   /**
    * {@inheritdoc}
    */
-  public function _fileSave($drupal_file) {
+  public function implementFileSave($drupal_file) {
     file_save($drupal_file);
     return $drupal_file;
   }

@@ -43,12 +43,12 @@ class RealisticDummyContentFieldModifier extends RealisticDummyContentEntityBase
    *   name, e.g. title => [RealisticDummyContentAttribute], field_image =>
    *   [RealisticDummyContentAttribute]
    */
-  function GetProperties() {
+  public function getProperties() {
     $modifiable_properties = array();
-    $fields = $this->GetFields();
-    foreach ((array) $this->GetEntity() as $property => $info) {
+    $fields = $this->getFields();
+    foreach ((array) $this->getEntity() as $property => $info) {
       if (!in_array($property, array_keys($fields)) && $this->filter($property)) {
-        $this->AddModifier($modifiable_properties, 'property', $property);
+        $this->addModifier($modifiable_properties, 'property', $property);
       }
     }
     return $modifiable_properties;
@@ -62,15 +62,15 @@ class RealisticDummyContentFieldModifier extends RealisticDummyContentEntityBase
    *   name, e.g. title => [RealisticDummyContentAttribute], field_image =>
    *   [RealisticDummyContentAttribute]
    */
-  function GetFields() {
+  public function getFields() {
     $modifiable_fields = array();
-    $entity = $this->GetEntity();
-    $type = $this->GetType();
-    $bundle = $this->GetBundle();
+    $entity = $this->getEntity();
+    $type = $this->getType();
+    $bundle = $this->getBundle();
     $fields = CMS::fieldInfoFields();
     foreach ($fields as $field => $info) {
-      if (isset($info['bundles'][$type]) && is_array($info['bundles'][$type]) && in_array($this->GetBundle(), $info['bundles'][$type]) && $this->filter($field)) {
-        $this->AddModifier($modifiable_fields, 'field', $field);
+      if (isset($info['bundles'][$type]) && is_array($info['bundles'][$type]) && in_array($this->getBundle(), $info['bundles'][$type]) && $this->filter($field)) {
+        $this->addModifier($modifiable_fields, 'field', $field);
       }
     }
     return $modifiable_fields;
@@ -97,12 +97,12 @@ class RealisticDummyContentFieldModifier extends RealisticDummyContentEntityBase
    *   Existing array of subclasses of RealisticDummyContentAttribute, to which
    *   new modifiers will be added.
    * @param string $type
-   *   Either 'property' or 'field'
+   *   Either 'property' or 'field'.
    * @param string $name
    *   Name of the property or field, for example 'body', 'picture', 'title',
    *   'field_image'.
    */
-  function AddModifier(&$modifiers, $type, $name) {
+  public function addModifier(&$modifiers, $type, $name) {
     $class = '';
     switch ($type) {
       case 'property':
@@ -118,7 +118,6 @@ class RealisticDummyContentFieldModifier extends RealisticDummyContentEntityBase
 
       default:
         return;
-        break;
     }
     $class = $original_class;
     CMS::alter('realistic_dummy_content_attribute_manipulator', $class, $type, $attribute_type);
@@ -148,12 +147,12 @@ class RealisticDummyContentFieldModifier extends RealisticDummyContentEntityBase
   /**
    * {@inheritdoc}
    */
-  function Modify() {
-    $attributes = $this->GetAttributes();
+  public function modify() {
+    $attributes = $this->getAttributes();
     CMS::debug(count($attributes) . ' attributes can be modified, we will try to change each one.');
     foreach ($attributes as $attribute) {
       CMS::debug(get_class($attribute) . ' Change() method about to be invoked.');
-      $attribute->Change();
+      $attribute->change();
     }
   }
 
@@ -168,15 +167,15 @@ class RealisticDummyContentFieldModifier extends RealisticDummyContentEntityBase
    *   name, e.g. title => [RealisticDummyContentAttribute], field_image =>
    *   [RealisticDummyContentAttribute]
    */
-  function GetAttributes() {
-    return array_merge($this->GetFields(), $this->GetProperties());
+  public function getAttributes() {
+    return array_merge($this->getFields(), $this->getProperties());
   }
 
   /**
    * Generate a random number, or during tests, give the first available number.
    */
-  function rand($start, $end) {
-    $return = realistic_dummy_content_api_rand($start, $end, $this->GetHash());
+  public function rand($start, $end) {
+    $return = realistic_dummy_content_api_rand($start, $end, $this->getHash());
     return $return;
   }
 
@@ -186,8 +185,8 @@ class RealisticDummyContentFieldModifier extends RealisticDummyContentEntityBase
    * @return int
    *   The uid of the associated entity.
    */
-  function GetUid() {
-    $entity = $this->GetEntity();
+  public function getUid() {
+    $entity = $this->getEntity();
     if (isset($entity->uid)) {
       return $entity->uid;
     }

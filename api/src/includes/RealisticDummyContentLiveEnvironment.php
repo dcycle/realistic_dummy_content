@@ -2,7 +2,6 @@
 
 namespace Drupal\realistic_dummy_content_api\includes;
 
-
 /**
  * The live environment.
  *
@@ -15,21 +14,21 @@ class RealisticDummyContentLiveEnvironment extends RealisticDummyContentEnvironm
   /**
    * {@inheritdoc}
    */
-  function _file_get_contents_($filename) {
+  public function implementFileGetContents($filename) {
     return file_get_contents($filename);
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
-  function _file_save_data_($data, $destination = NULL) {
+  public function implementFileSaveData($data, $destination = NULL) {
     return file_save_data($data, $destination);
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
-  function _file_save_(stdClass $file) {
+  public function implementFileSave(stdClass $file) {
     return file_save($file);
   }
 

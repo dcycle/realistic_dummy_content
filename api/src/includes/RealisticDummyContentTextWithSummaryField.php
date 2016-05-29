@@ -2,17 +2,18 @@
 
 namespace Drupal\realistic_dummy_content_api\includes;
 
-
 /**
- * Represents the text with summary field, which must have a text format when
- * part of an entity object. Node body is one example.
+ * Represents the text with summary field.
+ *
+ * This field must have a text format when part of an entity object. Node body
+ * is one example.
  */
 class RealisticDummyContentTextWithSummaryField extends RealisticDummyContentField {
 
   /**
    * {@inheritdoc}
    */
-  function ValueFromFile_($file) {
+  public function implementValueFromFile($file) {
     $value = $file->Value();
     // @TODO use the site's default, not filtered_html, as the default format.
     $format = $file->Attribute('format', 'filtered_html');

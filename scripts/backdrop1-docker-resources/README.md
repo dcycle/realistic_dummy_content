@@ -5,7 +5,6 @@ tutum-docker-lamp
 
 Out-of-the-box LAMP image (PHP+MySQL)
 
-
 Usage
 -----
 
@@ -16,7 +15,6 @@ To create the image `tutum/lamp`, execute the following command on the tutum-doc
 You can now push your new image to the registry:
 
 	docker push tutum/lamp
-
 
 Running your LAMP docker image
 ------------------------------
@@ -30,7 +28,6 @@ Test your deployment:
 	curl http://localhost/
 
 Hello world!
-
 
 Loading your custom PHP application
 -----------------------------------
@@ -58,7 +55,6 @@ Test your deployment:
 
 That's it!
 
-
 Connecting to the bundled MySQL server from within the container
 ----------------------------------------------------------------
 
@@ -69,7 +65,6 @@ Simply connect from your PHP code with this user:
 	$mysql = new mysqli("localhost", "root");
 	echo "MySQL Server info: ".$mysql->host_info;
 	?>
-
 
 Connecting to the bundled MySQL server from outside the container
 -----------------------------------------------------------------
@@ -100,7 +95,6 @@ You can then connect to MySQL:
 Remember that the `root` user does not allow connections from outside the container -
 you should use this `admin` user instead!
 
-
 Setting a specific password for the MySQL server admin account
 --------------------------------------------------------------
 
@@ -113,7 +107,6 @@ You can now test your new admin password:
 
 	mysql -uadmin -p"mypass"
 
-
 Disabling .htaccess
 --------------------
 
@@ -122,6 +115,5 @@ Disabling .htaccess
 	# config to enable .htaccess
     ADD apache_default /etc/apache2/sites-available/000-default.conf
     RUN a2enmod rewrite
-
 
 **by http://www.tutum.co**

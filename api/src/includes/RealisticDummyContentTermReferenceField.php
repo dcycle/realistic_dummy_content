@@ -5,20 +5,21 @@ namespace Drupal\realistic_dummy_content_api\includes;
 use Drupal\realistic_dummy_content_api\cms\CMS;
 
 /**
+ * Represents a term reference field.
  */
 class RealisticDummyContentTermReferenceField extends RealisticDummyContentField {
 
   /**
    * {@inheritdoc}
    */
-  function ValueFromFile_($file) {
+  public function implementValueFromFile($file) {
     try {
-      $termname = $file->Value();
+      $termname = $file->value();
       if ($termname) {
         return array(
           LANGUAGE_NONE => array(
             array(
-              'tid' => $this->GetTid($termname),
+              'tid' => $this->getTid($termname),
             ),
           ),
         );
@@ -44,12 +45,11 @@ class RealisticDummyContentTermReferenceField extends RealisticDummyContentField
    * @return int
    *   The associated pre-existing or just-created tid.
    *
-   * @throws
-   *   Exception
+   * @throws \Exception
    */
-  function GetTid($name) {
+  public function getTid($name) {
     $vocabularies = CMS::getAllVocabularies();
-    $field_info = field_info_field($this->GetName());
+    $field_info = field_info_field($this->getName());
     $candidate_existing_terms = array();
     foreach ($field_info['settings']['allowed_values'] as $vocabulary) {
       $vocabulary_name = $vocabulary['vocabulary'];
