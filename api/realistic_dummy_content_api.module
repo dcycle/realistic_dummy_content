@@ -8,8 +8,9 @@
  */
 
 use Drupal\realistic_dummy_content_api\cms\CMS;
-use Drupal\realistic_dummy_content_api\cms\RealisticDummyContentRecipe;
+use Drupal\realistic_dummy_content_api\includes\RealisticDummyContentRecipe;
 use Drupal\realistic_dummy_content_api\includes\RealisticDummyContentException;
+use Drupal\realistic_dummy_content_api\includes\RealisticDummyContentLog;
 
 function realistic_dummy_content_api_argcheck($callbacks) {
   $trace = debug_backtrace();
@@ -85,27 +86,6 @@ spl_autoload_register(function($class_name) {
  */
 define('REALISTIC_DUMMY_CONTENT_SEQUENTIAL', FALSE);
 define('REALISTIC_DUMMY_CONTENT_RANDOM', TRUE);
-
-/**
- * Interface for a log class
- */
-interface RealisticDummyContentLog {
-  public function log($text, $vars = array());
-  public function error($text, $vars = array());
-}
-
-/**
- * This log class can be used whenever you need a RealisticDummyContentLog
- */
-class RealisticDummyContentDebugLog implements RealisticDummyContentLog {
-  public function log($text, $vars = array()) {
-    debug(t($text, $vars));
-  }
-
-  public function error($text, $vars = array()) {
-    debug(t($text, $vars));
-  }
-}
 
 /**
  * Implements hook_entity_presave().
@@ -391,8 +371,8 @@ function realistic_dummy_content_api_sequential($start, $end, $hash) {
  *
  * @param object $log
  *   An object of a class which implements the interface
- *   RealisticDummyContentLog. Logging will be different if you are using drush
- *   or in the context of an automated test, for example.
+ *   RealisticDummyContentLog. Logging will be different if you are using
+ *   drush or in the context of an automated test, for example.
  */
 function realistic_dummy_content_api_apply_recipe($log) {
   try {

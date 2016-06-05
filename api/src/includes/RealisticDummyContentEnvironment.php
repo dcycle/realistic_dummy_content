@@ -298,9 +298,6 @@ abstract class RealisticDummyContentEnvironment {
    * Adds a file to an array of file group parts.
    */
   public static function addFileToArray(&$array, $name, $file) {
-    $attribute_name = NULL;
-    $attribute_extention = NULL;
-
     $fileinfo = self::getFileParts($name);
     if (isset($fileinfo['attribute_name'])) {
       $array[$fileinfo['base']]['attributes'][$fileinfo['attribute_name']] = $file;

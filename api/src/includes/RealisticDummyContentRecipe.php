@@ -2,6 +2,8 @@
 
 namespace Drupal\realistic_dummy_content_api\includes;
 
+use Drupal\realistic_dummy_content_api\cms\CMS;
+
 /**
  * Abstract base "recipe" class.
  *
@@ -41,11 +43,44 @@ abstract class RealisticDummyContentRecipe {
     $modules = module_list();
     foreach ($modules as $module) {
       $candidate = $module . '_realistic_dummy_content_recipe';
-      if (module_load_include('inc', $module, 'realistic_dummy_content/recipe/' . $module . '.recipe') && class_exists($candidate)) {
+      if (self::loadRecipeClass($module) && class_exists($candidate)) {
         $objects[] = new $candidate();
       }
     }
     return $objects;
+  }
+
+  /**
+   * Loads the recipe class file only if it is valid and exists.
+   *
+   * Version 2.x introduced the requirement that the following line should
+   * be added to recipe files:
+   *
+   *   use
+   *   Drupal\realistic_dummy_content_api\includes\RealisticDummyContentRecipe;
+   *
+   * So we will throw an exception warning users of previous versions to add
+   * that line to use the 2.x branch of realistic_dummy_content.
+   *
+   * @param string module
+   *   A module name
+   *
+   * @return boolean|string
+   *   FALSE or the full path to the loaded recipe class file.
+   *
+   * @throws \Exception
+   */
+  static function loadRecipeClass($module) {
+    $path = CMS::getPath('module', $module) . '/realistic_dummy_content/recipe/' . $module . '.recipe.inc';
+    $fullpath = CMS::cmsRoot() . '/' . $path;
+    if (!file_exists($fullpath)) {
+      return FALSE;
+    }
+    $contents = file_get_contents($fullpath);
+    if (!preg_match('/use Drupal*/s', $contents)) {
+      throw new \Exception('As of the 2.x version you need to add the following line to the top of your recipe at ' . $fullpath . ': use Drupal\realistic_dummy_content_api\includes\RealisticDummyContentRecipe');
+    }
+    return module_load_include('inc', $module, 'realistic_dummy_content/recipe/' . $module . '.recipe');
   }
 
   /**

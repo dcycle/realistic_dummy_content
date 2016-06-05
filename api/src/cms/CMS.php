@@ -134,7 +134,7 @@ abstract class CMS {
    * Tests self::getTestFlag().
    */
   static public function testGetTestFlag() {
-    return self::_test_addTestFlag();
+    return self::testAddTestFlag();
   }
 
   /**
@@ -184,7 +184,7 @@ abstract class CMS {
     $args = func_get_args();
     self::addTestFlag('moduleInvokeAll called');
     $object = self::instance();
-    return call_user_func_array(array(&$object, '_moduleInvokeAll'), $args);
+    return call_user_func_array(array(&$object, 'implementModuleInvokeAll'), $args);
   }
 
   /**
@@ -258,6 +258,30 @@ abstract class CMS {
   public abstract function implementModuleList();
 
   /**
+   * Check if a module exists.
+   */
+  static public function moduleExists($module) {
+    return self::instance()->implementModuleExists($module);
+  }
+
+  /**
+   * Implements self::moduleExists().
+   */
+  public abstract function implementModuleExists($module);
+
+  /**
+   * Check if a module exists.
+   */
+  static public function watchdog($message, $severity = WATCHDOG_NOTICE) {
+    return self::instance()->implementWatchdog($message, $severity);
+  }
+
+  /**
+   * Implements self::watchdog().
+   */
+  public abstract function implementWatchdog($message, $severity);
+
+  /**
    * Saves a file to disk.
    */
   static public function fileSave($drupal_file) {
@@ -282,7 +306,7 @@ abstract class CMS {
    */
   static public function assertReturnedObject($data, $properties = array()) {
     $class = get_class(self::instance());
-    $function = 'implement' . self::getCallingFunction();
+    $function = 'implement' . ucFirst(self::getCallingFunction());
     $caller = $class . '::' . $function;
 
     if (!is_object($data)) {
@@ -323,6 +347,30 @@ abstract class CMS {
    * Implements self::configGet().
    */
   public abstract function implementConfigGet($name, $default);
+
+  /**
+   * Gets the path to a module or theme.
+   */
+  static public function getPath($type, $name) {
+    return self::instance()->implementGetPath($type, $name);
+  }
+
+  /**
+   * Implements self::getPath().
+   */
+  public abstract function implementGetPath($type, $name);
+
+  /**
+   * Gets the path to a module or theme.
+   */
+  static public function cmsRoot() {
+    return self::instance()->implementCmsRoot();
+  }
+
+  /**
+   * Implements self::cmsRoot().
+   */
+  public abstract function implementCmsRoot();
 
   /**
    * Get information about fields.
@@ -371,9 +419,9 @@ abstract class CMS {
       if (substr($method_name, 0, strlen('implement')) == 'implement' || substr($method_name, 0, strlen('test')) == 'test') {
         continue;
       }
-      $candidate = 'test' . $method_name;
+      $candidate = 'test' . ucfirst($method_name);
       if (!in_array($candidate, $all)) {
-        $errors[] = 'There should be a status method called CMS::' . $candidate . '()';
+        $errors[] = 'There should be a static method called CMS::' . $candidate . '()';
       }
       else {
         try {

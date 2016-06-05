@@ -4,6 +4,9 @@
  * Contains a recipe for generating realistic dummy content.
  */
 
+// Required as of the 2.x branch.
+use Drupal\realistic_dummy_content_api\includes\RealisticDummyContentRecipe;
+
 /**
  * An example recipe. This one creates four pages, and then 10 articles.
  */

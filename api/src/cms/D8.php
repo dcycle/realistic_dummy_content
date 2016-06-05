@@ -21,7 +21,7 @@ class D8 extends CMS {
       }
       if (realistic_dummy_content_api_is_dummy($entity, $type)) {
         $candidate = $entity;
-        realistic_dummy_content_api_improve_dummy_content($candidate, $type, $filter);
+        realistic_dummy_content_api_improve_dummy_content($candidate, $type);
         realistic_dummy_content_api_validate($candidate, $type);
       }
     }
@@ -66,8 +66,8 @@ class D8 extends CMS {
    * {@inheritdoc}
    */
   public function implementConfigGet($name, $default) {
-    $this->debug('NYI ' . __LINE__);
-    return variable_get($name, $default);
+    $candidate = \Drupal::config('realistic_dummy_content_api')->get($name);
+    return $candidate ? $candidate : $default;
   }
 
   /**
@@ -88,8 +88,7 @@ class D8 extends CMS {
    * {@inheritdoc}
    */
   public function implementStateGet($name, $default) {
-    $this->debug('NYI ' . __LINE__);
-    return variable_get($name, $default);
+    return \Drupal::state()->get($name, $default);
   }
 
   /**
@@ -104,18 +103,79 @@ class D8 extends CMS {
   /**
    * {@inheritdoc}
    */
-  public function implementDebug($message, $info) {
-    if (is_string($message)) {
-      // @codingStandardsIgnoreStart
-      dpm($message, $info);
-      // @codingStandardsIgnoreEnd
+  public function implementModuleExists($module) {
+    return \Drupal::moduleHandler()->moduleExists($module);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function implementWatchdog($message, $severity) {
+    if ($severity == WATCHDOG_ERROR) {
+      \Drupal::logger('realistic_dummy_content_api')->error($message);
     }
     else {
-      // @codingStandardsIgnoreStart
-      dpm($info . ' ==>');
-      // @codingStandardsIgnoreEnd
-      ksm($message);
+      \Drupal::logger('realistic_dummy_content_api')->notice($message);
     }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function implementDebug($message, $info) {
+    if ($this->moduleExists('devel')) {
+      if (is_string($message)) {
+        // @codingStandardsIgnoreStart
+        dpm($message, $info);
+        // @codingStandardsIgnoreEnd
+      }
+      else {
+        // @codingStandardsIgnoreStart
+        dpm($info . ' ==>');
+        // @codingStandardsIgnoreEnd
+        ksm($message);
+      }
+    }
+    $this->watchdog('<pre>' . print_r(array($info => $message), TRUE) . '</pre>');
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function implementCreateEntity($info) {
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function implementGetEntityProperty(&$entity, $property) {
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function implementGetPath($type, $name) {
+    return drupal_get_path($type, $name);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function implementCmsRoot() {
+    return DRUPAL_ROOT;
+  }
+
+
+  /**
+   * {@inheritdoc}
+   */
+  public function implementFileSave($drupal_file) {
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function implementGetAllVocabularies() {
   }
 
 }

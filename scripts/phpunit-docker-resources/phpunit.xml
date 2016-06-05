@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit colors="true" whitelist="true">
+    <testsuites>
+        <testsuite name="Application Test Suite">
+            <directory>mycode/test/</directory>
+        </testsuite>
+    </testsuites>
+<filter>
+    <whitelist processUncoveredFilesFromWhitelist="true">
+      <directory suffix=".php">mycode</directory>
+    </whitelist>
+  </filter>
+</phpunit>

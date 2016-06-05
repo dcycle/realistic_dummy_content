@@ -1,1 +1,0 @@
-$conf['site_name'] =  $_SERVER['HTTP_HOST'];

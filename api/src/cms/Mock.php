@@ -27,7 +27,7 @@ class Mock extends CMS {
     $this->print('[info] About to save ' . $this->toString($entity) . ' of type ' . $type);
     if (realistic_dummy_content_api_is_dummy($entity, $type)) {
       $this->print('[info] Determined that ' . $this->toString($entity) . ' of type ' . $type . ' is dummy, about to improve it');
-      realistic_dummy_content_api_improve_dummy_content($candidate, $type, $filter);
+      realistic_dummy_content_api_improve_dummy_content($entity, $type);
     }
   }
 

@@ -102,7 +102,7 @@ abstract class RealisticDummyContentAttribute {
    *   The entity type as a string, 'node' or 'user' for example.
    */
   public function getEntityType() {
-    return $this->getEntity()->etType();
+    return $this->getEntity()->getType();
   }
 
   /**
@@ -318,11 +318,8 @@ abstract class RealisticDummyContentAttribute {
     if (!$drupal_file) {
       throw new RealisticDummyContentException('Please check if the file exists before attempting to save it');
     }
-    $uri = $drupal_file->uri;
-    // $random = md5($uri) . rand(1000000000, 9999999999);
-    // DO NOT RENAME FOR TESTING.
     $random = $file->getRadical();
-    $drupal_file = $this->env()->file_save_data($file->value(), 'public://dummyfile' . $random . '.' . $file->getRadicalExtension());
+    $drupal_file = $this->env()->fileSaveData($file->value(), 'public://dummyfile' . $random . '.' . $file->getRadicalExtension());
     $drupal_file->uid = $this->getUid();
     $return = CMS::fileSave($drupal_file);
 

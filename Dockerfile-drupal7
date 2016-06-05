@@ -51,14 +51,11 @@ RUN cd /srv/drupal/www/ && drush -y vset block_cache 1 --yes
 RUN cd /srv/drupal/www/ && drush -y vset cache_lifetime 300 --yes
 RUN cd /srv/drupal/www/ && drush -y vset page_cache_maximum_age 300 --yes
 
-RUN cd /srv/drupal/www/ && drush -y vset preprocess_css 1 --yes
-RUN cd /srv/drupal/www/ && drush -y vset preprocess_js  1 --yes
-
-RUN ls -al /srv/drupal/www/sites/default/files
 RUN chown -R www-data:www-data /srv/drupal/www/sites/default/files/.ht.sqlite
 RUN chmod a-w /srv/drupal/www/sites/default/settings.php
 
 RUN chown -R www-data:www-data /srv/drupal/www/
+RUN cd /srv/drupal/www && wget https://www.drupal.org/files/issues/1713332-76.patch && patch -p1 < 1713332-76.patch
 
 RUN echo "root:root" | chpasswd
 RUN sed --in-place=.bak 's/without-password/yes/' /etc/ssh/sshd_config

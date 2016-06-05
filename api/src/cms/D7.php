@@ -163,7 +163,6 @@ class D7 extends CMS {
    */
   public function implementModuleInvokeAll($hook) {
     $args = func_get_args();
-    $object = self::instance();
     return call_user_func_array('module_invoke_all', $args);
   }
 
@@ -278,9 +277,40 @@ class D7 extends CMS {
    * {@inheritdoc}
    */
   public function implementDebug($message, $info) {
-    // @codingStandardsIgnoreStart
-    dpm($message, $info);
-    // @codingStandardsIgnoreEnd
+    if ($this->moduleExists('devel')) {
+      // @codingStandardsIgnoreStart
+      dpm($message, $info);
+      // @codingStandardsIgnoreEnd
+    }
+    $this->watchdog('<pre>' . print_r(array($info => $message), TRUE) . '</pre>');
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function implementGetPath($type, $name) {
+    return drupal_get_path($type, $name);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function implementCmsRoot() {
+    return DRUPAL_ROOT;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function implementModuleExists($module) {
+    return module_exists($module);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function implementWatchdog($message, $severity) {
+    watchdog('realistic_dummy_content_api', $message, $severity);
   }
 
   /**

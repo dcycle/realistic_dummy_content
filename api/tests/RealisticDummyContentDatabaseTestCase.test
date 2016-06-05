@@ -9,6 +9,7 @@
  */
 
 use Drupal\realistic_dummy_content_api\includes\RealisticDummyContentFieldModifier;
+use Drupal\realistic_dummy_content_api\includes\RealisticDummyContentDebugLog;
 
 /**
  * The test case
@@ -19,7 +20,7 @@ class RealisticDummyContentDatabaseTestCase extends DrupalWebTestCase {
    */
   public static function getInfo() {
     return array(
-      'name' => t('Realistic dummy content database test'),
+      'name' => t('Realistic dummy content functional test'),
       'description' => t('Test Realistic dummy content with a temporary database.'),
       'group' => 'Realistic dummy content',
     );
@@ -180,8 +181,6 @@ class RealisticDummyContentDatabaseTestCase extends DrupalWebTestCase {
    */
   public function testRecipe() {
     $this->assertTrue(module_load_include('inc', 'realistic_dummy_content_api', 'realistic_dummy_content_api.drush'), 'drush file exists');
-    $this->assertTrue(class_exists('RealisticDummyContentDrushAPILog'), 'The drush log class exists; it is required when running drush generate-realistic or other drush commands');
-    $this->assertTrue(class_exists('RealisticDummyContentDebugLog'), 'The RealisticDummyContentDebugLog class exists, thereby preventing a fatal error.');
     realistic_dummy_content_api_apply_recipe(new RealisticDummyContentDebugLog());
     $page = node_load(4);
     $article = node_load(14);

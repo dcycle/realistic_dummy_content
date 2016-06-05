@@ -46,7 +46,7 @@ class RealisticDummyContentDummyEnvironment extends RealisticDummyContentEnviron
       'uri' => $destination,
       'filename' => $parsed['host'],
     );
-    return (object) $return;
+    return (object) $return_array;
   }
 
   /**

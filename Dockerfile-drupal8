@@ -50,7 +50,7 @@ RUN cd /srv/drupal/www/ && drush -y site-install standard --account-name=admin -
 
 RUN cat /settings.php.append >> /srv/drupal/www/sites/default/settings.php
 
-RUN cd /srv/drupal/www/ && drush -y dl coder devel
+RUN cd /srv/drupal/www/ && drush -y dl devel
 RUN chown -R www-data:www-data /srv/drupal/www/db
 RUN chmod -R 777 /srv/drupal/www/db
 RUN apt-get install sqlite3
@@ -61,11 +61,13 @@ RUN cd /srv/drupal/www && php composer.phar install
 
 RUN cd /srv/drupal/www/ && drush en -y kint
 RUN cd /srv/drupal/www/ && drush dl -y search_kint
-RUN cd /srv/drupal/www/ && drush en -y search_kint
 
 # Install codesniffer
 RUN composer global require 'squizlabs/php_codesniffer'
 RUN composer global require 'drupal/coder'
 RUN /root/.composer/vendor/bin/phpcs --config-set installed_paths ~/.composer/vendor/drupal/coder/coder_sniffer
+
+# Make sure module tests are visible to PHPUnit in Drupal
+RUN cd /srv/drupal/www && wget https://www.drupal.org/files/issues/2499239_77.patch && patch -p1 < 2499239_77.patch
 
 ENTRYPOINT [ "/usr/bin/supervisord", "-n", "-c", "/supervisord.conf", "-e", "trace" ]
