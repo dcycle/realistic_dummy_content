@@ -25,7 +25,7 @@ RUN chmod 755 /*.sh
 
 # Configure /app folder with sample app
 RUN git clone --depth 1 https://github.com/backdrop/backdrop.git /app
-RUN mkdir -p /app && rm -fr /var/www/html && ln -s /app /var/www/html
+RUN rm -fr /var/www/html && ln -s /app /var/www/html
 RUN git clone --depth 1 https://github.com/backdrop-contrib/devel.git /var/www/html/modules/devel
 
 # Environment variables to configure php

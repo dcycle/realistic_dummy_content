@@ -69,9 +69,12 @@ For more information see [A quick intro to Docker for a Drupal project (Dcycle P
 Continuous integration with Circle CI
 -----
 
-[CircleCI](https://circleci.com/gh/alberto56/realistic_dummy_content) is a continuous integration platform for Drupal projects. In [Continuous integration with Circle CI and Docker for your Drupal project (Dcycle project, Feb. 20, 2015)](http://dcycleproject.org/blog/92/continuous-integration-circle-ci-and-docker-your-drupal-project), I documented how and why I set up continuous integration with Circle CI and Docker for Realistic Dummy Content.
+[CircleCI](https://circleci.com/gh/alberto56/realistic_dummy_content) is a continuous integration platform for Drupal projects. In [Continuous integration with Circle CI and Docker for your Drupal project (Dcycle project, Feb. 20, 2015)](http://dcycleproject.org/blog/92/continuous-integration-circle-ci-and-docker-your-drupal-project), I documented how and why I set up continuous integration with Circle CI and Docker for Realistic Dummy Content. Because the 8.x-2.x uses Docker's `exec` function which [Circle CI does not support](http://stackoverflow.com/questions/30970969/exec-is-not-supported-by-the-lxc-driver-how-to-get-around-this), I am using [Travis CI](https://travis-ci.org/alberto56/realistic_dummy_content) for continuous integration of the 8.x-2.x branch.
 
-[![Circle CI](https://circleci.com/gh/alberto56/realistic_dummy_content.svg?style=svg)](https://circleci.com/gh/alberto56/realistic_dummy_content)
+# See http://stackoverflow.com/questions/30970969/exec-is-not-supported-by-the-lxc-driver-how-to-get-around-this
+8.x-2.x branch:
+[![Build Status](https://travis-ci.org/alberto56/realistic_dummy_content.svg?branch=8.x-2.x)](https://travis-ci.org/alberto56/realistic_dummy_content)
+7.x-1.x branch: [![CircleCI](https://circleci.com/gh/alberto56/realistic_dummy_content/tree/7.x-1.x.svg?style=svg)](https://circleci.com/gh/alberto56/realistic_dummy_content/tree/7.x-1.x)
 
 Sponsors
 -----

@@ -32,5 +32,6 @@ RUN cat /tmp/enable-xdebug.txt >> /etc/php5/cli/php.ini
 # scripts/phpunit-docker-resources/README.txt
 COPY scripts/phpunit-docker-resources/phpunit.xml /testable/phpunit.xml
 
+ADD api/src /testable/Drupal/realistic_dummy_content_api
 
-RUN cd /testable && ./vendor/bin/phpunit -v
+RUN cd /testable && ls -lah && ls -lah Drupal/realistic_dummy_content_api && ./vendor/bin/phpunit -v

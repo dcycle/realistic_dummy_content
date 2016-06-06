@@ -2,12 +2,12 @@
 <phpunit colors="true" whitelist="true">
     <testsuites>
         <testsuite name="Application Test Suite">
-            <directory>mycode/test/</directory>
+            <directory>Drupal/realistic_dummy_content_api/test/</directory>
         </testsuite>
     </testsuites>
 <filter>
     <whitelist processUncoveredFilesFromWhitelist="true">
-      <directory suffix=".php">mycode</directory>
+      <directory suffix=".php">Drupal/realistic_dummy_content_api</directory>
     </whitelist>
   </filter>
 </phpunit>

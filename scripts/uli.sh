@@ -11,6 +11,6 @@ echo -e ' ==> '$(./scripts/uli-for-container.sh rdc_dev_d8)|sed "s/default/172.1
 echo -e ""
 echo -e "Your Backdrop 1 environment can be found at:"
 echo -e ""
-echo -e " ==> http://172.17.8.101:$B1PORT"
+echo -e " ==> http://172.17.8.101:$B1PORT (use credentials admin/admin)"
 echo -e ""
 echo -e "Replace 172.17.8.101 with the IP address you use to access your development server."

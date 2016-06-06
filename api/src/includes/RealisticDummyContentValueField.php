@@ -19,7 +19,9 @@ class RealisticDummyContentValueField extends RealisticDummyContentField {
       return;
     }
     return array(
-      LANGUAGE_NONE => array(
+      // Not using LANGUAGE_NONE here because PHPUnit, and CMSs other than
+      // Drupal, do not know about LANGUAGE_NONE.
+      'und' => array(
         array(
           'value' => $value,
         ),

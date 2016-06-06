@@ -8,6 +8,7 @@
  */
 
 use Drupal\realistic_dummy_content_api\cms\CMS;
+use Drupal\realistic_dummy_content_api\includes\Math;
 use Drupal\realistic_dummy_content_api\includes\RealisticDummyContentRecipe;
 use Drupal\realistic_dummy_content_api\includes\RealisticDummyContentException;
 use Drupal\realistic_dummy_content_api\includes\RealisticDummyContentLogInterface;
@@ -281,9 +282,9 @@ function realistic_dummy_content_api_realistic_dummy_content_api_dummy($entity, 
  * REALISTIC_DUMMY_CONTENT_SEQUENTIAL, for example for automated tested or in a
  * recipe (an example can be found at
  * realistic_dummy_content/recipe/realistic_dummy_content.recipe.inc),
- * then this will call realistic_dummy_content_api_sequential().
+ * then this will call CMS::sequential().
  *
- * See the documentation for realistic_dummy_content_api_sequential() for
+ * See the documentation for Math::sequential() for
  * details.
  *
  * @param int $start
@@ -293,77 +294,23 @@ function realistic_dummy_content_api_realistic_dummy_content_api_dummy($entity, 
  * @param string $hash
  *   (Default is NULL).
  *   Ignored for random numbers; for sequential numbers, please see the
- *   documentation for realistic_dummy_content_api_sequential() for details.
+ *   documentation for Math::sequential() for details.
  *
  * @return int
  *   A random number by default, or a sequential number if you set the
  *   realistic_dummy_content_api_rand variable to
  *   REALISTIC_DUMMY_CONTENT_SEQUENTIAL.
- *   Please see the description of realistic_dummy_content_api_sequential() for
+ *   Please see the description of Math::sequential() for
  *   details.
  */
 function realistic_dummy_content_api_rand($start, $end, $hash = NULL) {
   if (CMS::configGet('realistic_dummy_content_api_rand', REALISTIC_DUMMY_CONTENT_RANDOM)) {
     return rand($start, $end);
   }
-  else return realistic_dummy_content_api_sequential($start, $end, $hash);
-}
-
-/**
- * Generate sequential number based on a hash
- *
- * Returns the starting number on every call until the hash is changed, in which
- * case it returns the second number, and so on.
- *
- * The idea behind this is that for a single node, we might want to retrieve the
- * 3rd file for each field (they go together).
- *
- * In the above example, if the 3rd file does not exist, we will return the
- * first file, in order to never return a number which is outside the range of
- * start to end.
- *
- * @param int $start
- *   The first possible number in the range.
- * @param int $end
- *   The last possible number in the range.
- * @param string $hash
- *   The number returned by this function will be in sequence: each call to
- *   realistic_dummy_content_api_sequential()'s return is incremented by
- *   one, unless $hash is the same as in the last call, in which case the return
- *   will be the same as in the last call.
- *
- * @return int
- *   A sequential number based on the $hash.
- *   Please see the description of the $hash parameter, above.
- */
-function realistic_dummy_content_api_sequential($start, $end, $hash) {
-  static $static_hash = NULL;
-  if (!$static_hash) {
-    $static_hash = $hash;
-  }
-  static $current = NULL;
-  if (!$current) {
-    $current = $start;
-  }
-  if ($static_hash != $hash) {
-    $static_hash = $hash;
-    $current -= $start;
-    $current++;
-    $current %= ($end - $start + 1);
-    $current += $start;
-  }
-
-  if ($current > $end) {
-    $return = $end;
-  }
-  elseif ($current < $start) {
-    $return = $start;
-  }
   else {
-    $return = $current;
+    $math = new Math;
+    return $math->sequential($start, $end, $hash);
   }
-
-  return $return;
 }
 
 /**

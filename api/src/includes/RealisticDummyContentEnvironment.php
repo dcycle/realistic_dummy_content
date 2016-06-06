@@ -379,7 +379,21 @@ abstract class RealisticDummyContentEnvironment {
    *   The lowercase radical without the extension, e.g. readme
    */
   public static function lowercaseRadicalNoExtension($filename) {
-    return drupal_strtolower(trim(preg_replace('/\.[^\.]*$/', '', $filename)));
+    return self::strToLower(trim(preg_replace('/\.[^\.]*$/', '', $filename)));
+  }
+
+  /**
+   * Wrapper around drupal_strtolower(if it exists) or strtolower.
+   *
+   * See those functions for details.
+   */
+  public static function strToLower($string) {
+    if (function_exists('drupal_strtolower')) {
+      return drupal_strtolower($string);
+    }
+    else {
+      return strtolower($string);
+    }
   }
 
   /**

@@ -270,9 +270,17 @@ abstract class CMS {
   public abstract function implementModuleExists($module);
 
   /**
-   * Check if a module exists.
+   * Logs something to the watchdog.
+   *
+   * See watchdog() for more details on this function.
+   *
+   * @param int $severity
+   *   The litteral severity as defined in:
+   *   https://api.drupal.org/api/drupal/includes%21bootstrap.inc/function/watchdog/7.x,
+   *   The default being WATCHDOG_NOTICE or 5. We cannot use the constants here
+   *   because PHPUnit does not know about them.
    */
-  static public function watchdog($message, $severity = WATCHDOG_NOTICE) {
+  static public function watchdog($message, $severity = 5) {
     return self::instance()->implementWatchdog($message, $severity);
   }
 

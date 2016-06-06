@@ -1,4 +1,5 @@
 <?php
+
 use Drupal\realistic_dummy_content_api\cms\CMS;
 
 namespace Drupal\realistic_dummy_content_api\cms;
@@ -185,7 +186,7 @@ class D7 extends CMS {
         // site, or else anyone can put ".invalid" at the end of their email
         // address and their profile's content will be overridden.
         $suffix = '.invalid';
-        if (isset($entity->mail) && drupal_substr($entity->mail, strlen($entity->mail) - strlen($suffix)) == $suffix) {
+        if (isset($entity->mail) && $this->drupalSubstr($entity->mail, strlen($entity->mail) - strlen($suffix)) == $suffix) {
           return TRUE;
         }
         break;
@@ -194,6 +195,15 @@ class D7 extends CMS {
         break;
     }
     return $return;
+  }
+
+  /**
+   * Mockable wrapper around drupal_substr().
+   *
+   * See that function for details.
+   */
+  public function drupalSubstr($text, $start) {
+    return drupal_substr($text, $start);
   }
 
   /**
