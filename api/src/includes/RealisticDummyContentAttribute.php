@@ -131,7 +131,6 @@ abstract class RealisticDummyContentAttribute {
    */
   public function change() {
     $files = $this->getCandidateFiles();
-    CMS::debug('Found ' . count($files) . ' files which have realistic dummy data.');
     $this->changeFromFiles($files);
   }
 
@@ -179,7 +178,6 @@ abstract class RealisticDummyContentAttribute {
       $filepaths[] = $filepath;
       $files = array_merge($files, RealisticDummyContentEnvironment::getAllFileGroups($filepath, $this->getExtensions()));
     }
-    CMS::debug($filepaths, 'Searching in');
     return $files;
   }
 

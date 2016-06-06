@@ -23,7 +23,7 @@ class RealisticDummyContentTextWithSummaryField extends RealisticDummyContentFie
       return NULL;
     }
     if ($value) {
-      return array(
+      $return = array(
         LANGUAGE_NONE => array(
           array(
             'value' => $value,
@@ -31,6 +31,7 @@ class RealisticDummyContentTextWithSummaryField extends RealisticDummyContentFie
           ),
         ),
       );
+      return $return;
     }
     else {
       return array();

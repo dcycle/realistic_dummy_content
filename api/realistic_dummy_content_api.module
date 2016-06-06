@@ -210,16 +210,12 @@ function realistic_dummy_content_api_is_dummy($entity, $type) {
  *   Exception
  */
 function realistic_dummy_content_api_improve_dummy_content(&$entity, $type, $filter = array()) {
-  CMS::debug('Entity is dummy content and needs to be improved.');
   realistic_dummy_content_api_argcheck(array('is_object', 'is_string'));
   $modifiers = Drupal\realistic_dummy_content_api\cms\CMS::moduleInvokeAll('realistic_dummy_content_api_class', $entity, $type, $filter);
-
-  CMS::debug(count($modifiers) . ' found through all implementations of hook_realistic_dummy_content_api_class.');
 
   foreach ($modifiers as $modifier_class) {
     realistic_dummy_content_api_validate_class($modifier_class);
     $modifier = new $modifier_class($entity, $type, $filter);
-    CMS::debug(get_class($modifier) . ' about to modify entity.');
     $modifier->modify();
     $entity = $modifier->getEntity();
   }

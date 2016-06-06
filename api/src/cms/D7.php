@@ -356,4 +356,25 @@ class D7 extends CMS {
     return !static::getTestFlag('hookUserPresave called');
   }
 
+  public static function vocabularyIdentifier($vocabulary) {
+    return self::instance()->vocabularyIdentifier($vocabulary);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function implementVocabularyIdentifier($vocabulary) {
+    return $vocabulary->vid;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function implementNewVocabularyTerm($vocabulary, $name) {
+    $term = new \stdClass();
+    $term->name = $name;
+    $term->vid = $vocabulary->vid;
+    return taxonomy_term_save($term);
+  }
+
 }

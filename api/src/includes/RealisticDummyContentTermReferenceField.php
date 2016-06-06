@@ -16,16 +16,18 @@ class RealisticDummyContentTermReferenceField extends RealisticDummyContentField
     try {
       $termname = $file->value();
       if ($termname) {
-        return array(
+        $return = array(
           LANGUAGE_NONE => array(
             array(
               'tid' => $this->getTid($termname),
             ),
           ),
         );
+        return $return;
       }
     }
     catch (\Exception $e) {
+      CMS::debug('Problem with taxonomy term: ' . $e->getMessage());
       return NULL;
     }
   }
@@ -55,7 +57,7 @@ class RealisticDummyContentTermReferenceField extends RealisticDummyContentField
       $vocabulary_name = $vocabulary['vocabulary'];
       foreach ($vocabularies as $vocabulary) {
         if ($vocabulary->machine_name == $vocabulary_name) {
-          $candidate_existing_terms = array_merge($candidate_existing_terms, taxonomy_get_tree($vocabulary->vid));
+          $candidate_existing_terms = array_merge($candidate_existing_terms, taxonomy_get_tree(CMS::vocabularyIdentifier($vocabulary)));
         }
       }
     }
@@ -65,14 +67,12 @@ class RealisticDummyContentTermReferenceField extends RealisticDummyContentField
       }
     }
 
-    if (!isset($vocabulary->vid)) {
+    if (!isset($vocabulary)) {
       throw new \Exception('Expecting the taxonomy term reference to reference at least one vocabulary');
     }
 
-    $term = new \stdClass();
-    $term->name = $name;
-    $term->vid = $vocabulary->vid;
-    taxonomy_term_save($term);
+    $term = CMS::newVocabularyTerm($vocabulary, $name);
+
     if ($term->tid) {
       return $term->tid;
     }

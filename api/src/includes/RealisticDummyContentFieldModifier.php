@@ -148,9 +148,7 @@ class RealisticDummyContentFieldModifier extends RealisticDummyContentEntityBase
    */
   public function modify() {
     $attributes = $this->getAttributes();
-    CMS::debug(count($attributes) . ' attributes can be modified, we will try to change each one.');
     foreach ($attributes as $attribute) {
-      CMS::debug(get_class($attribute) . ' Change() method about to be invoked.');
       $attribute->change();
     }
   }

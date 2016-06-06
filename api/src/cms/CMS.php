@@ -460,4 +460,16 @@ abstract class CMS {
   public function cmsSpecificTests(&$errors, &$tests) {
   }
 
+  public static function vocabularyIdentifier($vocabulary) {
+    return self::instance()->implementVocabularyIdentifier($vocabulary);
+  }
+
+  public abstract function implementVocabularyIdentifier($vocabulary);
+
+  static public function newVocabularyTerm($vocabulary, $name) {
+    return self::instance()->implementNewVocabularyTerm($vocabulary, $name);
+  }
+
+  public abstract function implementNewVocabularyTerm($vocabulary, $name);
+
 }

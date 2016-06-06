@@ -25,4 +25,23 @@ class B1 extends D7 {
     return 'post';
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function implementVocabularyIdentifier($vocabulary) {
+    return $vocabulary->name;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function implementNewVocabularyTerm($vocabulary, $name) {
+    $term = new \TaxonomyTerm(array(
+      'name' => $name,
+      'vocabulary' => $vocabulary->machine_name,
+    ));
+    $term->save();
+    return $term;
+  }
+
 }
