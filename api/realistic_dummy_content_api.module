@@ -10,7 +10,7 @@
 use Drupal\realistic_dummy_content_api\cms\CMS;
 use Drupal\realistic_dummy_content_api\includes\RealisticDummyContentRecipe;
 use Drupal\realistic_dummy_content_api\includes\RealisticDummyContentException;
-use Drupal\realistic_dummy_content_api\includes\RealisticDummyContentLog;
+use Drupal\realistic_dummy_content_api\includes\RealisticDummyContentLogInterface;
 
 function realistic_dummy_content_api_argcheck($callbacks) {
   $trace = debug_backtrace();
@@ -371,7 +371,7 @@ function realistic_dummy_content_api_sequential($start, $end, $hash) {
  *
  * @param object $log
  *   An object of a class which implements the interface
- *   RealisticDummyContentLog. Logging will be different if you are using
+ *   RealisticDummyContentLogInterface. Logging will be different if you are using
  *   drush or in the context of an automated test, for example.
  */
 function realistic_dummy_content_api_apply_recipe($log) {

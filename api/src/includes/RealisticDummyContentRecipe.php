@@ -62,15 +62,15 @@ abstract class RealisticDummyContentRecipe {
    * So we will throw an exception warning users of previous versions to add
    * that line to use the 2.x branch of realistic_dummy_content.
    *
-   * @param string module
-   *   A module name
+   * @param string $module
+   *   A module name.
    *
-   * @return boolean|string
+   * @return bool|string
    *   FALSE or the full path to the loaded recipe class file.
    *
    * @throws \Exception
    */
-  static function loadRecipeClass($module) {
+  static public function loadRecipeClass($module) {
     $path = CMS::getPath('module', $module) . '/realistic_dummy_content/recipe/' . $module . '.recipe.inc';
     $fullpath = CMS::cmsRoot() . '/' . $path;
     if (!file_exists($fullpath)) {

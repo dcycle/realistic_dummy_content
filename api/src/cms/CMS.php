@@ -306,7 +306,7 @@ abstract class CMS {
    */
   static public function assertReturnedObject($data, $properties = array()) {
     $class = get_class(self::instance());
-    $function = 'implement' . ucFirst(self::getCallingFunction());
+    $function = 'implement' . ucfirst(self::getCallingFunction());
     $caller = $class . '::' . $function;
 
     if (!is_object($data)) {

@@ -165,7 +165,6 @@ class D8 extends CMS {
     return DRUPAL_ROOT;
   }
 
-
   /**
    * {@inheritdoc}
    */
