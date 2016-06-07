@@ -172,10 +172,8 @@ abstract class RealisticDummyContentAttribute {
    */
   public function getCandidateFiles() {
     $files = array();
-    $filepaths = array();
     foreach (CMS::moduleList() as $module) {
       $filepath = DRUPAL_ROOT . '/' . drupal_get_path('module', $module) . '/realistic_dummy_content/fields/' . $this->getEntityType() . '/' . $this->getBundle() . '/' . $this->getName();
-      $filepaths[] = $filepath;
       $files = array_merge($files, RealisticDummyContentEnvironment::getAllFileGroups($filepath, $this->getExtensions()));
     }
     return $files;

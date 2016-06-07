@@ -2,6 +2,9 @@
 
 namespace Drupal\realistic_dummy_content_api\cms;
 
+use Drupal\taxonomy\Entity\Vocabulary;
+use Drupal\taxonomy\Entity\Term;
+
 /**
  * Drupal 8-specific code.
  */
@@ -16,8 +19,16 @@ class D8 extends CMS {
       if (get_class($entity) == 'Drupal\file\Entity\File') {
         $type = 'file';
       }
+      elseif (get_class($entity) == 'Drupal\taxonomy\Entity\Term') {
+        $type = 'term';
+      }
       else {
-        $type = $entity->getType();
+        if (method_exists($entity, 'getType')) {
+          $type = $entity->getType();
+        }
+        else {
+          throw new \Exception('Class ' . get_class($entity) . ' does not have a getType() method.');
+        }
       }
       if (realistic_dummy_content_api_is_dummy($entity, $type)) {
         $candidate = $entity;
@@ -143,12 +154,14 @@ class D8 extends CMS {
    * {@inheritdoc}
    */
   public function implementCreateEntity($info) {
+    throw new \Exception(__FUNCTION__ . ' not implemented.');
   }
 
   /**
    * {@inheritdoc}
    */
   public function implementGetEntityProperty(&$entity, $property) {
+    throw new \Exception(__FUNCTION__ . ' not implemented.');
   }
 
   /**
@@ -169,12 +182,35 @@ class D8 extends CMS {
    * {@inheritdoc}
    */
   public function implementFileSave($drupal_file) {
+    $drupal_file->save();
   }
 
   /**
    * {@inheritdoc}
    */
   public function implementGetAllVocabularies() {
+    return Vocabulary::loadMultiple();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function implementVocabularyIdentifier($vocabulary) {
+    return $vocabulary->id();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function implementNewVocabularyTerm($vocabulary, $name) {
+    $term = Term::create([
+      'name' => $name,
+      'vid' => $vocabulary->id(),
+    ]);
+
+    $term->save();
+
+    return $term;
   }
 
 }

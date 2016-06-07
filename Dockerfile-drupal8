@@ -34,7 +34,7 @@ ADD scripts/d8-docker-resources/php-fpm.conf /php-fpm.conf
 ADD scripts/d8-docker-resources/supervisord.conf /supervisord.conf
 ADD scripts/d8-docker-resources/settings.php.append /settings.php.append
 
-RUN cd /tmp && drush dl drupal-8.0.6 && mv /tmp/drupal*/* /srv/drupal/www/ && rm -rf /tmp/*
+RUN cd /tmp && drush dl drupal-8.1.2 && mv /tmp/drupal*/* /srv/drupal/www/ && rm -rf /tmp/*
 RUN cd /srv/drupal/www && cp ./sites/default/default.services.yml ./sites/default/services.yml
 RUN sed -i "s/<?php/<?php\nerror_reporting(E_ALL);\nini_set('display_errors', TRUE);\nini_set('display_startup_errors', TRUE);/g" /srv/drupal/www/index.php
 RUN chmod a+w /srv/drupal/www/sites/default && mkdir /srv/drupal/www/sites/default/files
@@ -69,5 +69,14 @@ RUN /root/.composer/vendor/bin/phpcs --config-set installed_paths ~/.composer/ve
 
 # Make sure module tests are visible to PHPUnit in Drupal
 RUN cd /srv/drupal/www && wget https://www.drupal.org/files/issues/2499239_77.patch && patch -p1 < 2499239_77.patch
+
+RUN apt-get -y install php5-xdebug
+RUN echo zend_extension="$(find /usr/lib/php5/ -name xdebug.so)" >> /etc/php5/apache2/php.ini
+RUN echo xdebug.remote_enable=1 >> /etc/php5/apache2/php.ini
+RUN echo xdebug.remote_handler=dbgp >> /etc/php5/apache2/php.ini
+RUN echo xdebug.remote_mode=req >> /etc/php5/apache2/php.ini
+RUN echo xdebug.remote_host=127.0.0.1 >> /etc/php5/apache2/php.ini
+RUN echo xdebug.remote_port=9000 >> /etc/php5/apache2/php.ini
+RUN echo xdebug.max_nesting_level=300 >> /etc/php5/apache2/php.ini
 
 ENTRYPOINT [ "/usr/bin/supervisord", "-n", "-c", "/supervisord.conf", "-e", "trace" ]

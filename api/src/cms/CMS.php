@@ -460,16 +460,42 @@ abstract class CMS {
   public function cmsSpecificTests(&$errors, &$tests) {
   }
 
+  /**
+   * Returns the unique identifier for the vocabulary.
+   *
+   * @param object $vocabulary
+   *   The vocabulary object.
+   *
+   * @return mixed
+   *   A unique identifier for this CMS.
+   */
   public static function vocabularyIdentifier($vocabulary) {
     return self::instance()->implementVocabularyIdentifier($vocabulary);
   }
 
+  /**
+   * Implements self::vocabularyIdentifier().
+   */
   public abstract function implementVocabularyIdentifier($vocabulary);
 
+  /**
+   * Creates a new vocabulary term.
+   *
+   * @param object $vocabulary
+   *   The vocabulary object.
+   * @param string $name
+   *   The name of the new taxonomy term.
+   *
+   * @return object
+   *   The taxonomy term object.
+   */
   static public function newVocabularyTerm($vocabulary, $name) {
     return self::instance()->implementNewVocabularyTerm($vocabulary, $name);
   }
 
+  /**
+   * Implements self::newVocabularyTerm().
+   */
   public abstract function implementNewVocabularyTerm($vocabulary, $name);
 
 }
