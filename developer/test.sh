@@ -39,9 +39,9 @@ else
 fi
 
 echo -e '[info] Build development environments.'
-cd "$BASEPATH"/developer && ./build-dev-environment.sh
+./build-dev-environment.sh
 
-cd "$BASEPATH"/developer && ./exec.sh drupal7 \
+./exec.sh drupal7 \
   "drush en -y simpletest && \
   php ./scripts/run-tests.sh \
     --class \
