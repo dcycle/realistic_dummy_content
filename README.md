@@ -51,7 +51,7 @@ Pull requests can be filed against the [GitHub repo](https://github.com/dcycle/r
 Drupal 7 and Drupal 8 in one "universal" codebase
 -----
 
-The 7.x-2.x and 8.x-2.x codebases are identical and both work on Drupal 7 or Drupal 8 sites. A blog post is planned on [Dcycle](http://dcycleproject.org/) to explain how this works.
+The 7.x-2.x and 8.x-2.x codebases are identical and both work on Drupal 7 or Drupal 8 sites. A blog post is planned on [Dcycle](http://dcycle.com/) to explain how this works.
 
 Docker integration
 -----
@@ -68,15 +68,30 @@ This will install two development environments, one for Drupal 7 and one for Dru
 
 For more information see [A quick intro to Docker for a Drupal project (Dcycle Project, Feb. 18, 2015)](http://dcycleproject.org/blog/91/quick-intro-docker-drupal-project). These scripts are meant to be used with [Docker](https://www.docker.com) and [CoreOS](https://coreos.com).
 
-Continuous integration with Circle CI
+Continuous integration and automated tests
 -----
 
-[CircleCI](https://circleci.com/gh/alberto56/realistic_dummy_content) is a continuous integration platform for Drupal projects. In [Continuous integration with Circle CI and Docker for your Drupal project (Dcycle project, Feb. 20, 2015)](http://dcycleproject.org/blog/92/continuous-integration-circle-ci-and-docker-your-drupal-project), I documented how and why I set up continuous integration with Circle CI and Docker for Realistic Dummy Content. Because the 8.x-2.x uses Docker's `exec` function which [Circle CI does not support](http://stackoverflow.com/questions/30970969/exec-is-not-supported-by-the-lxc-driver-how-to-get-around-this), I am using [Travis CI](https://travis-ci.org/alberto56/realistic_dummy_content) for continuous integration of the 8.x-2.x branch.
+Automated tests are run using
+[CircleCI](https://circleci.com/gh/dcycle/realistic_dummy_content),
+[Docker](https://www.docker.com/products/docker), Drupal's Simpletest (which
+is being phased out because it's slow), and [PHPUnit](https://phpunit.de).
+Linting is being run for PHP and shell files.
 
-# See http://stackoverflow.com/questions/30970969/exec-is-not-supported-by-the-lxc-driver-how-to-get-around-this
-8.x-2.x branch:
-[![Build Status](https://travis-ci.org/alberto56/realistic_dummy_content.svg?branch=8.x-2.x)](https://travis-ci.org/alberto56/realistic_dummy_content)
-7.x-1.x branch: [![CircleCI](https://circleci.com/gh/alberto56/realistic_dummy_content/tree/7.x-1.x.svg?style=svg)](https://circleci.com/gh/alberto56/realistic_dummy_content/tree/7.x-1.x)
+### 7.x-1.x branch
+
+[![CircleCI](https://circleci.com/gh/dcycle/realistic_dummy_content/tree/7.x-1.x.svg?style=svg)](https://circleci.com/gh/dcycle/realistic_dummy_content/tree/7.x-1.x)
+
+### 7.x-2.x branch
+
+[![CircleCI](https://circleci.com/gh/dcycle/realistic_dummy_content/tree/7.x-2.x.svg?style=svg)](https://circleci.com/gh/dcycle/realistic_dummy_content/tree/7.x-2.x)
+
+### 8.x-2.x branch
+
+[![CircleCI](https://circleci.com/gh/dcycle/realistic_dummy_content/tree/8.x-2.x.svg?style=svg)](https://circleci.com/gh/dcycle/realistic_dummy_content/tree/8.x-2.x)
+
+### master branch
+
+[![CircleCI](https://circleci.com/gh/dcycle/realistic_dummy_content/tree/master.svg?style=svg)](https://circleci.com/gh/dcycle/realistic_dummy_content/tree/master)
 
 Sponsors
 -----
