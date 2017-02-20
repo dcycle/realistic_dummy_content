@@ -4,7 +4,7 @@ machine:
   # See https://github.com/circleci/docker/issues/5.
   pre:
     - curl -sSL https://s3.amazonaws.com/circle-downloads/install-circleci-docker.sh | bash -s -- 1.10.0
-    - sudo pip install docker-compose
+    - sudo pip install docker-compose==1.8.0
   services:
     - docker
 
