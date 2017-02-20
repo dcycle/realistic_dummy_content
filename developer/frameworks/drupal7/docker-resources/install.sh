@@ -6,8 +6,6 @@
 set -e
 
 cp -r /sites-default/* sites/default
-echo -e "*****DRUPAL 7*****"
-ls -lah sites/default
 
 # In order to prevent the "unable to send mail" error, we are including
 # the "install_configure_form" line, which itself forces us to include the
@@ -17,7 +15,6 @@ ls -lah sites/default
 drush si \
   -y \
   --db-url=mysql://root:@database/drupal \
-  --db-prefix=d7 \
   --account-name=admin \
   --account-pass=admin \
   standard \

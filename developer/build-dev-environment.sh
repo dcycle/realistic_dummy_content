@@ -36,7 +36,7 @@ SECONDS=15
 echo -e "Waiting $SECONDS seconds for the database container to warm up."
 sleep "$SECONDS"
 
-for FRAMEWORK in `/bin/ls frameworks | grep -v README`; do
+for FRAMEWORK in $(/bin/ls frameworks | grep -v README); do
   ./exec.sh "$FRAMEWORK" '/resources/install.sh'
 done
 
@@ -49,4 +49,4 @@ echo -e ""
 echo -e ""
 echo -e "The same code for realistic_dummy_content can be used for"
 echo -e "Drupal 7 and Drupal 8. Changes you make to the code at "
-echo -e $(pwd)" will be reflected on both environments."
+echo -e "$(pwd) will be reflected on both environments."

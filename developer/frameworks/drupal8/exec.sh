@@ -7,7 +7,8 @@
 #
 set -e
 
-COMPOSERCONTAINER=drupal8
+# Used in ./lib/prepare-run.source, below
+export COMPOSERCONTAINER=drupal8
 
 if [ -z "$1" ]; then
   echo 'Please specify a command to run.'

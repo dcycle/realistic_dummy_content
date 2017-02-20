@@ -1,11 +1,20 @@
 <?php
 
+namespace Drupal\realistic_dummy_content_api\includes;
+
+/**
+ * Dummy required parent class.
+ */
+class RealisticDummyContentField {}
+
 namespace Drupal\realistic_dummy_content_api\Test;
 
-use Drupal\realistic_dummy_content_api\includes\RealisticDummyContentValueField;
+require_once './api/src/includes/RealisticDummyContentValueField.php';
 
 /**
  * Dummy file, used to test how fields manage files.
+ *
+ * @group realistic_dummy_content
  */
 class DummyFile {
   private $value;

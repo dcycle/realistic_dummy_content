@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * Hook definitions for documentation purposes.

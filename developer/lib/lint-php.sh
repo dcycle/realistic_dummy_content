@@ -4,5 +4,13 @@
 #
 set -e
 
-docker run -v "$(pwd)":/code dcycle/php-lint --standard=DrupalPractice /code
-docker run -v "$(pwd)":/code dcycle/php-lint --standard=Drupal /code
+BASEPATH="$(pwd)"
+
+echo -e '[lint] About to lint php files.'
+
+cd "$BASEPATH"/.. && docker run -v "$(pwd)":/code \
+  dcycle/php-lint \
+  --ignore=developer/tmp/* \
+  --standard=Drupal \
+  --report=full \
+  /code

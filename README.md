@@ -41,10 +41,12 @@ Some fields have special meta data: body fields can have input formats in additi
 
 In the above example, `realistic_dummy_content` sees two possible body values, _one of which with a specific input format_; and two possible images, _one of which with a specific alt text_. Meta data is never compulsory, and in the case where a meta attribute is needed, a reasonable fallback value is used, for example `filtered_html` will be used if no format is specified for the body.
 
-Issue queue
+Issue queue and pull requests
 -----
 
 See the [issue queue](https://drupal.org/project/issues/2253941?categories=All) if you have questions, bug reports or feature requests.
+
+Pull requests can be filed against the [GitHub repo](https://github.com/dcycle/realistic_dummy_content).
 
 Drupal 7 and Drupal 8 in one "universal" codebase
 -----
@@ -56,11 +58,11 @@ Docker integration
 
 To test this module you can run:
 
-    ./scripts/test.sh
+    cd ./development && ./test.sh
 
 To create a development environment for Drupal 7, make sure you have Docker installed (for example on a CoreOS vagrant machine on Mac OS), then you can run:
 
-    ./scripts/dev.sh
+    cd ./development && ./build-dev-environment.sh
 
 This will install two development environments, one for Drupal 7 and one for Drupal 8. When you change any code, it will reflected in both your environments in real time.
 

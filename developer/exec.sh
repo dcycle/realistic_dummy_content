@@ -26,7 +26,6 @@ if [ -z "$2" ]; then
 fi
 
 COMPOSECONTAINER="$1"
-CONTAINER="$(cd "$DEVPATH" && docker-compose ps -q "$COMPOSECONTAINER")"
 COMMAND="$2"
 
 # The LXC driver does not support exec, see

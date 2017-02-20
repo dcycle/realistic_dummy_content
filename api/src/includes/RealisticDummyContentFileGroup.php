@@ -114,7 +114,7 @@ class RealisticDummyContentFileGroup {
   /**
    * Returns the value of the radical file if one exists.
    *
-   * @return NULL|object
+   * @return null|object
    *   NULL if a radical file does not exist, if it does not have contents, or
    *   if an error occurred. Otherwise returns the contents of the file.
    */

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * Drush integration for the realistic_dummy_content_api module.

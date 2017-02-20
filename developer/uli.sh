@@ -18,10 +18,10 @@ if [ ! -f "$BASEPATH"/"$SCRIPTNAME" ]; then
   exit 1;
 fi
 
-for FRAMEWORK in `/bin/ls frameworks | grep -v README`; do
-  URL=http://$(docker-compose port "$FRAMEWORK" 80)
+for FRAMEWORK in $(/bin/ls frameworks | grep -v README); do
+  DOMAIN=$(docker-compose port "$FRAMEWORK" 80)
   echo -e "To log into your $FRAMEWORK environment go to:"
   echo -e ""
-  echo -e ' ==> '$(./exec.sh "$FRAMEWORK" 'drush uli')|sed "s/default/$URL/g"
+  echo -e ' ==> '"$(./exec.sh "$FRAMEWORK" 'drush uli')"|sed "s/default/$DOMAIN/g"
   echo -e ""
 done

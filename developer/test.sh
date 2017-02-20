@@ -39,18 +39,12 @@ else
 fi
 
 echo -e '[info] Build development environments.'
-./build-development-environments.sh
+cd "$BASEPATH"/developer && ./build-dev-environment.sh
 
-docker exec rdc_dev_d7 bash -c 'cd /srv/drupal/www && drush test-run RealisticDummyContentDatabaseTestCase'
-
-echo -e '[info] Test the realistic_dummy_content module'
-./run-all.sh 'drush ev "realistic_dummy_content_api_selftest()"'
-./run-all.sh 'drush generate-content 40 --kill'
-./run-all.sh 'drush generate-users 40 --kill'
-./run-all.sh 'drush ev "realistic_dummy_content_api_assert_basic()"'
-
-echo -e '[info] Test the recipe example'
-./run-all.sh 'drush en -y realistic_dummy_content_recipe_v2_example'
-./run-all.sh 'drush generate-realistic --kill'
-./run-all.sh 'drush ev "realistic_dummy_content_api_assert_recipe()"'
-./run-all-uninstall.sh 'realistic_dummy_content_recipe_v2_example'
+cd "$BASEPATH"/developer && ./exec.sh drupal7 \
+  'drush en -y simpletest && \
+  php ./scripts/run-tests.sh \
+    --class \
+    --url http://localhost \
+    --verbose \
+    RealisticDummyContentDatabaseTestCase'

@@ -8,6 +8,6 @@ tags[] = developer
 ; Do not use Drupal 7's autoloading mechanism as it does not support namespaces.
 
 ; Slow, functional tests.
-files[] = tests/RealisticDummyContentDatabaseTestCase.test
+files[] = drupal7-simpletests/RealisticDummyContentDatabaseTestCase.test
 
 test_dependencies[] = devel

@@ -2,10 +2,14 @@
 
 namespace Drupal\realistic_dummy_content_api\Test;
 
+require_once './api/src/includes/RealisticDummyContentEnvironment.php';
+
 use Drupal\realistic_dummy_content_api\includes\RealisticDummyContentEnvironment;
 
 /**
  * Dummy file, used to test how fields manage files.
+ *
+ * @group realistic_dummy_content
  */
 class RealisticDummyContentUnitTestCaseDummyFile {
   private $value;

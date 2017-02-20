@@ -1,9 +1,20 @@
 <?php
 
+namespace Drupal\realistic_dummy_content_api\cms;
+
+/**
+ * Required dummy parent class.
+ */
+class CMS {}
+
 namespace Drupal\realistic_dummy_content_api\Test;
+
+require_once './api/src/cms/D7.php';
 
 /**
  * Tests for \Drupal\realistic_dummy_content_api\cms\D7.
+ *
+ * @group realistic_dummy_content
  */
 class D7Test extends \PHPUnit_Framework_TestCase {
 

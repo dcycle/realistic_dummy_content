@@ -73,7 +73,7 @@ class RealisticDummyContentTermReferenceField extends RealisticDummyContentField
 
     $term = CMS::newVocabularyTerm($vocabulary, $name);
 
-    if ($term->tid) {
+    if (isset($term->tid) && $term->tid) {
       return $term->tid;
     }
     else {

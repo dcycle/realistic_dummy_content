@@ -1,4 +1,5 @@
 <?php
+
 namespace Drupal\realistic_dummy_content_api\cms;
 
 /**

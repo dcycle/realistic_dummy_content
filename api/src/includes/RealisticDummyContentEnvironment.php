@@ -11,11 +11,16 @@ namespace Drupal\realistic_dummy_content_api\includes;
  * do.
  */
 abstract class RealisticDummyContentEnvironment {
-  // Private variable containing the environment to use. Calls are made directly
-  // to RealisticDummyContentEnvironment's static methods, which then forward
-  // them to the appropriate environment. The environment can be live, or
-  // simulated as during tests. This is a form of mocking. See
-  // http://en.wikipedia.org/wiki/Mock_object
+  /**
+   * Private variable containing the environment to use.
+   *
+   * Calls are made directly to RealisticDummyContentEnvironment's static
+   * methods, which then forward them to the appropriate environment. The
+   * environment can be live, or simulated as during tests. This is a form of
+   * mocking. See http://en.wikipedia.org/wiki/Mock_object.
+   *
+   * @var object
+   */
   static private $env;
 
   /**
@@ -181,7 +186,7 @@ abstract class RealisticDummyContentEnvironment {
    *     'two.txt.attribute.txt' => [file object]
    *     'two.txt.attribute1.txt' => [file object]
    *     'three.txt' => [file object].
-   * @param NULL|array $extensions
+   * @param null|array $extensions
    *   (Default is NULL).
    *   If set, only return file groups whose base file is in one of the
    *   extenstions. For example, given an extension jpg,png, and a file
@@ -321,7 +326,7 @@ abstract class RealisticDummyContentEnvironment {
    * @param string $filename
    *   A filename string, for example 'a.b.txt'.
    *
-   * @return NULL|string
+   * @return null|string
    *   Null if there is attribute to extract; otherwise the attribute name, for
    *   example "b".
    *
@@ -429,7 +434,7 @@ abstract class RealisticDummyContentEnvironment {
    * @param object $file
    *   A drupal file object.
    *
-   * @return NULL|string
+   * @return null|string
    *   NULL if no contents in file, or if an error occurred; otherwise a string
    *   with the trimmed contents of the file.
    */

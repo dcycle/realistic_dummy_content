@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * Contains a recipe for generating realistic dummy content.

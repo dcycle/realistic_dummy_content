@@ -370,7 +370,8 @@ class D7 extends CMS {
     $term = new \stdClass();
     $term->name = $name;
     $term->vid = $vocabulary->vid;
-    return taxonomy_term_save($term);
+    taxonomy_term_save($term);
+    return $term;
   }
 
 }

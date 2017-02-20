@@ -8,7 +8,7 @@ RUN ln -s /root/.composer/vendor/drush/drush/drush /bin/drush
 RUN apt-get update && apt-get upgrade -y
 RUN apt-get install -y mysql-client
 
-ADD ./docker-resources /resources
+ADD ./frameworks/drupal8/docker-resources /resources
 
 RUN drush dl devel -y
 

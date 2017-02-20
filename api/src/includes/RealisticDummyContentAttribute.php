@@ -20,11 +20,15 @@ abstract class RealisticDummyContentAttribute {
    * The entity is set on construction and is a subclass of
    * RealisticDummyContentEntityBase. It contains information about the
    * entity to which this field instance is attached.
+   *
+   * @var object
    */
   private $entity;
 
   /**
    * The name of this attribuet, for example title, picture, field_image...
+   *
+   * @var string
    */
   private $name;
 
@@ -191,7 +195,7 @@ abstract class RealisticDummyContentAttribute {
    * @param object $file
    *   The actual file object.
    *
-   * @return NULL|array
+   * @return null|array
    *   In case of an error or if the value does not apply or is empty, return
    *   NULL; otherwise returns structured data to be added to the entity object.
    */
@@ -215,7 +219,7 @@ abstract class RealisticDummyContentAttribute {
    * @param object $file
    *   An object of type RealisticDummyContentFileGroup.
    *
-   * @return NULL|array
+   * @return null|array
    *   Returns structured data to be added to the entity object, or NULL if such
    *   data can't be creatd.
    *
@@ -273,7 +277,7 @@ abstract class RealisticDummyContentAttribute {
    * @param object $file
    *   The RealisticDummyContentFileGroup object.
    *
-   * @return NULL|object
+   * @return null|object
    *   NULL if the file is not an image, or if an error occurred; otherwise a
    *   Drupal file object.
    */
