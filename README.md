@@ -1,7 +1,7 @@
 Realistic dummy content
 =======================
 
-generate kick-ass realistic demo content with [Devel](https://drupal.org/project/devel)'s `devel_generate` module.
+Generate kick-ass realistic demo content with [Devel](https://drupal.org/project/devel)'s `devel_generate` module.
 
 Usage
 -----
