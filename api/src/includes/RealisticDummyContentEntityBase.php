@@ -44,7 +44,7 @@ abstract class RealisticDummyContentEntityBase extends RealisticDummyContentBase
    * @throws \Exception
    */
   public function __construct($entity, $type, $filter = array()) {
-    realistic_dummy_content_api_argcheck(array('is_object', 'is_string'));
+    realistic_dummy_content_api_argcheck(array('is_object', 'realistic_dummy_content_api_argcheck_entitytype'));
     $this->entity = $entity;
     $this->hash = md5(serialize($entity));
     $this->type = $type;

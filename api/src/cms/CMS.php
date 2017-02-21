@@ -429,10 +429,7 @@ abstract class CMS {
         continue;
       }
       $candidate = 'test' . ucfirst($method_name);
-      if (!in_array($candidate, $all)) {
-        $errors[] = 'There should be a static method called CMS::' . $candidate . '()';
-      }
-      else {
+      if (in_array($candidate, $all)) {
         try {
           $result = $this->{$candidate}();
           if ($result) {

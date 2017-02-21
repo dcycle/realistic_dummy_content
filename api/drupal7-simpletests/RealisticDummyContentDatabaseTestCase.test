@@ -34,7 +34,7 @@ class RealisticDummyContentDatabaseTestCase extends DrupalWebTestCase {
 
     // Our test needs to check that a given content was replaced, so turn
     // off random number generator during the test.
-    variable_set('realistic_dummy_content_api_rand', REALISTIC_DUMMY_CONTENT_SEQUENTIAL);
+    variable_set('realistic_dummy_content_api_rand', REALISTIC_DUMMY_CONTENT_API_SEQUENTIAL);
   }
 
   /*

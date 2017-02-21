@@ -41,10 +41,8 @@ fi
 echo -e '[info] Build development environments.'
 ./build-dev-environment.sh
 
-./exec.sh drupal7 \
-  "drush en -y simpletest && \
-  php ./scripts/run-tests.sh \
-    --class \
-    --url http://localhost \
-    --verbose \
-    RealisticDummyContentDatabaseTestCase"
+echo -e '[info] Running self-tests.'
+for FRAMEWORK in $(/bin/ls frameworks | grep -v README); do
+  echo -e "[info] Self-test for $FRAMEWORK."
+  ./frameworks/"$FRAMEWORK"/selftest.sh
+done
