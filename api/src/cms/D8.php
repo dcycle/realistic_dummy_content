@@ -32,6 +32,17 @@ class D8 extends CMS {
     }
   }
 
+  /**
+   * Returns the entity type (e.g. node, user) as a string.
+   *
+   * @param object $entity
+   *   A Drupal entity.
+   *
+   * @return string
+   *   An entity type machine name (id).
+   *
+   * @throws Exception
+   */
   public function getEntityType($entity) {
     return $entity->getEntityType()->id();
   }
@@ -51,16 +62,24 @@ class D8 extends CMS {
     }
   }
 
+  /**
+   * Create a dummy node.
+   *
+   * @return object
+   *   A Drupal node object.
+   *
+   * @throws Exception
+   */
   public function createDummyNode() {
     $entity_type = 'node';
     $bundle = 'article';
 
-    // get definition of target entity type
+    // Get definition of target entity type.
     $entity_def = \Drupal::entityManager()->getDefinition($entity_type);
 
-    // load up an array for creation
+    // Load up an array for creation.
     $new_node = array(
-      //set title
+      // Set title.
       'title' => 'test node',
       $entity_def->get('entity_keys')['bundle'] => $bundle,
     );
@@ -71,6 +90,14 @@ class D8 extends CMS {
     return node_load($this->latestNid());
   }
 
+  /**
+   * Retrieve the latest node id.
+   *
+   * @return int
+   *   The latest node id in the database.
+   *
+   * @throws Exception
+   */
   public function latestNid() {
     return db_query("SELECT nid FROM {node} ORDER BY nid DESC LIMIT 1")->fetchField();
   }
@@ -182,7 +209,9 @@ class D8 extends CMS {
           ksm($message);
         }
         else {
+          // @codingStandardsIgnoreStart
           dpm($message);
+          // @codingStandardsIgnoreEnd
         }
       }
     }
