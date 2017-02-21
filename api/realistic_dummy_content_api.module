@@ -125,6 +125,12 @@ spl_autoload_register(function ($class_name) {
 /**
  * Type of number generation.
  */
+// We changed in the constant name in x.x-2.x, however the example
+// recipe with the old constant name is possibly still in use, so we are
+// keeping the old constant here to avoid breaking anything.
+// @codingStandardsIgnoreStart
+define('REALISTIC_DUMMY_CONTENT_SEQUENTIAL', FALSE);
+// @codingStandardsIgnoreStart
 define('REALISTIC_DUMMY_CONTENT_API_SEQUENTIAL', FALSE);
 define('REALISTIC_DUMMY_CONTENT_API_RANDOM', TRUE);
 
