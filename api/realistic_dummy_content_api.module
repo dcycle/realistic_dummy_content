@@ -32,6 +32,10 @@ function realistic_dummy_content_api_argcheck($callbacks) {
   }
 }
 
+function realistic_dummy_content_api_argcheck_entitytype($data) {
+  return is_string($data) && $data != 'article';
+}
+
 function realistic_dummy_content_api_version() {
   if (defined('BACKDROP_BOOTSTRAP_SESSION')) {
     return 'B1';
@@ -210,7 +214,7 @@ function realistic_dummy_content_api_is_dummy($entity, $type) {
  *   Exception
  */
 function realistic_dummy_content_api_improve_dummy_content(&$entity, $type, $filter = array()) {
-  realistic_dummy_content_api_argcheck(array('is_object', 'is_string'));
+  realistic_dummy_content_api_argcheck(array('is_object', 'realistic_dummy_content_api_argcheck_entitytype'));
   $modifiers = Drupal\realistic_dummy_content_api\cms\CMS::moduleInvokeAll('realistic_dummy_content_api_class', $entity, $type, $filter);
 
   foreach ($modifiers as $modifier_class) {
@@ -331,5 +335,7 @@ function realistic_dummy_content_api_apply_recipe($log) {
 }
 
 function realistic_dummy_content_api_cms_selftest() {
-  return CMS::instance()->selfTest();
+  if (CMS::instance()->selfTest()) {
+    die('Self test returned errors.');
+  }
 }

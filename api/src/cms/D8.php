@@ -5,6 +5,10 @@ namespace Drupal\realistic_dummy_content_api\cms;
 use Drupal\taxonomy\Entity\Vocabulary;
 use Drupal\taxonomy\Entity\Term;
 
+if (!defined('WATCHDOG_ERROR')) {
+  define('WATCHDOG_ERROR', 3);
+}
+
 /**
  * Drupal 8-specific code.
  */
@@ -16,20 +20,7 @@ class D8 extends CMS {
   public function implementHookEntityPresave($entity, $type) {
     try {
       // $type is NULL in D8; we'll compute it here.
-      if (get_class($entity) == 'Drupal\file\Entity\File') {
-        $type = 'file';
-      }
-      elseif (get_class($entity) == 'Drupal\taxonomy\Entity\Term') {
-        $type = 'term';
-      }
-      else {
-        if (method_exists($entity, 'getType')) {
-          $type = $entity->getType();
-        }
-        else {
-          throw new \Exception('Class ' . get_class($entity) . ' does not have a getType() method.');
-        }
-      }
+      $type = $this->getEntityType($entity);
       if (realistic_dummy_content_api_is_dummy($entity, $type)) {
         $candidate = $entity;
         realistic_dummy_content_api_improve_dummy_content($candidate, $type);
@@ -39,6 +30,49 @@ class D8 extends CMS {
     catch (Exception $e) {
       $this->setMessage(t('realistic_dummy_content_api failed to modify dummy objects: message: @m', array('@m' => $e->getMessage())), 'error', FALSE);
     }
+  }
+
+  public function getEntityType($entity) {
+    return $entity->getEntityType()->id();
+  }
+
+  /**
+   * Perform CMS-specific tests, if any.
+   */
+  public function cmsSpecificTests(&$errors, &$tests) {
+    $node = $this->createDummyNode();
+
+    $result = $this->getEntityType($node);
+    if ($result == 'node') {
+      $tests = 'D8::getEntityType() works as expected.';
+    }
+    else {
+      $errors = 'D8::getEntityType() returned ' . $result;
+    }
+  }
+
+  public function createDummyNode() {
+    $entity_type = 'node';
+    $bundle = 'article';
+
+    // get definition of target entity type
+    $entity_def = \Drupal::entityManager()->getDefinition($entity_type);
+
+    // load up an array for creation
+    $new_node = array(
+      //set title
+      'title' => 'test node',
+      $entity_def->get('entity_keys')['bundle'] => $bundle,
+    );
+
+    $new_post = \Drupal::entityManager()->getStorage($entity_type)->create($new_node);
+    $new_post->save();
+
+    return node_load($this->latestNid());
+  }
+
+  public function latestNid() {
+    return db_query("SELECT nid FROM {node} ORDER BY nid DESC LIMIT 1")->fetchField();
   }
 
   /**
@@ -144,7 +178,12 @@ class D8 extends CMS {
         // @codingStandardsIgnoreStart
         dpm($info . ' ==>');
         // @codingStandardsIgnoreEnd
-        ksm($message);
+        if (function_exists('ksm')) {
+          ksm($message);
+        }
+        else {
+          dpm($message);
+        }
       }
     }
     $this->watchdog('<pre>' . print_r(array($info => $message), TRUE) . '</pre>');
@@ -154,14 +193,29 @@ class D8 extends CMS {
    * {@inheritdoc}
    */
   public function implementCreateEntity($info) {
-    throw new \Exception(__FUNCTION__ . ' not implemented.');
+    if (isset($info['entity_type']) && $info['entity_type'] != 'node') {
+      throw new \Exception(__FUNCTION__ . ' unknown entity type.');
+    }
+    else {
+      return $this->createDummyNode();
+    }
   }
 
   /**
    * {@inheritdoc}
    */
   public function implementGetEntityProperty(&$entity, $property) {
-    throw new \Exception(__FUNCTION__ . ' not implemented.');
+    $type = $this->getEntityType($entity);
+    if ($type == 'node') {
+      switch ($property) {
+        case 'title':
+          return $entity->getTitle();
+
+        default:
+          throw new \Exception(__FUNCTION__ . ' Unknown property ' . $property);
+      }
+    }
+    throw new \Exception(__FUNCTION__ . ' not implemented for type ' . $type);
   }
 
   /**
