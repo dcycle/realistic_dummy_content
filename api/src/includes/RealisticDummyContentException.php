@@ -8,7 +8,7 @@ use Drupal\realistic_dummy_content_api\cms\CMS;
 // we need to go 4 levels deep. When returning the called function, we also
 // need to 4 levels deep, but call GetCaller() through another function which
 // adds a level (GetCalled()).
-define('REALISTIC_DUMMY_CONTENT_EXCEPTION_BACKTRACE_LEVEL', 4);
+define('REALISTIC_DUMMY_CONTENT_API_EXCEPTION_BACKTRACE_LEVEL', 4);
 
 /**
  * An Exception.
@@ -37,7 +37,7 @@ class RealisticDummyContentException extends \Exception {
     // A funciton x has called a function y which called this
     // see stackoverflow.com/questions/190421.
     $caller = debug_backtrace();
-    $caller = $caller[REALISTIC_DUMMY_CONTENT_EXCEPTION_BACKTRACE_LEVEL];
+    $caller = $caller[REALISTIC_DUMMY_CONTENT_API_EXCEPTION_BACKTRACE_LEVEL];
     $r = $caller['function'] . '()';
     if (isset($caller['class'])) {
       $r .= ' in ' . $caller['class'];

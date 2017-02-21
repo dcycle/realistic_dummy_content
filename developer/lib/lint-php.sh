@@ -14,3 +14,17 @@ cd "$BASEPATH"/.. && docker run -v "$(pwd)":/code \
   --standard=Drupal \
   --report=full \
   /code
+
+cd "$BASEPATH"/.. && docker run -v "$(pwd)":/code \
+  dcycle/php-lint \
+  --ignore=developer/tmp/* \
+  --standard=Drupal \
+  --report=full \
+  /code/realistic_dummy_content.module
+
+cd "$BASEPATH"/.. && docker run -v "$(pwd)":/code \
+  dcycle/php-lint \
+  --ignore=developer/tmp/* \
+  --standard=Drupal \
+  --report=full \
+  /code/api/realistic_dummy_content_api.module

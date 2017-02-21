@@ -1,10 +1,12 @@
 <?php
+
 /**
  * @file
+ * Required .module file for Drupal 7.
  *
- * This module provides basic Realistic Dummy Content functionality and is meant
- * to be an example of how you can use Realistic Dummy Content API in your own
- * projects.
+ * This module provides basic Realistic Dummy Content functionality and is
+ * meant to be an example of how you can use Realistic Dummy Content API in
+ * your own projects.
  *
  * This module replaces the body field of all node types with custom dummy
  * content; it also replaces the image field of articles and the picture field
