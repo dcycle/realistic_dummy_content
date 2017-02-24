@@ -2,6 +2,8 @@
 
 namespace Drupal\realistic_dummy_content_api\includes;
 
+use Drupal\realistic_dummy_content_api\cms\CMS;
+
 /**
  * Field modifier for image fields.
  */
@@ -18,20 +20,16 @@ class RealisticDummyContentImageField extends RealisticDummyContentField {
    * {@inheritdoc}
    */
   public function implementValueFromFile($file) {
-    dpm('zzz' . __LINE__);
+    // Note that this is not called for the user picture in Drupal 7, which
+    // does not use the field system.
     if (!$file->value()) {
       return NULL;
     }
     $return = NULL;
     $file = $this->imageSave($file);
     if ($file) {
-      $return = array(
-        LANGUAGE_NONE => array(
-          (array) $file,
-        ),
-      );
+      $return = CMS::instance()->formatFileProperty($file);
     }
-    dpm($return);
     return $return;
   }
 

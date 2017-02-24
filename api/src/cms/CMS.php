@@ -1,10 +1,8 @@
 <?php
 
-use Drupal\realistic_dummy_content_api\cms\D8;
-use Drupal\realistic_dummy_content_api\cms\B1;
-use Drupal\realistic_dummy_content_api\cms\D7;
-
 namespace Drupal\realistic_dummy_content_api\cms;
+
+use Drupal\realistic_dummy_content_api\includes\RealisticDummyContentDevelGenerateGenerator;
 
 /**
  * The abstract entry point for the CMS.
@@ -39,6 +37,9 @@ abstract class CMS implements FrameworkInterface {
     }
   }
 
+  /**
+   * {@inheritdoc}
+   */
   abstract public function develGenerate($info);
 
   /**
@@ -77,7 +78,7 @@ abstract class CMS implements FrameworkInterface {
    *   Associative array which can contain (defaults are the first
    *   value):
    *     entity_type => node|user|...
-   *     dummy => FALSE|TRUE
+   *     dummy => FALSE|TRUE.
    */
   static public function createEntity($info = array()) {
     $return = self::instance()->implementCreateEntity($info);
@@ -152,6 +153,11 @@ abstract class CMS implements FrameworkInterface {
   static public function setEntityProperty(&$entity, $property, $value) {
     return self::instance()->implementSetEntityProperty($entity, $property, $value);
   }
+
+  /**
+   * {@inheritdoc}
+   */
+  abstract public function formatFileProperty($file);
 
   /**
    * Implements self::setEntityProperty().
@@ -389,6 +395,9 @@ abstract class CMS implements FrameworkInterface {
    */
   public abstract function implementCmsRoot();
 
+  /**
+   * {@inheritdoc}
+   */
   abstract public function fieldInfoField($name);
 
   /**
@@ -456,12 +465,23 @@ abstract class CMS implements FrameworkInterface {
     return count($errors) != 0;
   }
 
+  /**
+   * Run high-level tests.
+   *
+   * For example, create entities, make sure they have been improved with
+   * realistic dummy content.
+   *
+   * @param array $errors
+   *   Will be populated with error strings.
+   * @param array $tests
+   *   Will be populated with passing test strings.
+   */
   public function endToEndTests(&$errors, &$tests) {
-    $generator = new \Drupal\realistic_dummy_content_api\includes\RealisticDummyContentDevelGenerateGenerator('user', 'user', 1, array('kill' => TRUE));
+    $generator = new RealisticDummyContentDevelGenerateGenerator('user', 'user', 1, array('kill' => TRUE));
     $generator->generate();
 
     $user = user_load(CMS::instance()->latestId('users', 'uid'));
-    if (strpos($user->picture->filename, 'dummyfile') === 0) {
+    if (strpos(CMS::instance()->userPictureFilename($user), 'dummyfile') !== FALSE) {
       $tests[] = 'User picture substitution OK, and aliases work correctly.';
     }
     else {
@@ -470,11 +490,16 @@ abstract class CMS implements FrameworkInterface {
   }
 
   /**
+   * {@inheritdoc}
+   */
+  abstract public function userPictureFilename($user);
+
+  /**
    * Retrieve the latest entity id (for example node nid).
    *
-   * @param string table
+   * @param string $table
    *   A database table, for example node or users.
-   * @return string key
+   * @param string $key
    *   A database key, for example nid or uid.
    *
    * @return int

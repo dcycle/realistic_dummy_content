@@ -18,23 +18,31 @@ class D7 extends CMS implements FrameworkInterface {
     }
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function entityProperties($entity) {
     return (array) $entity;
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function userPictureFilename($user) {
+    return $user->picture->filename;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function develGenerate($info) {
     module_load_include('inc', 'devel_generate');
 
     if ($info['entity_type'] == 'node') {
       // See https://www.drupal.org/node/2324027
-      $info = array(
-        'node_types' => $info['node_types'],
-        'users' => array(
-          1,
-        ),
-        'title_length' => 3,
-      );
-      if ($this->getKill()) {
+      $info['users'] = array(1);
+      $info['title_length'] = 3;
+      if ($info['kill']) {
         devel_generate_content_kill($info);
       }
       for ($i = 0; $i < $info['num']; $i++) {
@@ -272,6 +280,17 @@ class D7 extends CMS implements FrameworkInterface {
   /**
    * {@inheritdoc}
    */
+  public function formatFileProperty($file) {
+    return array(
+      LANGUAGE_NONE => array(
+        (array) $file,
+      ),
+    );
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function implementGetEntityProperty(&$entity, $property) {
     return $entity->{$property};
   }
@@ -376,9 +395,7 @@ class D7 extends CMS implements FrameworkInterface {
    * {@inheritdoc}
    */
   public function implementFileSave($drupal_file) {
-    dpm($drupal_file);
     $return = file_save($drupal_file);
-    dpm($return);
     return $return;
   }
 

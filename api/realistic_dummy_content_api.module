@@ -183,8 +183,12 @@ function realistic_dummy_content_api_realistic_dummy_content_attribute_manipulat
   }
 }
 
+/**
+ * hook_user_insert and hook_user_presave should not be called in Drupal 8.
+ *
+ * In Drupal 8 this work is done in hook_entity_presave().
+ */
 if (realistic_dummy_content_api_version() != 'D8') {
-
   /**
    * Implements hook_user_insert().
    */
@@ -262,7 +266,6 @@ function realistic_dummy_content_api_is_dummy($entity, $type) {
  * @throws \Exception
  */
 function realistic_dummy_content_api_improve_dummy_content(&$entity, $type, $filter = array()) {
-  dpm($type);
   realistic_dummy_content_api_argcheck(array('is_object', 'realistic_dummy_content_api_argcheck_entitytype'));
   $modifiers = CMS::moduleInvokeAll('realistic_dummy_content_api_class', $entity, $type, $filter);
 
@@ -387,15 +390,17 @@ function realistic_dummy_content_api_apply_recipe($log) {
  * Meant to be run from the CI scripts on a throwaway environment.
  *
  * Will exit the php script with 1 in case of a failure.
+ *
+ * @param bool $die
+ *   Whether or not to kill the script. We want to kill the script if this
+ *   is called via drush, so we'll get the correct exit code. During
+ *   development we can set this to FALSE.
+ *
  */
 function realistic_dummy_content_api_cms_selftest($die = TRUE) {
   if (CMS::instance()->selfTest()) {
-    $message = 'Self test returned errors.';
     if ($die) {
-      die($message);
-    }
-    else {
-      drupal_set_message('Self test returned errors.');
+      die('Self test returned errors.');
     }
   }
 }

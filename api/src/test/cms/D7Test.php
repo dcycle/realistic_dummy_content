@@ -3,6 +3,11 @@
 namespace Drupal\realistic_dummy_content_api\cms;
 
 /**
+ * Required interface.
+ */
+interface FrameworkInterface {}
+
+/**
  * Required dummy parent class.
  */
 class CMS {}

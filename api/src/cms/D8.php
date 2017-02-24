@@ -17,6 +17,16 @@ class D8 extends CMS implements FrameworkInterface {
   /**
    * {@inheritdoc}
    */
+  public function userPictureFilename($user) {
+    $value = $user->get('user_picture')->getValue();
+    $id = $value[0]['target_id'];
+    $file = file_load($id);
+    return $file->getFileUri();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function implementHookEntityPresave($entity, $type) {
     try {
       // $type is NULL in D8; we'll compute it here.
@@ -32,11 +42,17 @@ class D8 extends CMS implements FrameworkInterface {
     }
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function fieldInfoField($field) {
     $fields = $this->fieldInfoFields();
     return $fields[$field];
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function develGenerate($info) {
     $info = array_merge(array(
       'pass' => 'some-password',
@@ -71,10 +87,10 @@ class D8 extends CMS implements FrameworkInterface {
 
     $result = $this->getEntityType($node);
     if ($result == 'node') {
-      $tests = 'D8::getEntityType() works as expected.';
+      $tests[] = 'D8::getEntityType() works as expected.';
     }
     else {
-      $errors = 'D8::getEntityType() returned ' . $result;
+      $errors[] = 'D8::getEntityType() returned ' . $result;
     }
   }
 
@@ -129,7 +145,7 @@ class D8 extends CMS implements FrameworkInterface {
   public function fieldInfoFields() {
     $return = array();
     $field_map = \Drupal::entityManager()->getFieldMap();
-    // field map returns:
+    // Field map returns:
     // entitytype/name(type, bundles(article => article))
     // we must change that into:
     // name(entity_types=>(node), type=>type, bundles=>node(page, article))
@@ -185,9 +201,14 @@ class D8 extends CMS implements FrameworkInterface {
    * {@inheritdoc}
    */
   public function implementSetEntityProperty(&$entity, $property, $value) {
-    if ($property == 'title' && method_exists($entity, 'setTitle')) {
-      $entity->setTitle($value);
-    }
+    $entity->set($property, $value);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function formatFileProperty($file) {
+    return $file->id();
   }
 
   /**
@@ -248,6 +269,9 @@ class D8 extends CMS implements FrameworkInterface {
     }
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function entityProperties($entity) {
     return array();
   }
