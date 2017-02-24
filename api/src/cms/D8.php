@@ -280,17 +280,8 @@ class D8 extends CMS implements FrameworkInterface {
    * {@inheritdoc}
    */
   public function implementGetEntityProperty(&$entity, $property) {
-    $type = $this->getEntityType($entity);
-    if ($type == 'node') {
-      switch ($property) {
-        case 'title':
-          return $entity->getTitle();
-
-        default:
-          throw new \Exception(__FUNCTION__ . ' Unknown property ' . $property);
-      }
-    }
-    throw new \Exception(__FUNCTION__ . ' not implemented for type ' . $type);
+    // D8 does not have properties.
+    throw new \Exception(__FUNCTION__ . ' should not be called as D8 does not use properties.');
   }
 
   /**

@@ -266,15 +266,21 @@ function realistic_dummy_content_api_is_dummy($entity, $type) {
  * @throws \Exception
  */
 function realistic_dummy_content_api_improve_dummy_content(&$entity, $type, $filter = array()) {
+  return;
   realistic_dummy_content_api_argcheck(array('is_object', 'realistic_dummy_content_api_argcheck_entitytype'));
   $modifiers = CMS::moduleInvokeAll('realistic_dummy_content_api_class', $entity, $type, $filter);
 
+  $candidate = $entity;
+
   foreach ($modifiers as $modifier_class) {
     realistic_dummy_content_api_validate_class($modifier_class);
-    $modifier = new $modifier_class($entity, $type, $filter);
+    $modifier = new $modifier_class($candidate, $type, $filter);
     $modifier->modify();
-    $entity = $modifier->getEntity();
+    $candidate = $modifier->getEntity();
+    dpm($candidate->getTitle());
   }
+
+  //$entity = $candidate;
 }
 
 /**
