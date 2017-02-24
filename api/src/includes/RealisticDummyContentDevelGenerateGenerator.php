@@ -2,6 +2,8 @@
 
 namespace Drupal\realistic_dummy_content_api\includes;
 
+use Drupal\realistic_dummy_content_api\cms\CMS;
+
 /**
  * The "devel generate" dummy content generator.
  */
@@ -11,11 +13,12 @@ class RealisticDummyContentDevelGenerateGenerator extends RealisticDummyContentG
    * {@inheritdoc}
    */
   public function implementGenerate() {
-    module_load_include('inc', 'devel_generate');
-
+    $info['entity_type'] = $this->getType();
+    $info['kill'] = $this->getKill();
+    $info['num'] = $this->getNum();
     if ($this->getType() == 'node') {
       // See https://www.drupal.org/node/2324027
-      $info = array(
+      $info = array_merge($info, array(
         'node_types' => array(
           $this->getBundle() => $this->getBundle(),
         ),
@@ -23,17 +26,9 @@ class RealisticDummyContentDevelGenerateGenerator extends RealisticDummyContentG
           1,
         ),
         'title_length' => 3,
-      );
-      if ($this->getKill()) {
-        devel_generate_content_kill($info);
-      }
-      for ($i = 0; $i < $this->getNum(); $i++) {
-        devel_generate_content_add_node($info);
-      }
+      ));
     }
-    elseif ($this->getType() == 'user') {
-      devel_create_users($this->getNum(), $this->getKill());
-    }
+    CMS::instance()->develGenerate($info);
   }
 
 }

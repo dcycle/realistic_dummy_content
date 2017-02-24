@@ -7,7 +7,7 @@ namespace Drupal\realistic_dummy_content_api\cms;
 /**
  * Drupal 7-specific code.
  */
-class D7 extends CMS {
+class D7 extends CMS implements FrameworkInterface {
 
   /**
    * {@inheritdoc}
@@ -15,6 +15,42 @@ class D7 extends CMS {
   public function implementHookEntityPresave($entity, $type) {
     if ($type != 'user') {
       $this->genericEntityPresave($entity, $type);
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function entityProperties($entity) {
+    return (array) $entity;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function userPictureFilename($user) {
+    return $user->picture->filename;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function develGenerate($info) {
+    module_load_include('inc', 'devel_generate');
+
+    if ($info['entity_type'] == 'node') {
+      // See https://www.drupal.org/node/2324027
+      $info['users'] = array(1);
+      $info['title_length'] = 3;
+      if ($info['kill']) {
+        devel_generate_content_kill($info);
+      }
+      for ($i = 0; $i < $info['num']; $i++) {
+        devel_generate_content_add_node($info);
+      }
+    }
+    elseif ($info['entity_type'] == 'user') {
+      devel_create_users($info['num'], $info['kill']);
     }
   }
 
@@ -148,8 +184,15 @@ class D7 extends CMS {
   /**
    * {@inheritdoc}
    */
-  public function implementFieldInfoFields() {
+  public function fieldInfoFields() {
     return field_info_fields();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function fieldInfoField($field) {
+    return field_info_field($field);
   }
 
   /**
@@ -237,6 +280,17 @@ class D7 extends CMS {
   /**
    * {@inheritdoc}
    */
+  public function formatFileProperty($file) {
+    return array(
+      LANGUAGE_NONE => array(
+        (array) $file,
+      ),
+    );
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function implementGetEntityProperty(&$entity, $property) {
     return $entity->{$property};
   }
@@ -260,7 +314,13 @@ class D7 extends CMS {
         break;
 
       case 'user':
-        $entity = user_save(drupal_anonymous_user(), array('name' => rand(1000000, 9999999)));
+        $options = array(
+          'name' => rand(1000000, 9999999),
+        );
+        if (isset($info['dummy']) && $info['dummy']) {
+          $options['mail'] = $options['name'] . '@example.invalid';
+        }
+        $entity = user_save(drupal_anonymous_user(), $options);
         break;
 
       default:
@@ -335,7 +395,8 @@ class D7 extends CMS {
    * {@inheritdoc}
    */
   public function implementFileSave($drupal_file) {
-    return file_save($drupal_file);
+    $return = file_save($drupal_file);
+    return $return;
   }
 
   /**

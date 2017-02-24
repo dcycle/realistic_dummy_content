@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\realistic_dummy_content_api\includes\;
+namespace Drupal\realistic_dummy_content_api\includes;
 
 /**
  * Legacy base class for recipes.

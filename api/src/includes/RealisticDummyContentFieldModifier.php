@@ -46,7 +46,7 @@ class RealisticDummyContentFieldModifier extends RealisticDummyContentEntityBase
   public function getProperties() {
     $modifiable_properties = array();
     $fields = $this->getFields();
-    foreach ((array) $this->getEntity() as $property => $info) {
+    foreach (CMS::instance()->entityProperties($this->getEntity()) as $property => $info) {
       if (!in_array($property, array_keys($fields)) && $this->filter($property)) {
         $this->addModifier($modifiable_properties, 'property', $property);
       }
@@ -66,7 +66,7 @@ class RealisticDummyContentFieldModifier extends RealisticDummyContentEntityBase
     $modifiable_fields = array();
     $type = $this->getType();
     $bundle = $this->getBundle();
-    $fields = CMS::fieldInfoFields();
+    $fields = CMS::instance()->fieldInfoFields();
     foreach ($fields as $field => $info) {
       if (isset($info['bundles'][$type]) && is_array($info['bundles'][$type]) && in_array($bundle, $info['bundles'][$type]) && $this->filter($field)) {
         $this->addModifier($modifiable_fields, 'field', $field);
@@ -111,7 +111,7 @@ class RealisticDummyContentFieldModifier extends RealisticDummyContentEntityBase
 
       case 'field':
         $original_class = '\Drupal\realistic_dummy_content_api\includes\RealisticDummyContentValueField';
-        $field_info = field_info_field($name);
+        $field_info = CMS::instance()->fieldInfoField($name);
         $attribute_type = $field_info['type'];
         break;
 

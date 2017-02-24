@@ -12,7 +12,17 @@ if (!defined('WATCHDOG_ERROR')) {
 /**
  * Drupal 8-specific code.
  */
-class D8 extends CMS {
+class D8 extends CMS implements FrameworkInterface {
+
+  /**
+   * {@inheritdoc}
+   */
+  public function userPictureFilename($user) {
+    $value = $user->get('user_picture')->getValue();
+    $id = $value[0]['target_id'];
+    $file = file_load($id);
+    return $file->getFileUri();
+  }
 
   /**
    * {@inheritdoc}
@@ -30,6 +40,28 @@ class D8 extends CMS {
     catch (Exception $e) {
       $this->setMessage(t('realistic_dummy_content_api failed to modify dummy objects: message: @m', array('@m' => $e->getMessage())), 'error', FALSE);
     }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function fieldInfoField($field) {
+    $fields = $this->fieldInfoFields();
+    return $fields[$field];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function develGenerate($info) {
+    $info = array_merge(array(
+      'pass' => 'some-password',
+      'time_range' => 0,
+      'roles' => array(),
+    ), $info);
+    $plugin_manager = \Drupal::service('plugin.manager.develgenerate');
+    $instance = $plugin_manager->createInstance($info['entity_type'], array());
+    $instance->generate($info);
   }
 
   /**
@@ -55,10 +87,10 @@ class D8 extends CMS {
 
     $result = $this->getEntityType($node);
     if ($result == 'node') {
-      $tests = 'D8::getEntityType() works as expected.';
+      $tests[] = 'D8::getEntityType() works as expected.';
     }
     else {
-      $errors = 'D8::getEntityType() returned ' . $result;
+      $errors[] = 'D8::getEntityType() returned ' . $result;
     }
   }
 
@@ -87,19 +119,7 @@ class D8 extends CMS {
     $new_post = \Drupal::entityManager()->getStorage($entity_type)->create($new_node);
     $new_post->save();
 
-    return node_load($this->latestNid());
-  }
-
-  /**
-   * Retrieve the latest node id.
-   *
-   * @return int
-   *   The latest node id in the database.
-   *
-   * @throws Exception
-   */
-  public function latestNid() {
-    return db_query("SELECT nid FROM {node} ORDER BY nid DESC LIMIT 1")->fetchField();
+    return node_load($this->latestId());
   }
 
   /**
@@ -122,8 +142,22 @@ class D8 extends CMS {
   /**
    * {@inheritdoc}
    */
-  public function implementFieldInfoFields() {
-    return \Drupal::entityManager()->getFieldMap();
+  public function fieldInfoFields() {
+    $return = array();
+    $field_map = \Drupal::entityManager()->getFieldMap();
+    // Field map returns:
+    // entitytype/name(type, bundles(article => article))
+    // we must change that into:
+    // name(entity_types=>(node), type=>type, bundles=>node(page, article))
+    foreach ($field_map as $entity_type => $fields) {
+      foreach ($fields as $field => $field_info) {
+        $return[$field]['entity_types'][$entity_type] = $entity_type;
+        $return[$field]['field_name'] = $field;
+        $return[$field]['type'] = $field_info['type'];
+        $return[$field]['bundles'][$entity_type] = $field_info['bundles'];
+      }
+    }
+    return $return;
   }
 
   /**
@@ -167,9 +201,14 @@ class D8 extends CMS {
    * {@inheritdoc}
    */
   public function implementSetEntityProperty(&$entity, $property, $value) {
-    if ($property == 'title' && method_exists($entity, 'setTitle')) {
-      $entity->setTitle($value);
-    }
+    $entity->set($property, $value);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function formatFileProperty($file) {
+    return $file->id();
   }
 
   /**
@@ -233,6 +272,13 @@ class D8 extends CMS {
   /**
    * {@inheritdoc}
    */
+  public function entityProperties($entity) {
+    return array();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function implementGetEntityProperty(&$entity, $property) {
     $type = $this->getEntityType($entity);
     if ($type == 'node') {
@@ -266,6 +312,7 @@ class D8 extends CMS {
    */
   public function implementFileSave($drupal_file) {
     $drupal_file->save();
+    return $drupal_file;
   }
 
   /**
