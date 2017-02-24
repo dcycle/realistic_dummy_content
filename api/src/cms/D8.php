@@ -229,6 +229,10 @@ class D8 extends CMS implements FrameworkInterface {
     }
   }
 
+  public function entityProperties($entity) {
+    return array();
+  }
+
   /**
    * {@inheritdoc}
    */

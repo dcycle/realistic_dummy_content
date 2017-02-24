@@ -46,7 +46,7 @@ class RealisticDummyContentFieldModifier extends RealisticDummyContentEntityBase
   public function getProperties() {
     $modifiable_properties = array();
     $fields = $this->getFields();
-    foreach ((array) $this->getEntity() as $property => $info) {
+    foreach (CMS::instance()->entityProperties($this->getEntity()) as $property => $info) {
       if (!in_array($property, array_keys($fields)) && $this->filter($property)) {
         $this->addModifier($modifiable_properties, 'property', $property);
       }

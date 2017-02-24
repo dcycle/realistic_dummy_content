@@ -18,4 +18,6 @@ interface FrameworkInterface {
    */
   public function develGenerate($info);
 
+  public function entityProperties($entity);
+
 }

@@ -18,6 +18,10 @@ class D7 extends CMS implements FrameworkInterface {
     }
   }
 
+  public function entityProperties($entity) {
+    return (array) $entity;
+  }
+
   public function develGenerate($info) {
     module_load_include('inc', 'devel_generate');
 
