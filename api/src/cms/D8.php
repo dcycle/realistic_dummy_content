@@ -122,7 +122,21 @@ class D8 extends CMS implements FrameworkInterface {
    * {@inheritdoc}
    */
   public function implementFieldInfoFields() {
-    return \Drupal::entityManager()->getFieldMap();
+    $return = array();
+    $field_map = \Drupal::entityManager()->getFieldMap();
+    // field map returns:
+    // entitytype/name(type, bundles(article => article))
+    // we must change that into:
+    // name(entity_types=>(node), type=>type, bundles=>node(page, article))
+    foreach ($field_map as $entity_type => $fields) {
+      foreach ($fields as $field => $field_info) {
+        $return[$field]['entity_types'][$entity_type] = $entity_type;
+        $return[$field]['field_name'] = $field;
+        $return[$field]['type'] = $field_info['type'];
+        $return[$field]['bundles'][$entity_type] = $field_info['bundles'];
+      }
+    }
+    return $return;
   }
 
   /**
