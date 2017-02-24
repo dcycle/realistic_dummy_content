@@ -12,7 +12,7 @@ if (!defined('WATCHDOG_ERROR')) {
 /**
  * Drupal 8-specific code.
  */
-class D8 extends CMS {
+class D8 extends CMS implements FrameworkInterface {
 
   /**
    * {@inheritdoc}
@@ -30,6 +30,17 @@ class D8 extends CMS {
     catch (Exception $e) {
       $this->setMessage(t('realistic_dummy_content_api failed to modify dummy objects: message: @m', array('@m' => $e->getMessage())), 'error', FALSE);
     }
+  }
+
+  public function develGenerate($info) {
+    $info = array_merge(array(
+      'pass' => 'some-password',
+      'time_range' => 0,
+      'roles' => array(),
+    ), $info);
+    $plugin_manager = \Drupal::service('plugin.manager.develgenerate');
+    $instance = $plugin_manager->createInstance($info['entity_type'], array());
+    $instance->generate($info);
   }
 
   /**
@@ -87,19 +98,7 @@ class D8 extends CMS {
     $new_post = \Drupal::entityManager()->getStorage($entity_type)->create($new_node);
     $new_post->save();
 
-    return node_load($this->latestNid());
-  }
-
-  /**
-   * Retrieve the latest node id.
-   *
-   * @return int
-   *   The latest node id in the database.
-   *
-   * @throws Exception
-   */
-  public function latestNid() {
-    return db_query("SELECT nid FROM {node} ORDER BY nid DESC LIMIT 1")->fetchField();
+    return node_load($this->latestId());
   }
 
   /**

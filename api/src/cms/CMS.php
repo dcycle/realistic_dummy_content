@@ -14,7 +14,7 @@ namespace Drupal\realistic_dummy_content_api\cms;
  * Backdrop 1, Drupal 7 or Drupal 8, are represented by subclasses of this
  * class.
  */
-abstract class CMS {
+abstract class CMS implements FrameworkInterface {
   static private $testFlag;
 
   /**
@@ -38,6 +38,8 @@ abstract class CMS {
         throw new \Exception('No CMS implementation class available for the CMS ' . $cms);
     }
   }
+
+  abstract public function develGenerate($info);
 
   /**
    * Test for self::instance().
@@ -70,6 +72,12 @@ abstract class CMS {
 
   /**
    * Create an entity.
+   *
+   * @param array $info
+   *   Associative array which can contain (defaults are the first
+   *   value):
+   *     entity_type => node|user|...
+   *     dummy => FALSE|TRUE
    */
   static public function createEntity($info = array()) {
     $return = self::instance()->implementCreateEntity($info);
@@ -445,11 +453,42 @@ abstract class CMS {
       }
     }
     $this->cmsSpecificTests($errors, $tests);
+    $this->endToEndTests($errors, $tests);
     self::debug('Errors:');
     self::debug($errors);
     self::debug('Passed tests:');
     self::debug($tests);
     return count($errors) != 0;
+  }
+
+  public function endToEndTests(&$errors, &$tests) {
+    $generator = new \Drupal\realistic_dummy_content_api\includes\RealisticDummyContentDevelGenerateGenerator('user', 'user', 1, array('kill' => TRUE));
+    $generator->generate();
+
+    $user = user_load(CMS::instance()->latestId('users', 'uid'));
+    if (strpos($user->picture->filename, 'dummyfile') === 0) {
+      $tests[] = 'User picture substitution OK, and aliases work correctly.';
+    }
+    else {
+      $errors[] = 'User picture substitution does not work.';
+    }
+  }
+
+  /**
+   * Retrieve the latest entity id (for example node nid).
+   *
+   * @param string table
+   *   A database table, for example node or users.
+   * @return string key
+   *   A database key, for example nid or uid.
+   *
+   * @return int
+   *   The latest key (node nid or user uid) in the database.
+   *
+   * @throws Exception
+   */
+  public function latestId($table = 'node', $key = 'nid') {
+    return db_query("SELECT $key FROM {$table} ORDER BY $key DESC LIMIT 1")->fetchField();
   }
 
   /**
