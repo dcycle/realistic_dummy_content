@@ -389,17 +389,12 @@ abstract class CMS implements FrameworkInterface {
    */
   public abstract function implementCmsRoot();
 
+  abstract public function fieldInfoField($name);
+
   /**
    * Get information about fields.
    */
-  static public function fieldInfoFields() {
-    return self::instance()->implementFieldInfoFields();
-  }
-
-  /**
-   * Implements self::fieldInfoFields().
-   */
-  public abstract function implementFieldInfoFields();
+  public abstract function fieldInfoFields();
 
   /**
    * Gets state information.

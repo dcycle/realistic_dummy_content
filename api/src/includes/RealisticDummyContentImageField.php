@@ -18,6 +18,7 @@ class RealisticDummyContentImageField extends RealisticDummyContentField {
    * {@inheritdoc}
    */
   public function implementValueFromFile($file) {
+    dpm('zzz' . __LINE__);
     if (!$file->value()) {
       return NULL;
     }
@@ -30,6 +31,7 @@ class RealisticDummyContentImageField extends RealisticDummyContentField {
         ),
       );
     }
+    dpm($return);
     return $return;
   }
 

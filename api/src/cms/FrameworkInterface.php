@@ -20,4 +20,6 @@ interface FrameworkInterface {
 
   public function entityProperties($entity);
 
+  public function fieldInfoField($name);
+
 }

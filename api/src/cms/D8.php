@@ -32,6 +32,11 @@ class D8 extends CMS implements FrameworkInterface {
     }
   }
 
+  public function fieldInfoField($field) {
+    $fields = $this->fieldInfoFields();
+    return $fields[$field];
+  }
+
   public function develGenerate($info) {
     $info = array_merge(array(
       'pass' => 'some-password',
@@ -121,7 +126,7 @@ class D8 extends CMS implements FrameworkInterface {
   /**
    * {@inheritdoc}
    */
-  public function implementFieldInfoFields() {
+  public function fieldInfoFields() {
     $return = array();
     $field_map = \Drupal::entityManager()->getFieldMap();
     // field map returns:
@@ -283,6 +288,7 @@ class D8 extends CMS implements FrameworkInterface {
    */
   public function implementFileSave($drupal_file) {
     $drupal_file->save();
+    return $drupal_file;
   }
 
   /**

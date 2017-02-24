@@ -176,8 +176,15 @@ class D7 extends CMS implements FrameworkInterface {
   /**
    * {@inheritdoc}
    */
-  public function implementFieldInfoFields() {
+  public function fieldInfoFields() {
     return field_info_fields();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function fieldInfoField($field) {
+    return field_info_field($field);
   }
 
   /**
@@ -369,7 +376,10 @@ class D7 extends CMS implements FrameworkInterface {
    * {@inheritdoc}
    */
   public function implementFileSave($drupal_file) {
-    return file_save($drupal_file);
+    dpm($drupal_file);
+    $return = file_save($drupal_file);
+    dpm($return);
+    return $return;
   }
 
   /**
