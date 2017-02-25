@@ -180,6 +180,7 @@ abstract class RealisticDummyContentAttribute {
       $filepath = DRUPAL_ROOT . '/' . drupal_get_path('module', $module) . '/realistic_dummy_content/fields/' . $this->getEntityType() . '/' . $this->getBundle() . '/' . $this->getName();
       $files = array_merge($files, RealisticDummyContentEnvironment::getAllFileGroups($filepath, $this->getExtensions()));
     }
+    print_r($files);
     return $files;
   }
 

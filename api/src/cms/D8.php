@@ -35,6 +35,7 @@ class D8 extends CMS implements FrameworkInterface {
         $candidate = $entity;
         realistic_dummy_content_api_improve_dummy_content($candidate, $type);
         realistic_dummy_content_api_validate($candidate, $type);
+        $entity = $candidate;
       }
     }
     catch (Exception $e) {
