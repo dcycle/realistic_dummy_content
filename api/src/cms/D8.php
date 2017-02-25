@@ -54,6 +54,9 @@ class D8 extends CMS implements FrameworkInterface {
    * {@inheritdoc}
    */
   public function develGenerate($info) {
+    if ($info['entity_type'] == 'node') {
+      $info['entity_type'] = 'content';
+    }
     $info = array_merge(array(
       'pass' => 'some-password',
       'time_range' => 0,
@@ -201,6 +204,7 @@ class D8 extends CMS implements FrameworkInterface {
    * {@inheritdoc}
    */
   public function implementSetEntityProperty(&$entity, $property, $value) {
+    print_r([$property, $value]);
     $entity->set($property, $value);
   }
 

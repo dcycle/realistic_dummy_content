@@ -487,6 +487,9 @@ abstract class CMS implements FrameworkInterface {
     else {
       $errors[] = 'User picture substitution does not work.';
     }
+
+    $generator = new RealisticDummyContentDevelGenerateGenerator('node', 'article', 1, array('kill' => TRUE));
+    $generator->generate();
   }
 
   /**
