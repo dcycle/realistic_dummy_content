@@ -280,12 +280,37 @@ class D7 extends CMS implements FrameworkInterface {
   /**
    * {@inheritdoc}
    */
-  public function formatFileProperty($file) {
-    return array(
-      LANGUAGE_NONE => array(
-        (array) $file,
-      ),
-    );
+  public function formatProperty($type, $value, $options = array()) {
+    switch ($type) {
+      case 'file':
+        return array(
+          LANGUAGE_NONE => array(
+            (array) $value,
+          ),
+        );
+
+      case 'value':
+      case 'tid':
+        return array(
+          LANGUAGE_NONE => array(
+            array_merge($options, array(
+              $type => $value,
+            )),
+          ),
+        );
+
+      case 'text_with_summary':
+        return array(
+          LANGUAGE_NONE => array(
+            array_merge($options, array(
+              'value' => $value,
+            )),
+          ),
+        );
+
+      default:
+        throw new \Exception('Unknown property type ' . $type);
+    }
   }
 
   /**

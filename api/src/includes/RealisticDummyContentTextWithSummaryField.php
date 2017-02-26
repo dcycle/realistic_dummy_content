@@ -2,6 +2,8 @@
 
 namespace Drupal\realistic_dummy_content_api\includes;
 
+use Drupal\realistic_dummy_content_api\cms\CMS;
+
 /**
  * Represents the text with summary field.
  *
@@ -23,14 +25,8 @@ class RealisticDummyContentTextWithSummaryField extends RealisticDummyContentFie
       return NULL;
     }
     if ($value) {
-      $return = array(
-        LANGUAGE_NONE => array(
-          array(
-            'value' => $value,
-            'format' => $format,
-          ),
-        ),
-      );
+      $return = CMS::instance()->formatProperty('text_with_summary',
+        $value, array('format' => $format));
       return $return;
     }
     else {

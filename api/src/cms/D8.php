@@ -205,15 +205,31 @@ class D8 extends CMS implements FrameworkInterface {
    * {@inheritdoc}
    */
   public function implementSetEntityProperty(&$entity, $property, $value) {
-    print_r([$property, $value]);
-    $entity->set($property, $value);
+    if (!is_array($value)) {
+      $value = array('set' => $value);
+    }
+    $entity->set($property, $value['set']);
+    if (isset($value['options']['format'])) {
+      $entity->{$property}->format = $value['options']['format'];
+    }
   }
 
   /**
    * {@inheritdoc}
    */
-  public function formatFileProperty($file) {
-    return $file->id();
+  public function formatProperty($type, $value, $options = array()) {
+    switch ($type) {
+      case 'file':
+        return ['set' => $value->id(), 'options' => $options];
+
+      case 'value':
+      case 'tid':
+      case 'text_with_summary':
+        return ['set' => $value, 'options' => $options];
+
+      default:
+        throw new \Exception('Unknown property type ' . $type);
+    }
   }
 
   /**

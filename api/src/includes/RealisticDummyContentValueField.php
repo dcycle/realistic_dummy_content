@@ -2,6 +2,8 @@
 
 namespace Drupal\realistic_dummy_content_api\includes;
 
+use Drupal\realistic_dummy_content_api\cms\CMS;
+
 /**
  * Generic Drupal field.
  *
@@ -18,15 +20,7 @@ class RealisticDummyContentValueField extends RealisticDummyContentField {
     if ($value === NULL) {
       return;
     }
-    return array(
-      // Not using LANGUAGE_NONE here because PHPUnit, and CMSs other than
-      // Drupal, do not know about LANGUAGE_NONE.
-      'und' => array(
-        array(
-          'value' => $value,
-        ),
-      ),
-    );
+    return CMS::instance()->formatProperty('value', $value);
   }
 
 }

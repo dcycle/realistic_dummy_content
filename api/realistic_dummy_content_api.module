@@ -278,7 +278,7 @@ function realistic_dummy_content_api_improve_dummy_content(&$entity, $type, $fil
     $candidate = $modifier->getEntity();
   }
 
-  //$entity = $candidate;
+  $entity = $candidate;
 }
 
 /**

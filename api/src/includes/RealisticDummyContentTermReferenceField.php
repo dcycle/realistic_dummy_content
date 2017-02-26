@@ -16,13 +16,8 @@ class RealisticDummyContentTermReferenceField extends RealisticDummyContentField
     try {
       $termname = $file->value();
       if ($termname) {
-        $return = array(
-          LANGUAGE_NONE => array(
-            array(
-              'tid' => $this->getTid($termname),
-            ),
-          ),
-        );
+        $return = CMS::instance()->formatProperty('tid',
+          $this->getTid($termname));
         return $return;
       }
     }

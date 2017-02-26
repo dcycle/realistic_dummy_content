@@ -157,7 +157,7 @@ abstract class CMS implements FrameworkInterface {
   /**
    * {@inheritdoc}
    */
-  abstract public function formatFileProperty($file);
+  abstract public function formatProperty($type, $value, $options = array());
 
   /**
    * Implements self::setEntityProperty().

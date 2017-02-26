@@ -49,18 +49,22 @@ interface FrameworkInterface {
   public function fieldInfoField($name);
 
   /**
-   * Formats a file to add as a property to an entity.
+   * Formats a property to add it to an entity.
    *
    * In Drupal 7, this might be array(LANGUAGE_NONE => ...); in D8 it is just
-   * the file id.
+   * the file id, or value.
    *
-   * @param object $file
-   *   A Drupal file object.
+   * @param string $type
+   *   Can be 'file', 'value', ...
+   * @param mixed $value
+   *   A file, or string...
+   * @param array $options
+   *   Extra options such as the format.
    *
    * @return mixed
    *   The file data formatted for placement in an entity.
    */
-  public function formatFileProperty($file);
+  public function formatProperty($type, $value, $options = array());
 
   /**
    * Return the filename of a user picture.

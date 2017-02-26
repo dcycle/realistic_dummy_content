@@ -28,7 +28,7 @@ class RealisticDummyContentImageField extends RealisticDummyContentField {
     $return = NULL;
     $file = $this->imageSave($file);
     if ($file) {
-      $return = CMS::instance()->formatFileProperty($file);
+      $return = CMS::instance()->formatProperty('file', $file);
     }
     return $return;
   }
