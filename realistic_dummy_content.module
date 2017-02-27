@@ -17,9 +17,7 @@
  * although hooks are available for finer control over what constitutes
  * dummy content.
  *
- * See realistic_dummy_content.api.php for hooks you can implement.
+ * See ./api/realistic_dummy_content.api.php for hooks you can implement.
  * See also the realistic_dummy_content_api module which implements its own
  * hooks.
- *
- * See also https://drupal.org/node/2266627.
  */

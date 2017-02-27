@@ -6,8 +6,5 @@ backdrop = 1.x
 tags[] = developer
 
 ; note that we are using realistic_dummy_content_api as a dependency here purely
-; as a convenience. For you own modules, this is not required. If
-; realistic_dummy_content_api is active, custom demo content will be used, but
-; not if realistic_dummy_content_api is disabled. The idea is to enable in on
-; demo and development sites, but not on production.
+; as a convenience. For you own modules, this is not required.
 dependencies[] = realistic_dummy_content_api
