@@ -32,7 +32,7 @@ function hook_realistic_dummy_content_attribute_manipulator_alter(&$class, &$inf
   // If you want to implement a particular manipulator class for a field or
   // property you can do so by implementing this hook and reproducing what's
   // below for your own field or property type.
-  switch (CMS::instance()->fieldTypeMachineName($info)) {
+  switch (Framework::instance()->fieldTypeMachineName($info)) {
     case 'picture':
       // The user picture.
       $class = '\Drupal\realistic_dummy_content_api\includes\RealisticDummyContentUserPicture';

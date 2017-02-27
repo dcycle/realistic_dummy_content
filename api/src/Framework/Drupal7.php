@@ -1,18 +1,18 @@
 <?php
 
-use Drupal\realistic_dummy_content_api\cms\CMS;
+use Drupal\realistic_dummy_content_api\Framework\Framework;
 
-namespace Drupal\realistic_dummy_content_api\cms;
+namespace Drupal\realistic_dummy_content_api\Framework;
 
 /**
  * Drupal 7-specific code.
  */
-class D7 extends CMS implements FrameworkInterface {
+class Drupal7 extends Framework implements FrameworkInterface {
 
   /**
    * {@inheritdoc}
    */
-  public function implementHookEntityPresave($entity, $type) {
+  public function hookEntityPresave($entity, $type) {
     if ($type != 'user') {
       $this->genericEntityPresave($entity, $type);
     }
@@ -62,25 +62,9 @@ class D7 extends CMS implements FrameworkInterface {
   }
 
   /**
-   * Drupal-7 specific insert hook for users.
+   * {@inheritdoc}
    */
   public function hookUserInsert(&$edit, $account, $category) {
-    static::addTestFlag('hookUserInsert called');
-    return $this->instance()->implementHookUserInsert($edit, $account, $category);
-  }
-
-  /**
-   * Drupal-7 specific presave hook for users.
-   */
-  public function hookUserPresave(&$edit, $account, $category) {
-    static::addTestFlag('hookUserPresave called');
-    return $this->instance()->implementHookUserPresave($edit, $account, $category);
-  }
-
-  /**
-   * Implements $this->hookUserInsert().
-   */
-  public function implementHookUserInsert(&$edit, $account, $category) {
     // This hook is invoked only once when the user is first created, whether
     // by the administrator or by devel_generate. The hook is not invoked
     // thereafter.
@@ -95,13 +79,13 @@ class D7 extends CMS implements FrameworkInterface {
   /**
    * {@inheritdoc}
    */
-  public function cmsSpecificTests(&$errors, &$tests) {
+  public function frameworkSpecificTests(&$errors, &$tests) {
   }
 
   /**
-   * Implements $this->hookUserPresave().
+   * {@inheritdoc}
    */
-  public function implementHookUserPresave(&$edit, $account, $category) {
+  public function hookUserPresave(&$edit, $account, $category) {
     // This hook is called when content is updated, in which case we don't want
     // to tamper with it. When content is first created, the $account's is_new
     // property is set to FALSE, se we can't depend on that to determine whether
@@ -184,7 +168,7 @@ class D7 extends CMS implements FrameworkInterface {
   /**
    * {@inheritdoc}
    */
-  public function implementAlter($type, &$data, &$context1 = NULL, &$context2 = NULL, &$context3 = NULL) {
+  public function alter($type, &$data, &$context1 = NULL, &$context2 = NULL, &$context3 = NULL) {
     return drupal_alter($type, $data, $context1, $context2, $context3);
   }
 
@@ -205,14 +189,14 @@ class D7 extends CMS implements FrameworkInterface {
   /**
    * {@inheritdoc}
    */
-  public function implementModuleList() {
+  public function moduleList() {
     return module_list();
   }
 
   /**
    * {@inheritdoc}
    */
-  public function implementModuleInvokeAll($hook) {
+  public function moduleInvokeAll($hook) {
     $args = func_get_args();
     return call_user_func_array('module_invoke_all', $args);
   }
@@ -220,7 +204,7 @@ class D7 extends CMS implements FrameworkInterface {
   /**
    * {@inheritdoc}
    */
-  public function implementEntityIsDummy($entity, $type) {
+  public function entityIsDummy($entity, $type) {
     $return = FALSE;
     // Any entity with the devel_generate property set should be considered
     // dummy content. although not all dummy content has this flag set.
@@ -259,28 +243,28 @@ class D7 extends CMS implements FrameworkInterface {
   /**
    * {@inheritdoc}
    */
-  public function implementGetBundleName($entity) {
+  public function getBundleName($entity) {
     return $entity->type;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function implementConfigGet($name, $default) {
+  public function configGet($name, $default) {
     return variable_get($name, $default);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function implementStateGet($name, $default) {
+  public function stateGet($name, $default) {
     return variable_get($name, $default);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function implementSetEntityProperty(&$entity, $property, $value) {
+  public function setEntityProperty(&$entity, $property, $value) {
     $entity->{$property} = $value;
   }
 
@@ -323,14 +307,14 @@ class D7 extends CMS implements FrameworkInterface {
   /**
    * {@inheritdoc}
    */
-  public function implementGetEntityProperty(&$entity, $property) {
+  public function getEntityProperty(&$entity, $property) {
     return $entity->{$property};
   }
 
   /**
    * {@inheritdoc}
    */
-  public function implementCreateEntity($info) {
+  public function createEntity($info) {
     if (isset($info['entity_type'])) {
       $entity_type = $info['entity_type'];
     }
@@ -362,7 +346,7 @@ class D7 extends CMS implements FrameworkInterface {
   }
 
   /**
-   * Retrieves the default node type for this CMS.
+   * Retrieves the default node type for this framework.
    */
   public function getDefaultNodeType() {
     return 'article';
@@ -378,7 +362,7 @@ class D7 extends CMS implements FrameworkInterface {
   /**
    * {@inheritdoc}
    */
-  public function implementDebug($message, $info) {
+  public function debug($message, $info) {
     if ($this->moduleExists('devel')) {
       // @codingStandardsIgnoreStart
       dpm($message, $info);
@@ -390,35 +374,35 @@ class D7 extends CMS implements FrameworkInterface {
   /**
    * {@inheritdoc}
    */
-  public function implementGetPath($type, $name) {
+  public function getPath($type, $name) {
     return drupal_get_path($type, $name);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function implementCmsRoot() {
+  public function frameworkRoot() {
     return DRUPAL_ROOT;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function implementModuleExists($module) {
+  public function moduleExists($module) {
     return module_exists($module);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function implementWatchdog($message, $severity) {
+  public function watchdog($message, $severity) {
     watchdog('realistic_dummy_content_api', $message, $severity);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function implementGetAllVocabularies() {
+  public function getAllVocabularies() {
     $return = taxonomy_get_vocabularies();
     return $return;
   }
@@ -426,7 +410,7 @@ class D7 extends CMS implements FrameworkInterface {
   /**
    * {@inheritdoc}
    */
-  public function implementFileSave($drupal_file) {
+  public function fileSave($drupal_file) {
     $return = file_save($drupal_file);
     return $return;
   }
@@ -452,14 +436,14 @@ class D7 extends CMS implements FrameworkInterface {
   /**
    * {@inheritdoc}
    */
-  public function implementVocabularyIdentifier($vocabulary) {
+  public function vocabularyIdentifier($vocabulary) {
     return $vocabulary->vid;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function implementNewVocabularyTerm($vocabulary, $name) {
+  public function newVocabularyTerm($vocabulary, $name) {
     $term = new \stdClass();
     $term->name = $name;
     $term->vid = $vocabulary->vid;
@@ -486,6 +470,13 @@ class D7 extends CMS implements FrameworkInterface {
    */
   public function filteredHtml() {
     return 'filtered_html';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function variableDel($variable) {
+    variable_del($variable);
   }
 
 }

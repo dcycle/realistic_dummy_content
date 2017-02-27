@@ -2,7 +2,7 @@
 
 namespace Drupal\realistic_dummy_content_api\includes;
 
-use Drupal\realistic_dummy_content_api\cms\CMS;
+use Drupal\realistic_dummy_content_api\Framework\Framework;
 
 /**
  * Generic entity manipulator.
@@ -114,7 +114,7 @@ abstract class RealisticDummyContentEntityBase extends RealisticDummyContentBase
   public function getBundle() {
     $entity = $this->getEntity();
     if (isset($entity->type)) {
-      return CMS::getBundleName($entity);
+      return Framework::instance()->getBundleName($entity);
     }
     else {
       return $this->getType();

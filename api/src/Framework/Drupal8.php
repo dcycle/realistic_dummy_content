@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\realistic_dummy_content_api\cms;
+namespace Drupal\realistic_dummy_content_api\Framework;
 
 use Drupal\taxonomy\Entity\Vocabulary;
 use Drupal\taxonomy\Entity\Term;
@@ -14,7 +14,7 @@ if (!defined('WATCHDOG_ERROR')) {
 /**
  * Drupal 8-specific code.
  */
-class D8 extends CMS implements FrameworkInterface {
+class Drupal8 extends Framework implements FrameworkInterface {
 
   /**
    * {@inheritdoc}
@@ -29,9 +29,9 @@ class D8 extends CMS implements FrameworkInterface {
   /**
    * {@inheritdoc}
    */
-  public function implementHookEntityPresave($entity, $type) {
+  public function hookEntityPresave($entity, $type) {
     try {
-      // $type is NULL in D8; we'll compute it here.
+      // $type is NULL in Drupal8; we'll compute it here.
       $type = $this->getEntityType($entity);
       if (realistic_dummy_content_api_is_dummy($entity, $type)) {
         $candidate = $entity;
@@ -86,17 +86,17 @@ class D8 extends CMS implements FrameworkInterface {
   }
 
   /**
-   * Perform CMS-specific tests, if any.
+   * Perform framework-specific tests, if any.
    */
-  public function cmsSpecificTests(&$errors, &$tests) {
+  public function frameworkSpecificTests(&$errors, &$tests) {
     $node = $this->createDummyNode();
 
     $result = $this->getEntityType($node);
     if ($result == 'node') {
-      $tests[] = 'D8::getEntityType() works as expected.';
+      $tests[] = 'Drupal8::getEntityType() works as expected.';
     }
     else {
-      $errors[] = 'D8::getEntityType() returned ' . $result;
+      $errors[] = 'Drupal8::getEntityType() returned ' . $result;
     }
   }
 
@@ -131,7 +131,7 @@ class D8 extends CMS implements FrameworkInterface {
   /**
    * {@inheritdoc}
    */
-  public function implementModuleInvokeAll($hook) {
+  public function moduleInvokeAll($hook) {
     $args = func_get_args();
     $hook = array_shift($args);
     return \Drupal::moduleHandler()->invokeAll($hook, $args);
@@ -140,7 +140,7 @@ class D8 extends CMS implements FrameworkInterface {
   /**
    * {@inheritdoc}
    */
-  public function implementEntityIsDummy($entity, $type) {
+  public function entityIsDummy($entity, $type) {
     $return = isset($entity->devel_generate);
     return $return;
   }
@@ -202,7 +202,7 @@ class D8 extends CMS implements FrameworkInterface {
   /**
    * {@inheritdoc}
    */
-  public function implementModuleList() {
+  public function moduleList() {
     $full_list = \Drupal::moduleHandler()->getModuleList();
     return array_keys($full_list);
   }
@@ -210,7 +210,7 @@ class D8 extends CMS implements FrameworkInterface {
   /**
    * {@inheritdoc}
    */
-  public function implementConfigGet($name, $default) {
+  public function configGet($name, $default) {
     $candidate = \Drupal::config('realistic_dummy_content_api')->get($name);
     return $candidate ? $candidate : $default;
   }
@@ -218,28 +218,28 @@ class D8 extends CMS implements FrameworkInterface {
   /**
    * {@inheritdoc}
    */
-  public function implementAlter($type, &$data, &$context1 = NULL, &$context2 = NULL, &$context3 = NULL) {
+  public function alter($type, &$data, &$context1 = NULL, &$context2 = NULL, &$context3 = NULL) {
     return \Drupal::moduleHandler()->alter($type, $data, $context1, $context2);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function implementGetBundleName($entity) {
+  public function getBundleName($entity) {
     return $entity->bundle();
   }
 
   /**
    * {@inheritdoc}
    */
-  public function implementStateGet($name, $default) {
+  public function stateGet($name, $default) {
     return \Drupal::state()->get($name, $default);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function implementSetEntityProperty(&$entity, $property, $value) {
+  public function setEntityProperty(&$entity, $property, $value) {
     if (!is_array($value)) {
       $value = array('set' => $value);
     }
@@ -270,14 +270,14 @@ class D8 extends CMS implements FrameworkInterface {
   /**
    * {@inheritdoc}
    */
-  public function implementModuleExists($module) {
+  public function moduleExists($module) {
     return \Drupal::moduleHandler()->moduleExists($module);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function implementWatchdog($message, $severity) {
+  public function watchdog($message, $severity) {
     if ($severity == WATCHDOG_ERROR) {
       \Drupal::logger('realistic_dummy_content_api')->error($message);
     }
@@ -306,7 +306,7 @@ class D8 extends CMS implements FrameworkInterface {
   /**
    * {@inheritdoc}
    */
-  public function implementDebug($message, $info) {
+  public function debug($message, $info) {
     if ($this->moduleExists('devel')) {
       if (is_string($message)) {
         // @codingStandardsIgnoreStart
@@ -333,7 +333,7 @@ class D8 extends CMS implements FrameworkInterface {
   /**
    * {@inheritdoc}
    */
-  public function implementCreateEntity($info) {
+  public function createEntity($info) {
     if (isset($info['entity_type']) && $info['entity_type'] != 'node') {
       throw new \Exception(__FUNCTION__ . ' unknown entity type.');
     }
@@ -352,32 +352,32 @@ class D8 extends CMS implements FrameworkInterface {
   /**
    * {@inheritdoc}
    */
-  public function implementGetEntityProperty(&$entity, $property) {
-    // D8 does not have properties.
+  public function getEntityProperty(&$entity, $property) {
+    // Drupal8 does not have properties.
     if ($property == 'title') {
       return $entity->getTitle();
     }
-    throw new \Exception(__FUNCTION__ . ' should not be called as D8 does not use properties. ' . $property);
+    throw new \Exception(__FUNCTION__ . ' should not be called as Drupal8 does not use properties. ' . $property);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function implementGetPath($type, $name) {
+  public function getPath($type, $name) {
     return drupal_get_path($type, $name);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function implementCmsRoot() {
+  public function frameworkRoot() {
     return DRUPAL_ROOT;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function implementFileSave($drupal_file) {
+  public function fileSave($drupal_file) {
     $drupal_file->save();
     return $drupal_file;
   }
@@ -385,21 +385,21 @@ class D8 extends CMS implements FrameworkInterface {
   /**
    * {@inheritdoc}
    */
-  public function implementGetAllVocabularies() {
+  public function getAllVocabularies() {
     return Vocabulary::loadMultiple();
   }
 
   /**
    * {@inheritdoc}
    */
-  public function implementVocabularyIdentifier($vocabulary) {
+  public function vocabularyIdentifier($vocabulary) {
     return $vocabulary->id();
   }
 
   /**
    * {@inheritdoc}
    */
-  public function implementNewVocabularyTerm($vocabulary, $name) {
+  public function newVocabularyTerm($vocabulary, $name) {
     $term = Term::create([
       'name' => $name,
       'vid' => $vocabulary->id(),
@@ -429,6 +429,13 @@ class D8 extends CMS implements FrameworkInterface {
    */
   public function filteredHtml() {
     return 'basic_html';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function variableDel($variable) {
+    // Do nothing in Drupal8 to delete a variable.
   }
 
 }

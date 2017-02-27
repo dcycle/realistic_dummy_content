@@ -6,6 +6,8 @@
  * Install, deployment (update), and uninstall hooks for this module.
  */
 
+use Drupal\realistic_dummy_content_api\Framework\Framework;
+
 /**
  * Implements hook_uninstall().
  */
@@ -13,5 +15,5 @@ function realistic_dummy_content_api_uninstall() {
   // This is an internal variable used by tests to avoid using random
   // images. This is necessary in order to test that the image replacement
   // happens correctly.
-  RealisticDummyContentCMS::variableDel('realistic_dummy_content_api_rand');
+  Framework::variableDel('realistic_dummy_content_api_rand');
 }

@@ -2,7 +2,7 @@
 
 namespace Drupal\realistic_dummy_content_api\includes;
 
-use Drupal\realistic_dummy_content_api\cms\CMS;
+use Drupal\realistic_dummy_content_api\Framework\Framework;
 
 /**
  * Field modifier for image fields.
@@ -28,7 +28,7 @@ class RealisticDummyContentImageField extends RealisticDummyContentField {
     $return = NULL;
     $file = $this->imageSave($file);
     if ($file) {
-      $return = CMS::instance()->formatProperty('file', $file);
+      $return = Framework::instance()->formatProperty('file', $file);
     }
     return $return;
   }

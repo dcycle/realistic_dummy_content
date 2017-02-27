@@ -2,7 +2,7 @@
 
 namespace Drupal\realistic_dummy_content_api\includes;
 
-use Drupal\realistic_dummy_content_api\cms\CMS;
+use Drupal\realistic_dummy_content_api\Framework\Framework;
 
 /**
  * Field modifier class.
@@ -46,7 +46,7 @@ class RealisticDummyContentFieldModifier extends RealisticDummyContentEntityBase
   public function getProperties() {
     $modifiable_properties = array();
     $fields = $this->getFields();
-    foreach (CMS::instance()->entityProperties($this->getEntity()) as $property => $info) {
+    foreach (Framework::instance()->entityProperties($this->getEntity()) as $property => $info) {
       if (!in_array($property, array_keys($fields)) && $this->filter($property)) {
         $this->addModifier($modifiable_properties, 'property', $property);
       }
@@ -67,7 +67,7 @@ class RealisticDummyContentFieldModifier extends RealisticDummyContentEntityBase
     $type = $this->getType();
     $bundle = $this->getBundle();
     // Get _all_ defined fields. This should return an associative array.
-    $fields = CMS::instance()->fieldInfoFields();
+    $fields = Framework::instance()->fieldInfoFields();
     foreach ($fields as $field => $info) {
       if (isset($info['bundles'][$type]) && is_array($info['bundles'][$type]) && in_array($bundle, $info['bundles'][$type]) && $this->filter($field)) {
         $this->addModifier($modifiable_fields, 'field', $field);
@@ -112,7 +112,7 @@ class RealisticDummyContentFieldModifier extends RealisticDummyContentEntityBase
 
       case 'field':
         $original_class = '\Drupal\realistic_dummy_content_api\includes\RealisticDummyContentValueField';
-        $field_info = CMS::instance()->fieldInfoField($name);
+        $field_info = Framework::instance()->fieldInfoField($name);
         $attribute_type = $field_info['type'];
         break;
 
@@ -127,7 +127,7 @@ class RealisticDummyContentFieldModifier extends RealisticDummyContentEntityBase
       'entity' => $this->getEntity(),
       'field_name' => $name,
     );
-    CMS::alter('realistic_dummy_content_attribute_manipulator', $class, $info);
+    Framework::instance()->alter('realistic_dummy_content_attribute_manipulator', $class, $info);
 
     if (!$class) {
       // third-parties might want to signal that certain fields cannot be

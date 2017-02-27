@@ -2,7 +2,7 @@
 
 namespace Drupal\realistic_dummy_content_api\includes;
 
-use Drupal\realistic_dummy_content_api\cms\CMS;
+use Drupal\realistic_dummy_content_api\Framework\Framework;
 
 /**
  * Represents either a field or a property for an entity.
@@ -152,7 +152,7 @@ abstract class RealisticDummyContentAttribute {
       return;
     }
     $entity = $this->getEntity()->getEntity();
-    CMS::setEntityProperty($entity, $this->getName(), $value);
+    Framework::instance()->setEntityProperty($entity, $this->getName(), $value);
     $this->getEntity()->setEntity($entity);
   }
 
@@ -176,7 +176,7 @@ abstract class RealisticDummyContentAttribute {
    */
   public function getCandidateFiles() {
     $files = array();
-    foreach (CMS::moduleList() as $module) {
+    foreach (Framework::instance()->moduleList() as $module) {
       $filepath = DRUPAL_ROOT . '/' . drupal_get_path('module', $module) . '/realistic_dummy_content/fields/' . $this->getEntityType() . '/' . $this->getBundle() . '/' . $this->getName();
       $files = array_merge($files, RealisticDummyContentEnvironment::getAllFileGroups($filepath, $this->getExtensions()));
     }
@@ -189,9 +189,9 @@ abstract class RealisticDummyContentAttribute {
    * The structured property can then be added to the entity.
    *
    * For example, sometimes the appropriate property is array('value' => 'abc',
-   * 'text_format' => CMS::instance()->filteredHtml()); other times is it just a
-   * string. Subclasses will determine what to do with the contents from the
-   * file.
+   * 'text_format' => Framework::instance()->filteredHtml()); other times is it
+   * just a string. Subclasses will determine what to do with the contents from
+   * the file.
    *
    * @param object $file
    *   The actual file object.
@@ -322,7 +322,7 @@ abstract class RealisticDummyContentAttribute {
     $random = $file->getRadical();
     $drupal_file = $this->env()->fileSaveData($file->value(), 'public://dummyfile' . $random . '.' . $file->getRadicalExtension());
     $drupal_file->uid = $this->getUid();
-    $return = CMS::fileSave($drupal_file);
+    $return = Framework::instance()->fileSave($drupal_file);
 
     if (!is_object($return)) {
       throw new \Exception('Internal error, ' . __FUNCTION__ . ' expecting to return an object');

@@ -2,7 +2,7 @@
 
 namespace Drupal\realistic_dummy_content_api\includes;
 
-use Drupal\realistic_dummy_content_api\cms\CMS;
+use Drupal\realistic_dummy_content_api\Framework\Framework;
 
 /**
  * The "devel generate" dummy content generator.
@@ -29,7 +29,7 @@ class RealisticDummyContentDevelGenerateGenerator extends RealisticDummyContentG
         'title_length' => 3,
       ));
     }
-    CMS::instance()->develGenerate($info);
+    Framework::instance()->develGenerate($info);
   }
 
 }
