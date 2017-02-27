@@ -102,6 +102,13 @@ class Framework implements FrameworkInterface {
   /**
    * {@inheritdoc}
    */
+  public function entityProperties($entity) {
+    return $this->implementor()->entityProperties($entity);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function fieldInfoField($name) {
     return $this->implementor()->fieldInfoField($name);
   }
