@@ -8,5 +8,5 @@ set -e
 
 ./exec.sh drupal8 'drush generate-realistic'
 
-./exec.sh drupal8 'drush pm-uninstall realistic_dummy_content'
-./exec.sh drupal8 'drush pm-uninstall realistic_dummy_content_api'
+./exec.sh drupal8 'drush -y pm-uninstall realistic_dummy_content'
+./exec.sh drupal8 'drush -y pm-uninstall realistic_dummy_content_api'

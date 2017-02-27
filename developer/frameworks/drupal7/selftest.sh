@@ -15,7 +15,7 @@ set -e
 
 ./exec.sh drupal7 'drush generate-realistic'
 
-./exec.sh drupal7 'drush dis realistic_dummy_content'
-./exec.sh drupal7 'drush dis realistic_dummy_content_api'
-./exec.sh drupal7 'drush pm-uninstall realistic_dummy_content'
-./exec.sh drupal7 'drush pm-uninstall realistic_dummy_content_api'
+./exec.sh drupal7 'drush -y dis realistic_dummy_content'
+./exec.sh drupal7 'drush -y dis realistic_dummy_content_api'
+./exec.sh drupal7 'drush -y pm-uninstall realistic_dummy_content'
+./exec.sh drupal7 'drush -y pm-uninstall realistic_dummy_content_api'
