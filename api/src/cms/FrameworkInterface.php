@@ -77,4 +77,37 @@ interface FrameworkInterface {
    */
   public function userPictureFilename($user);
 
+  /**
+   * Return a Drupal 7-style field name if possible for a given entity.
+   *
+   * For example if the field type is entity_reference, we can transform that
+   * to taxonomy_term_reference for a given field in a given entity.
+   *
+   * @param array $info
+   *   An associative array which can contain "entity" and "field_name" and
+   *   "machine_name".
+   *
+   * @return string
+   *   A Drupal 7-style field type machine name.
+   */
+  public function fieldTypeMachineName($info);
+
+  /**
+   * Starts a timer, see timer_start() in Drupal 7.
+   */
+  public function timerStart($id);
+
+  /**
+   * Stops a timer and returns data, see timer_stop() in Drupal 7.
+   */
+  public function timerStop($id);
+
+  /**
+   * Return the default text filter.
+   *
+   * @return string
+   *   filtered_html or basic_html... depending on the CMS.
+   */
+  public function filteredHtml();
+
 }

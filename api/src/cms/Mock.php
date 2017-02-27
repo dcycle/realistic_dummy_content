@@ -87,7 +87,7 @@ class Mock extends CMS {
    */
   public function implementAlter($type, &$data, &$context1 = NULL, &$context2 = NULL, &$context3 = NULL) {
     if ($type == 'realistic_dummy_content_attribute_manipulator') {
-      return realistic_dummy_content_api_realistic_dummy_content_attribute_manipulator_alter($data, $context1, $context2);
+      return realistic_dummy_content_api_realistic_dummy_content_attribute_manipulator_alter($data, $context1, $context2, $context3);
     }
   }
 

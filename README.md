@@ -39,7 +39,12 @@ Some fields have special meta data: body fields can have input formats in additi
         - 2.jpg
         - 2.jpg.alt.txt
 
-In the above example, `realistic_dummy_content` sees two possible body values, _one of which with a specific input format_; and two possible images, _one of which with a specific alt text_. Meta data is never compulsory, and in the case where a meta attribute is needed, a reasonable fallback value is used, for example `filtered_html` will be used if no format is specified for the body.
+In the above example, `realistic_dummy_content` sees two possible body values,
+_one of which with a specific input format_; and two possible images, _one of
+which with a specific alt text_. Meta data is never compulsory, and in the case
+where a meta attribute is needed, a reasonable fallback value is used, for
+example `filtered_html` (Drupal 7) or `basic_html` (Drupal 8) will be used if no
+format is specified for the body.
 
 Issue queue and pull requests
 -----
@@ -97,5 +102,5 @@ Sponsors
 -----
 
  * [Dcycle](http://dcycle.com/) (Current)
- * [The Linux Foundation](http://www.linuxfoundation.org/) (previous)  
+ * [The Linux Foundation](http://www.linuxfoundation.org/) (previous)
  * [CGI](http://cgi.com/) (Initial development)

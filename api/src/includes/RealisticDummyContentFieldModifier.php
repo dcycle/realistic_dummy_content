@@ -121,12 +121,13 @@ class RealisticDummyContentFieldModifier extends RealisticDummyContentEntityBase
     }
     $class = $original_class;
 
-    // TODO : this does not alter correctly, because taxonomy term refs are
-    // now entity_refs, we need to load field information (for this entity?)
-    // print_r($this->getEntity()->getFieldDefinition($name));
-    // TODO: if the entity ref is a taxonomy term ref we need to tell the next
-    // alter hook that...
-    CMS::alter('realistic_dummy_content_attribute_manipulator', $class, $type, $attribute_type);
+    $info = array(
+      'type' => $type,
+      'machine_name' => $attribute_type,
+      'entity' => $this->getEntity(),
+      'field_name' => $name,
+    );
+    CMS::alter('realistic_dummy_content_attribute_manipulator', $class, $info);
 
     if (!$class) {
       // third-parties might want to signal that certain fields cannot be

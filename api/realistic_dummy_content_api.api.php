@@ -14,8 +14,17 @@
  * @param string $machine_name
  *   The machine name of the field or property, for example "title",
  *   "text_with_summary", or "picture".
+ * @param array $info
+ *   More information which may be required for the manipulator class. This
+ *   can contain
+ *     [
+ *       entity => Drupal entity object,
+ *       field_name => the field name
+ *     ], which can be required
+ *   for example to determine which type of entity reference manipulator
+ *   to create.
  */
-function hook_realistic_dummy_content_attribute_manipulator_alter(&$class, &$type, &$machine_name) {
+function hook_realistic_dummy_content_attribute_manipulator_alter(&$class, &$type, &$machine_name, &$info) {
   // If you want to implement a particular manipulator class for a field or
   // property you can do so by implementing this hook and reproducing what's
   // below for your own field or property type.

@@ -4,6 +4,8 @@ namespace Drupal\realistic_dummy_content_api\cms;
 
 use Drupal\taxonomy\Entity\Vocabulary;
 use Drupal\taxonomy\Entity\Term;
+use Drupal\Component\Utility\Timer;
+use Drupal\field\Entity\FieldConfig;
 
 if (!defined('WATCHDOG_ERROR')) {
   define('WATCHDOG_ERROR', 3);
@@ -159,9 +161,42 @@ class D8 extends CMS implements FrameworkInterface {
         $return[$field]['field_name'] = $field;
         $return[$field]['type'] = $field_info['type'];
         $return[$field]['bundles'][$entity_type] = $field_info['bundles'];
+
+        $this->addFieldSettings($return, $field, $field_info);
       }
     }
     return $return;
+  }
+
+  /**
+   * Adds field settings if possible.
+   *
+   * @param array $return
+   *   An array of fields to modify.
+   * @param string $field
+   *   A field name.
+   * @param array $field_info
+   *   Information about the field.
+   */
+  public function addFieldSettings(&$return, $field, $field_info) {
+    if ($field_info['type'] == 'entity_reference') {
+      if (isset($field_info['bundles']) && count($field_info['bundles'])) {
+        $bundle = array_pop($field_info['bundles']);
+        $config = FieldConfig::loadByName('node', $bundle, $field);
+        if ($config) {
+          $settings = $config->getSettings();
+
+          if (isset($settings['handler_settings']['target_bundles'])) {
+            foreach ($settings['handler_settings']['target_bundles'] as
+            $target) {
+              $return[$field]['settings']['allowed_values'][] = array(
+                'vocabulary' => $target,
+              );
+            }
+          }
+        }
+      }
+    }
   }
 
   /**
@@ -254,6 +289,23 @@ class D8 extends CMS implements FrameworkInterface {
   /**
    * {@inheritdoc}
    */
+  public function fieldTypeMachineName($info) {
+    $machine_name = isset($info['machine_name']) ? $info['machine_name'] : NULL;
+    $entity = isset($info['entity']) ? $info['entity'] : NULL;
+    $field_name = isset($info['field_name']) ? $info['field_name'] : NULL;
+
+    if ($machine_name == 'entity_reference' && $entity && $field_name) {
+      $settings = $entity->getFieldDefinition($field_name)->getSettings();
+      if (isset($settings['target_type']) && $settings['target_type'] == 'taxonomy_term') {
+        return 'taxonomy_term_reference';
+      }
+    }
+    return $info['machine_name'];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function implementDebug($message, $info) {
     if ($this->moduleExists('devel')) {
       if (is_string($message)) {
@@ -302,7 +354,10 @@ class D8 extends CMS implements FrameworkInterface {
    */
   public function implementGetEntityProperty(&$entity, $property) {
     // D8 does not have properties.
-    throw new \Exception(__FUNCTION__ . ' should not be called as D8 does not use properties.');
+    if ($property == 'title') {
+      return $entity->getTitle();
+    }
+    throw new \Exception(__FUNCTION__ . ' should not be called as D8 does not use properties. ' . $property);
   }
 
   /**
@@ -353,6 +408,27 @@ class D8 extends CMS implements FrameworkInterface {
     $term->save();
 
     return $term;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function timerStart($id) {
+    return Timer::start($id);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function timerStop($id) {
+    return Timer::stop($id);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function filteredHtml() {
+    return 'basic_html';
   }
 
 }

@@ -40,7 +40,7 @@ abstract class RealisticDummyContentRecipe {
     // We need to cycle through all active modules and look for those
     // which contain a class module_name_realistic_dummy_content_recipe
     // in the file realistic_dummy_content/recipe/module_name.recipe.inc.
-    $modules = module_list();
+    $modules = CMS::moduleList();
     foreach ($modules as $module) {
       $candidate = $module . '_realistic_dummy_content_recipe';
       if (self::loadRecipeClass($module) && class_exists($candidate)) {
@@ -92,7 +92,7 @@ abstract class RealisticDummyContentRecipe {
    */
   public static function getGenerator($type, $bundle, $count, $more) {
     if (in_array($type, array('user', 'node'))) {
-      if (module_exists('devel_generate')) {
+      if (CMS::moduleExists('devel_generate')) {
         return new RealisticDummyContentDevelGenerateGenerator($type, $bundle, $count, $more);
       }
       else {
@@ -128,14 +128,14 @@ abstract class RealisticDummyContentRecipe {
    * Log the start time.
    */
   public static function startTime($id) {
-    timer_start(serialize($id));
+    CMS::instance()->timerStart(serialize($id));
   }
 
   /**
    * Get the end time.
    */
   public static function stopTime($id) {
-    $timer = timer_stop(serialize($id));
+    $timer = CMS::instance()->timerStop(serialize($id));
     return $timer['time'];
   }
 

@@ -59,6 +59,13 @@ abstract class CMS implements FrameworkInterface {
   }
 
   /**
+   * {@inheritdoc}
+   */
+  public function fieldTypeMachineName($info) {
+    return $this->implementor()->fieldTypeMachineName($info);
+  }
+
+  /**
    * Implements self::hookEntityPresave().
    */
   public abstract function implementHookEntityPresave($entity, $type);
@@ -557,5 +564,26 @@ abstract class CMS implements FrameworkInterface {
    * Implements self::newVocabularyTerm().
    */
   public abstract function implementNewVocabularyTerm($vocabulary, $name);
+
+  /**
+   * {@inheritdoc}
+   */
+  public function timerStart($id) {
+    return $this->implementor()->timerStart($id);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function timerStop($id) {
+    return $this->implementor()->timerStop($id);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function filteredHtml() {
+    return $this->implementor()->filteredHtml();
+  }
 
 }
