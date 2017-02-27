@@ -1,4 +1,6 @@
-The files herein are used by Realistic dummy content to replace generated content for fields in entities of type node. There will be subdirectories in here, one for each "bundle" (or content type).
+The files herein are used by Realistic dummy content to replace generated
+content for fields in entities of type node. There will be subdirectories in
+here, one for each "bundle" (or content type).
 
 About the symbolic link from "post" to "article": In Backdrop, the fork of
 Drupal, article has been renamed post. Using a symbolic link here tells
