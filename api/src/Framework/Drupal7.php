@@ -248,14 +248,14 @@ class Drupal7 extends Framework implements FrameworkInterface {
   /**
    * {@inheritdoc}
    */
-  public function configGet($name, $default) {
+  public function configGet($name, $default = NULL) {
     return variable_get($name, $default);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function stateGet($name, $default) {
+  public function stateGet($name, $default = NULL) {
     return variable_get($name, $default);
   }
 
@@ -312,7 +312,7 @@ class Drupal7 extends Framework implements FrameworkInterface {
   /**
    * {@inheritdoc}
    */
-  public function createEntity($info) {
+  public function createEntity($info = array()) {
     if (isset($info['entity_type'])) {
       $entity_type = $info['entity_type'];
     }
@@ -360,7 +360,7 @@ class Drupal7 extends Framework implements FrameworkInterface {
   /**
    * {@inheritdoc}
    */
-  public function debug($message, $info) {
+  public function debug($message, $info = NULL) {
     if ($this->moduleExists('devel')) {
       // @codingStandardsIgnoreStart
       dpm($message, $info);
@@ -393,7 +393,7 @@ class Drupal7 extends Framework implements FrameworkInterface {
   /**
    * {@inheritdoc}
    */
-  public function watchdog($message, $severity) {
+  public function watchdog($message, $severity = 5) {
     watchdog('realistic_dummy_content_api', $message, $severity);
   }
 
@@ -418,7 +418,7 @@ class Drupal7 extends Framework implements FrameworkInterface {
    */
   public function testHookUserInsert() {
     self::clearTestFlag('hookUserInsert called');
-    self::createEntity(array('entity_type' => 'user'));
+    $this->createEntity(array('entity_type' => 'user'));
     return !static::getTestFlag('hookUserInsert called');
   }
 
@@ -427,7 +427,7 @@ class Drupal7 extends Framework implements FrameworkInterface {
    */
   public function testHookUserPresave() {
     self::clearTestFlag('hookUserPresave called');
-    self::createEntity(array('entity_type' => 'user'));
+    $this->createEntity(array('entity_type' => 'user'));
     return !static::getTestFlag('hookUserPresave called');
   }
 

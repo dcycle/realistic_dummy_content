@@ -229,7 +229,7 @@ class Framework implements FrameworkInterface {
    * {@inheritdoc}
    */
   public function hookEntityPresave($entity, $type) {
-    $return = self::instance()->hookEntityPresave($entity, $type);
+    $return = self::implementor()->hookEntityPresave($entity, $type);
     static::addTestFlag('hookEntityPresave called');
     return $return;
   }
@@ -237,7 +237,21 @@ class Framework implements FrameworkInterface {
   /**
    * {@inheritdoc}
    */
-  static public function newVocabularyTerm($vocabulary, $name) {
+  public function hookUserInsert(&$edit, $account, $category) {
+    return $this->implementor()->hookUserInsert($edit, $account, $category);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function hookUserPresave(&$edit, $account, $category) {
+    return $this->implementor()->hookUserPresave($edit, $account, $category);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function newVocabularyTerm($vocabulary, $name) {
     return $this->implementor()->newVocabularyTerm($vocabulary, $name);
   }
 
@@ -422,7 +436,7 @@ class Framework implements FrameworkInterface {
    * Tests self::createEntity().
    */
   static public function testCreateEntity() {
-    $entity = self::createEntity();
+    $entity = self::instance()->createEntity();
     return !is_object($entity);
   }
 
@@ -475,9 +489,9 @@ class Framework implements FrameworkInterface {
    * Tests self::setEntityProperty().
    */
   static public function testSetEntityProperty() {
-    $entity = self::createEntity();
-    self::setEntityProperty($entity, 'title', 'whatever');
-    return self::getEntityProperty($entity, 'title') != 'whatever';
+    $entity = self::instance()->createEntity();
+    self::instance()->setEntityProperty($entity, 'title', 'whatever');
+    return self::instance()->getEntityProperty($entity, 'title') != 'whatever';
   }
 
 }

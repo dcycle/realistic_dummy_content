@@ -161,6 +161,16 @@ interface FrameworkInterface {
   public function hookEntityPresave($entity, $type);
 
   /**
+   * Hook called in D7 when a user is inserted.
+   */
+  public function hookUserInsert(&$edit, $account, $category);
+
+  /**
+   * Hook called in D7 when a user is saved.
+   */
+  public function hookUserPresave(&$edit, $account, $category);
+
+  /**
    * Check if a module exists.
    */
   public function moduleExists($module);
@@ -186,7 +196,7 @@ interface FrameworkInterface {
    * @return object
    *   The taxonomy term object.
    */
-  static public function newVocabularyTerm($vocabulary, $name);
+  public function newVocabularyTerm($vocabulary, $name);
 
   /**
    * Sets the property of an entity.

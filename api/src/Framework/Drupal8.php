@@ -210,7 +210,7 @@ class Drupal8 extends Framework implements FrameworkInterface {
   /**
    * {@inheritdoc}
    */
-  public function configGet($name, $default) {
+  public function configGet($name, $default = NULL) {
     $candidate = \Drupal::config('realistic_dummy_content_api')->get($name);
     return $candidate ? $candidate : $default;
   }
@@ -232,7 +232,7 @@ class Drupal8 extends Framework implements FrameworkInterface {
   /**
    * {@inheritdoc}
    */
-  public function stateGet($name, $default) {
+  public function stateGet($name, $default = NULL) {
     return \Drupal::state()->get($name, $default);
   }
 
@@ -277,7 +277,7 @@ class Drupal8 extends Framework implements FrameworkInterface {
   /**
    * {@inheritdoc}
    */
-  public function watchdog($message, $severity) {
+  public function watchdog($message, $severity = 5) {
     if ($severity == WATCHDOG_ERROR) {
       \Drupal::logger('realistic_dummy_content_api')->error($message);
     }
@@ -306,7 +306,7 @@ class Drupal8 extends Framework implements FrameworkInterface {
   /**
    * {@inheritdoc}
    */
-  public function debug($message, $info) {
+  public function debug($message, $info = NULL) {
     if ($this->moduleExists('devel')) {
       if (is_string($message)) {
         // @codingStandardsIgnoreStart
@@ -333,7 +333,7 @@ class Drupal8 extends Framework implements FrameworkInterface {
   /**
    * {@inheritdoc}
    */
-  public function createEntity($info) {
+  public function createEntity($info = array()) {
     if (isset($info['entity_type']) && $info['entity_type'] != 'node') {
       throw new \Exception(__FUNCTION__ . ' unknown entity type.');
     }
@@ -387,6 +387,20 @@ class Drupal8 extends Framework implements FrameworkInterface {
    */
   public function getAllVocabularies() {
     return Vocabulary::loadMultiple();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function hookUserInsert(&$edit, $account, $category) {
+    // Do nothing in D8.
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function hookUserPresave(&$edit, $account, $category) {
+    // Do nothing in D8.
   }
 
   /**
