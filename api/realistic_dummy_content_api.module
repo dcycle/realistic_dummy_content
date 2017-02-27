@@ -7,7 +7,7 @@
  * See the Realistic Dummy Content module for an example of how to use.
  */
 
-use Drupal\realistic_dummy_content_api\cms\CMS;
+use Drupal\realistic_dummy_content_api\Framework\Framework;
 use Drupal\realistic_dummy_content_api\includes\Math;
 use Drupal\realistic_dummy_content_api\includes\RealisticDummyContentRecipe;
 
@@ -70,16 +70,16 @@ function realistic_dummy_content_api_argcheck_entitytype($data) {
  * Returns the current framework.
  *
  * @return string
- *   B1, D7, D8 (Backdrop, Drupal 7, Drupal 8).
+ *   Backdrop, Drupal7, Drupal8 (Backdrop, Drupal 7, Drupal 8).
  */
 function realistic_dummy_content_api_version() {
   if (defined('BACKDROP_BOOTSTRAP_SESSION')) {
-    return 'B1';
+    return 'Backdrop';
   }
   if (defined('VERSION')) {
-    return 'D7';
+    return 'Drupal7';
   }
-  return 'D8';
+  return 'Drupal8';
 }
 
 /**
@@ -101,7 +101,7 @@ function realistic_dummy_content_api_calling_function($level = 2) {
 }
 
 spl_autoload_register(function ($class_name) {
-  if (realistic_dummy_content_api_version() == 'D8') {
+  if (realistic_dummy_content_api_version() == 'Drupal8') {
     return;
   }
   if (strpos($class_name, 'realistic_dummy_content') === FALSE) {
@@ -141,7 +141,7 @@ function realistic_dummy_content_api_entity_presave($entity, $type = NULL) {
   try {
     // In Drupal 7, $entity and $type will be populated. In Drupal 8, only
     // $entity will be populated.
-    CMS::hookEntityPresave($entity, $type);
+    Framework::instance()->hookEntityPresave($entity, $type);
   }
   // Hook implementations should never throw exceptions, so we'll catch them
   // all here.
@@ -161,7 +161,7 @@ function realistic_dummy_content_api_realistic_dummy_content_attribute_manipulat
   // If you want to implement a particular manipulator class for a field or
   // property you can do so by implementing this hook and reproducing what's
   // below for your own field or property type.
-  switch (CMS::instance()->fieldTypeMachineName($info)) {
+  switch (Framework::instance()->fieldTypeMachineName($info)) {
     case 'picture':
       // The user picture.
       $class = '\Drupal\realistic_dummy_content_api\includes\RealisticDummyContentUserPicture';
@@ -192,25 +192,19 @@ function realistic_dummy_content_api_realistic_dummy_content_attribute_manipulat
  *
  * In Drupal 8 this work is done in hook_entity_presave().
  */
-if (realistic_dummy_content_api_version() != 'D8') {
+if (realistic_dummy_content_api_version() != 'Drupal8') {
   /**
    * Implements hook_user_insert().
    */
   function realistic_dummy_content_api_user_insert(&$edit, $account, $category) {
-    // This hook is only implemented by some CMSs, so we will call instance().
-    // Calling this function in a CMS that does not support it, for example Drupal
-    // 8, will result in a fatal error.
-    CMS::instance()->hookUserInsert($edit, $account, $category);
+    Framework::instance()->hookUserInsert($edit, $account, $category);
   }
 
   /**
    * Implements hook_user_presave().
    */
   function realistic_dummy_content_api_user_presave(&$edit, $account, $category) {
-    // This hook is only implemented by some CMSs, so we will call instance().
-    // Calling this function in a CMS that does not support it, for example
-    // Drupal 8, will result in a fatal error.
-    CMS::instance()->hookUserPresave($edit, $account, $category);
+    Framework::instance()->hookUserPresave($edit, $account, $category);
   }
 }
 
@@ -229,7 +223,7 @@ if (realistic_dummy_content_api_version() != 'D8') {
  *   objects; FALSE otherwise.
  */
 function realistic_dummy_content_api_is_dummy($entity, $type) {
-  foreach (CMS::moduleInvokeAll('realistic_dummy_content_api_dummy', $entity, $type) as $dummy) {
+  foreach (Framework::instance()->moduleInvokeAll('realistic_dummy_content_api_dummy', $entity, $type) as $dummy) {
     if ($dummy) {
       return TRUE;
     }
@@ -271,7 +265,7 @@ function realistic_dummy_content_api_is_dummy($entity, $type) {
  */
 function realistic_dummy_content_api_improve_dummy_content(&$entity, $type, $filter = array()) {
   realistic_dummy_content_api_argcheck(array('is_object', 'realistic_dummy_content_api_argcheck_entitytype'));
-  $modifiers = CMS::moduleInvokeAll('realistic_dummy_content_api_class', $entity, $type, $filter);
+  $modifiers = Framework::instance()->moduleInvokeAll('realistic_dummy_content_api_class', $entity, $type, $filter);
 
   $candidate = $entity;
 
@@ -328,7 +322,7 @@ function realistic_dummy_content_api_realistic_dummy_content_api_class($entity, 
  * Implements hook_realistic_dummy_content_api_dummy().
  */
 function realistic_dummy_content_api_realistic_dummy_content_api_dummy($entity, $type) {
-  $return = CMS::entityIsDummy($entity, $type);
+  $return = Framework::instance()->entityIsDummy($entity, $type);
   return $return;
 }
 
@@ -340,7 +334,7 @@ function realistic_dummy_content_api_realistic_dummy_content_api_dummy($entity, 
  * REALISTIC_DUMMY_CONTENT_API_SEQUENTIAL, for example for automated tested
  * or in a recipe (an example can be found at
  * realistic_dummy_content/recipe/realistic_dummy_content.recipe.inc),
- * then this will call CMS::sequential().
+ * then this will call Framework::instance()->sequential().
  *
  * See the documentation for Math::sequential() for
  * details.
@@ -362,7 +356,7 @@ function realistic_dummy_content_api_realistic_dummy_content_api_dummy($entity, 
  *   details.
  */
 function realistic_dummy_content_api_rand($start, $end, $hash = NULL) {
-  if (CMS::configGet('realistic_dummy_content_api_rand', REALISTIC_DUMMY_CONTENT_API_RANDOM)) {
+  if (Framework::instance()->configGet('realistic_dummy_content_api_rand', REALISTIC_DUMMY_CONTENT_API_RANDOM)) {
     return rand($start, $end);
   }
   else {
@@ -405,8 +399,8 @@ function realistic_dummy_content_api_apply_recipe($log) {
  *   development we can set this to FALSE.
  *
  */
-function realistic_dummy_content_api_cms_selftest($die = TRUE) {
-  if (CMS::instance()->selfTest()) {
+function realistic_dummy_content_api_selftest($die = TRUE) {
+  if (Framework::instance()->selfTest()) {
     if ($die) {
       die('Self test returned errors.');
     }

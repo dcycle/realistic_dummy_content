@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\realistic_dummy_content_api\cms;
+namespace Drupal\realistic_dummy_content_api\Framework;
 
 /**
  * Required interface.
@@ -10,39 +10,39 @@ interface FrameworkInterface {}
 /**
  * Required dummy parent class.
  */
-class CMS {}
+class Framework {}
 
 namespace Drupal\realistic_dummy_content_api\Test;
 
-require_once './api/src/cms/D7.php';
+require_once './api/src/Framework/Drupal7.php';
 
 /**
- * Tests for \Drupal\realistic_dummy_content_api\cms\D7.
+ * Tests for \Drupal\realistic_dummy_content_api\Framework\Drupal7.
  *
  * @group realistic_dummy_content
  */
-class D7Test extends \PHPUnit_Framework_TestCase {
+class Drupal7Test extends \PHPUnit_Framework_TestCase {
 
   /**
-   * Tests D7::implementEntityIsDummy().
+   * Tests Drupal7::entityIsDummy().
    *
-   * @dataProvider providerTestImplementEntityIsDummy
+   * @dataProvider providerTestEntityIsDummy
    */
-  public function testImplementEntityIsDummy($account, $type, $expected) {
-    $cms = $this->getMockBuilder('Drupal\realistic_dummy_content_api\cms\D7')
+  public function testEntityIsDummy($account, $type, $expected) {
+    $framework = $this->getMockBuilder('Drupal\realistic_dummy_content_api\Framework\Drupal7')
       ->setMethods(array('drupalSubstr'))
       ->getMock();;
-    $cms->method('drupalSubstr')
+    $framework->method('drupalSubstr')
       ->will($this->returnCallback('substr'));
 
-    $result = $cms->implementEntityIsDummy($account, $type);
+    $result = $framework->entityIsDummy($account, $type);
     $this->assertTrue($result === $expected, 'Account ' . serialize($account) . ' returned ' . serialize($result) . ' (expected result is ' . $expected . ')');
   }
 
   /**
-   * Data provider for $this->testImplementEntityIsDummy().
+   * Data provider for $this->testEntityIsDummy().
    */
-  public function providerTestImplementEntityIsDummy() {
+  public function providerTestEntityIsDummy() {
     return array(
       array(
         (object) array(

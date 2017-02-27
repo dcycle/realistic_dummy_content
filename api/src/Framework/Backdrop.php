@@ -1,19 +1,19 @@
 <?php
 
-namespace Drupal\realistic_dummy_content_api\cms;
+namespace Drupal\realistic_dummy_content_api\Framework;
 
 // Explicitly load the Drupal 7 class from which we inherit.
-module_load_include('php', 'realistic_dummy_content_api', 'src/cms/D7');
+module_load_include('php', 'realistic_dummy_content_api', 'src/Framework/Drupal7');
 
 /**
- * Represents the Backdrop 1 CMS.
+ * Represents the Backdrop framework.
  */
-class B1 extends D7 {
+class Backdrop extends Drupal7 {
 
   /**
    * {@inheritdoc}
    */
-  public function implementFileSave($drupal_file) {
+  public function fileSave($drupal_file) {
     file_save($drupal_file);
     return $drupal_file;
   }
@@ -28,14 +28,14 @@ class B1 extends D7 {
   /**
    * {@inheritdoc}
    */
-  public function implementVocabularyIdentifier($vocabulary) {
+  public function vocabularyIdentifier($vocabulary) {
     return $vocabulary->name;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function implementNewVocabularyTerm($vocabulary, $name) {
+  public function newVocabularyTerm($vocabulary, $name) {
     $term = new \TaxonomyTerm(array(
       'name' => $name,
       'vocabulary' => $vocabulary->machine_name,

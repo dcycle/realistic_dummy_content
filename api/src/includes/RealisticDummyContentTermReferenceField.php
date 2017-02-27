@@ -2,7 +2,7 @@
 
 namespace Drupal\realistic_dummy_content_api\includes;
 
-use Drupal\realistic_dummy_content_api\cms\CMS;
+use Drupal\realistic_dummy_content_api\Framework\Framework;
 
 /**
  * Represents a term reference field.
@@ -16,13 +16,13 @@ class RealisticDummyContentTermReferenceField extends RealisticDummyContentField
     try {
       $termname = $file->value();
       if ($termname) {
-        $return = CMS::instance()->formatProperty('tid',
+        $return = Framework::instance()->formatProperty('tid',
           $this->getTid($termname));
         return $return;
       }
     }
     catch (\Exception $e) {
-      CMS::debug('Problem with taxonomy term: ' . $e->getMessage());
+      Framework::instance()->debug('Problem with taxonomy term: ' . $e->getMessage());
       return NULL;
     }
   }
@@ -45,14 +45,14 @@ class RealisticDummyContentTermReferenceField extends RealisticDummyContentField
    * @throws \Exception
    */
   public function getTid($name) {
-    $vocabularies = CMS::getAllVocabularies();
-    $field_info = CMS::instance()->fieldInfoField($this->getName());
+    $vocabularies = Framework::instance()->getAllVocabularies();
+    $field_info = Framework::instance()->fieldInfoField($this->getName());
     $candidate_existing_terms = array();
     foreach ($field_info['settings']['allowed_values'] as $vocabulary) {
       $vocabulary_name = $vocabulary['vocabulary'];
       foreach ($vocabularies as $vocabulary) {
         if ($vocabulary->machine_name == $vocabulary_name) {
-          $candidate_existing_terms = array_merge($candidate_existing_terms, taxonomy_get_tree(CMS::vocabularyIdentifier($vocabulary)));
+          $candidate_existing_terms = array_merge($candidate_existing_terms, taxonomy_get_tree(Framework::instance()->vocabularyIdentifier($vocabulary)));
         }
       }
     }
@@ -66,7 +66,7 @@ class RealisticDummyContentTermReferenceField extends RealisticDummyContentField
       throw new \Exception('Expecting the taxonomy term reference to reference at least one vocabulary');
     }
 
-    $term = CMS::newVocabularyTerm($vocabulary, $name);
+    $term = Framework::instance()->newVocabularyTerm($vocabulary, $name);
 
     if (isset($term->tid) && $term->tid) {
       return $term->tid;

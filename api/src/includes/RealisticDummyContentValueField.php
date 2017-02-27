@@ -2,7 +2,7 @@
 
 namespace Drupal\realistic_dummy_content_api\includes;
 
-use Drupal\realistic_dummy_content_api\cms\CMS;
+use Drupal\realistic_dummy_content_api\Framework\Framework;
 
 /**
  * Generic Drupal field.
@@ -20,7 +20,7 @@ class RealisticDummyContentValueField extends RealisticDummyContentField {
     if ($value === NULL) {
       return;
     }
-    return CMS::instance()->formatProperty('value', $value);
+    return Framework::instance()->formatProperty('value', $value);
   }
 
 }
