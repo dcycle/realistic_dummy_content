@@ -12,3 +12,5 @@ set -e
     --url http://localhost \
     --verbose \
     RealisticDummyContentDatabaseTestCase"
+
+./exec.sh drupal7 'drush generate-realistic'

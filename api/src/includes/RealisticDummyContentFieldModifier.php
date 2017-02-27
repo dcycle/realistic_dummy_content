@@ -66,6 +66,7 @@ class RealisticDummyContentFieldModifier extends RealisticDummyContentEntityBase
     $modifiable_fields = array();
     $type = $this->getType();
     $bundle = $this->getBundle();
+    // Get _all_ defined fields. This should return an associative array.
     $fields = CMS::instance()->fieldInfoFields();
     foreach ($fields as $field => $info) {
       if (isset($info['bundles'][$type]) && is_array($info['bundles'][$type]) && in_array($bundle, $info['bundles'][$type]) && $this->filter($field)) {
@@ -119,7 +120,14 @@ class RealisticDummyContentFieldModifier extends RealisticDummyContentEntityBase
         return;
     }
     $class = $original_class;
-    CMS::alter('realistic_dummy_content_attribute_manipulator', $class, $type, $attribute_type);
+
+    $info = array(
+      'type' => $type,
+      'machine_name' => $attribute_type,
+      'entity' => $this->getEntity(),
+      'field_name' => $name,
+    );
+    CMS::alter('realistic_dummy_content_attribute_manipulator', $class, $info);
 
     if (!$class) {
       // third-parties might want to signal that certain fields cannot be

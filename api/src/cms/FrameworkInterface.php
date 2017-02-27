@@ -49,18 +49,22 @@ interface FrameworkInterface {
   public function fieldInfoField($name);
 
   /**
-   * Formats a file to add as a property to an entity.
+   * Formats a property to add it to an entity.
    *
    * In Drupal 7, this might be array(LANGUAGE_NONE => ...); in D8 it is just
-   * the file id.
+   * the file id, or value.
    *
-   * @param object $file
-   *   A Drupal file object.
+   * @param string $type
+   *   Can be 'file', 'value', ...
+   * @param mixed $value
+   *   A file, or string...
+   * @param array $options
+   *   Extra options such as the format.
    *
    * @return mixed
    *   The file data formatted for placement in an entity.
    */
-  public function formatFileProperty($file);
+  public function formatProperty($type, $value, $options = array());
 
   /**
    * Return the filename of a user picture.
@@ -72,5 +76,38 @@ interface FrameworkInterface {
    *   A string representing the filename of the user picture if possible.
    */
   public function userPictureFilename($user);
+
+  /**
+   * Return a Drupal 7-style field name if possible for a given entity.
+   *
+   * For example if the field type is entity_reference, we can transform that
+   * to taxonomy_term_reference for a given field in a given entity.
+   *
+   * @param array $info
+   *   An associative array which can contain "entity" and "field_name" and
+   *   "machine_name".
+   *
+   * @return string
+   *   A Drupal 7-style field type machine name.
+   */
+  public function fieldTypeMachineName($info);
+
+  /**
+   * Starts a timer, see timer_start() in Drupal 7.
+   */
+  public function timerStart($id);
+
+  /**
+   * Stops a timer and returns data, see timer_stop() in Drupal 7.
+   */
+  public function timerStop($id);
+
+  /**
+   * Return the default text filter.
+   *
+   * @return string
+   *   filtered_html or basic_html... depending on the CMS.
+   */
+  public function filteredHtml();
 
 }

@@ -21,6 +21,13 @@ class D7 extends CMS implements FrameworkInterface {
   /**
    * {@inheritdoc}
    */
+  public function fieldTypeMachineName($info) {
+    return $info['machine_name'];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function entityProperties($entity) {
     return (array) $entity;
   }
@@ -280,12 +287,37 @@ class D7 extends CMS implements FrameworkInterface {
   /**
    * {@inheritdoc}
    */
-  public function formatFileProperty($file) {
-    return array(
-      LANGUAGE_NONE => array(
-        (array) $file,
-      ),
-    );
+  public function formatProperty($type, $value, $options = array()) {
+    switch ($type) {
+      case 'file':
+        return array(
+          LANGUAGE_NONE => array(
+            (array) $value,
+          ),
+        );
+
+      case 'value':
+      case 'tid':
+        return array(
+          LANGUAGE_NONE => array(
+            array_merge($options, array(
+              $type => $value,
+            )),
+          ),
+        );
+
+      case 'text_with_summary':
+        return array(
+          LANGUAGE_NONE => array(
+            array_merge($options, array(
+              'value' => $value,
+            )),
+          ),
+        );
+
+      default:
+        throw new \Exception('Unknown property type ' . $type);
+    }
   }
 
   /**
@@ -433,6 +465,27 @@ class D7 extends CMS implements FrameworkInterface {
     $term->vid = $vocabulary->vid;
     taxonomy_term_save($term);
     return $term;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function timerStart($id) {
+    return timer_start($id);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function timerStop($id) {
+    return timer_stop($id);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function filteredHtml() {
+    return 'filtered_html';
   }
 
 }

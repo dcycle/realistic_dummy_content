@@ -4,6 +4,8 @@ namespace Drupal\realistic_dummy_content_api\cms;
 
 use Drupal\taxonomy\Entity\Vocabulary;
 use Drupal\taxonomy\Entity\Term;
+use Drupal\Component\Utility\Timer;
+use Drupal\field\Entity\FieldConfig;
 
 if (!defined('WATCHDOG_ERROR')) {
   define('WATCHDOG_ERROR', 3);
@@ -35,6 +37,7 @@ class D8 extends CMS implements FrameworkInterface {
         $candidate = $entity;
         realistic_dummy_content_api_improve_dummy_content($candidate, $type);
         realistic_dummy_content_api_validate($candidate, $type);
+        $entity = $candidate;
       }
     }
     catch (Exception $e) {
@@ -54,6 +57,9 @@ class D8 extends CMS implements FrameworkInterface {
    * {@inheritdoc}
    */
   public function develGenerate($info) {
+    if ($info['entity_type'] == 'node') {
+      $info['entity_type'] = 'content';
+    }
     $info = array_merge(array(
       'pass' => 'some-password',
       'time_range' => 0,
@@ -155,9 +161,42 @@ class D8 extends CMS implements FrameworkInterface {
         $return[$field]['field_name'] = $field;
         $return[$field]['type'] = $field_info['type'];
         $return[$field]['bundles'][$entity_type] = $field_info['bundles'];
+
+        $this->addFieldSettings($return, $field, $field_info);
       }
     }
     return $return;
+  }
+
+  /**
+   * Adds field settings if possible.
+   *
+   * @param array $return
+   *   An array of fields to modify.
+   * @param string $field
+   *   A field name.
+   * @param array $field_info
+   *   Information about the field.
+   */
+  public function addFieldSettings(&$return, $field, $field_info) {
+    if ($field_info['type'] == 'entity_reference') {
+      if (isset($field_info['bundles']) && count($field_info['bundles'])) {
+        $bundle = array_pop($field_info['bundles']);
+        $config = FieldConfig::loadByName('node', $bundle, $field);
+        if ($config) {
+          $settings = $config->getSettings();
+
+          if (isset($settings['handler_settings']['target_bundles'])) {
+            foreach ($settings['handler_settings']['target_bundles'] as
+            $target) {
+              $return[$field]['settings']['allowed_values'][] = array(
+                'vocabulary' => $target,
+              );
+            }
+          }
+        }
+      }
+    }
   }
 
   /**
@@ -201,14 +240,31 @@ class D8 extends CMS implements FrameworkInterface {
    * {@inheritdoc}
    */
   public function implementSetEntityProperty(&$entity, $property, $value) {
-    $entity->set($property, $value);
+    if (!is_array($value)) {
+      $value = array('set' => $value);
+    }
+    $entity->set($property, $value['set']);
+    if (isset($value['options']['format'])) {
+      $entity->{$property}->format = $value['options']['format'];
+    }
   }
 
   /**
    * {@inheritdoc}
    */
-  public function formatFileProperty($file) {
-    return $file->id();
+  public function formatProperty($type, $value, $options = array()) {
+    switch ($type) {
+      case 'file':
+        return ['set' => $value->id(), 'options' => $options];
+
+      case 'value':
+      case 'tid':
+      case 'text_with_summary':
+        return ['set' => $value, 'options' => $options];
+
+      default:
+        throw new \Exception('Unknown property type ' . $type);
+    }
   }
 
   /**
@@ -228,6 +284,23 @@ class D8 extends CMS implements FrameworkInterface {
     else {
       \Drupal::logger('realistic_dummy_content_api')->notice($message);
     }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function fieldTypeMachineName($info) {
+    $machine_name = isset($info['machine_name']) ? $info['machine_name'] : NULL;
+    $entity = isset($info['entity']) ? $info['entity'] : NULL;
+    $field_name = isset($info['field_name']) ? $info['field_name'] : NULL;
+
+    if ($machine_name == 'entity_reference' && $entity && $field_name) {
+      $settings = $entity->getFieldDefinition($field_name)->getSettings();
+      if (isset($settings['target_type']) && $settings['target_type'] == 'taxonomy_term') {
+        return 'taxonomy_term_reference';
+      }
+    }
+    return $info['machine_name'];
   }
 
   /**
@@ -280,17 +353,11 @@ class D8 extends CMS implements FrameworkInterface {
    * {@inheritdoc}
    */
   public function implementGetEntityProperty(&$entity, $property) {
-    $type = $this->getEntityType($entity);
-    if ($type == 'node') {
-      switch ($property) {
-        case 'title':
-          return $entity->getTitle();
-
-        default:
-          throw new \Exception(__FUNCTION__ . ' Unknown property ' . $property);
-      }
+    // D8 does not have properties.
+    if ($property == 'title') {
+      return $entity->getTitle();
     }
-    throw new \Exception(__FUNCTION__ . ' not implemented for type ' . $type);
+    throw new \Exception(__FUNCTION__ . ' should not be called as D8 does not use properties. ' . $property);
   }
 
   /**
@@ -341,6 +408,27 @@ class D8 extends CMS implements FrameworkInterface {
     $term->save();
 
     return $term;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function timerStart($id) {
+    return Timer::start($id);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function timerStop($id) {
+    return Timer::stop($id);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function filteredHtml() {
+    return 'basic_html';
   }
 
 }

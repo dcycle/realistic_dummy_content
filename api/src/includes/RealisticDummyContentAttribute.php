@@ -189,8 +189,9 @@ abstract class RealisticDummyContentAttribute {
    * The structured property can then be added to the entity.
    *
    * For example, sometimes the appropriate property is array('value' => 'abc',
-   * 'text_format' => 'filtered_html'); other times is it just a string.
-   * Subclasses will determine what to do with the contents from the file.
+   * 'text_format' => CMS::instance()->filteredHtml()); other times is it just a
+   * string. Subclasses will determine what to do with the contents from the
+   * file.
    *
    * @param object $file
    *   The actual file object.

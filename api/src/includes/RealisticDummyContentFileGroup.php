@@ -39,8 +39,8 @@ namespace Drupal\realistic_dummy_content_api\includes;
  * values, _one of which with a specific input format_; and two possible images,
  * _one of which with a specific alt text_. Attributes are never compulsory, and
  * in the case where an attribute is needed, a reasonable fallback value is
- * used, for example `filtered_html` will be used if no format is specified for
- * the body.
+ * used, for example CMS::instance()->filteredHtml() will be used if no format
+ * is specified for the body.
  */
 class RealisticDummyContentFileGroup {
 

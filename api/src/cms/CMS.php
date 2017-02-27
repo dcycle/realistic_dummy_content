@@ -59,6 +59,13 @@ abstract class CMS implements FrameworkInterface {
   }
 
   /**
+   * {@inheritdoc}
+   */
+  public function fieldTypeMachineName($info) {
+    return $this->implementor()->fieldTypeMachineName($info);
+  }
+
+  /**
    * Implements self::hookEntityPresave().
    */
   public abstract function implementHookEntityPresave($entity, $type);
@@ -157,7 +164,7 @@ abstract class CMS implements FrameworkInterface {
   /**
    * {@inheritdoc}
    */
-  abstract public function formatFileProperty($file);
+  abstract public function formatProperty($type, $value, $options = array());
 
   /**
    * Implements self::setEntityProperty().
@@ -487,6 +494,9 @@ abstract class CMS implements FrameworkInterface {
     else {
       $errors[] = 'User picture substitution does not work.';
     }
+
+    $generator = new RealisticDummyContentDevelGenerateGenerator('node', 'article', 1, array('kill' => TRUE));
+    $generator->generate();
   }
 
   /**
@@ -554,5 +564,26 @@ abstract class CMS implements FrameworkInterface {
    * Implements self::newVocabularyTerm().
    */
   public abstract function implementNewVocabularyTerm($vocabulary, $name);
+
+  /**
+   * {@inheritdoc}
+   */
+  public function timerStart($id) {
+    return $this->implementor()->timerStart($id);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function timerStop($id) {
+    return $this->implementor()->timerStop($id);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function filteredHtml() {
+    return $this->implementor()->filteredHtml();
+  }
 
 }

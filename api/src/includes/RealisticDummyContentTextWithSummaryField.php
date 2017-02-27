@@ -2,6 +2,8 @@
 
 namespace Drupal\realistic_dummy_content_api\includes;
 
+use Drupal\realistic_dummy_content_api\cms\CMS;
+
 /**
  * Represents the text with summary field.
  *
@@ -15,22 +17,17 @@ class RealisticDummyContentTextWithSummaryField extends RealisticDummyContentFie
    */
   public function implementValueFromFile($file) {
     $value = $file->Value();
-    // @TODO use the site's default, not filtered_html, as the default format.
-    $format = $file->Attribute('format', 'filtered_html');
+    // @TODO use the site's default, not CMS::instance()->filteredHtml(), as the
+    // default format.
+    $format = $file->Attribute('format', CMS::instance()->filteredHtml());
     // If the value cannot be determined, which is different from an empty
     // string.
     if ($value === NULL) {
       return NULL;
     }
     if ($value) {
-      $return = array(
-        LANGUAGE_NONE => array(
-          array(
-            'value' => $value,
-            'format' => $format,
-          ),
-        ),
-      );
+      $return = CMS::instance()->formatProperty('text_with_summary',
+        $value, array('format' => $format));
       return $return;
     }
     else {

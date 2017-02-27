@@ -11,32 +11,45 @@
 /**
  * Returns a manipulator class name for a given field.
  *
- * @param string $machine_name
- *   The machine name of the field or property, for example "title",
- *   "text_with_summary", or "picture".
+ * @param string $class
+ *   A class name to alter.
+ * @param array $info
+ *   More information which may be required for the manipulator class. This
+ *   can contain
+ *     [
+ *       machine_name => The machine name of a field type.
+ *       entity => Drupal entity object,
+ *       field_name => the field name
+ *     ], which can be required
+ *   for example to determine which type of entity reference manipulator
+ *   to create.
  */
-function hook_realistic_dummy_content_attribute_manipulator_alter(&$class, &$type, &$machine_name) {
+function hook_realistic_dummy_content_attribute_manipulator_alter(&$class, &$info) {
+  $type = isset($info['type']) ? $info['type'] : NULL;
+  $machine_name = isset($info['machine_name']) ? $info['machine_name'] : NULL;
+  $entity = isset($info['entity']) ? $info['entity'] : NULL;
+  $field_name = isset($info['field_name']) ? $info['field_name'] : NULL;
   // If you want to implement a particular manipulator class for a field or
   // property you can do so by implementing this hook and reproducing what's
   // below for your own field or property type.
-  switch ($machine_name) {
+  switch (CMS::instance()->fieldTypeMachineName($info)) {
     case 'picture':
       // The user picture.
       $class = '\Drupal\realistic_dummy_content_api\includes\RealisticDummyContentUserPicture';
       break;
 
     case 'text_with_summary':
-      // e.g. body.
+      // For example the body.
       $class = '\Drupal\realistic_dummy_content_api\includes\RealisticDummyContentTextWithSummaryField';
       break;
 
     case 'taxonomy_term_reference':
-      // e.g. tags on articles.
+      // For example, tags on articles.
       $class = '\Drupal\realistic_dummy_content_api\includes\RealisticDummyContentTermReferenceField';
       break;
 
     case 'image':
-      // e.g. images on articles.
+      // For example, images on articles.
       $class = '\Drupal\realistic_dummy_content_api\includes\RealisticDummyContentImageField';
       break;
 
