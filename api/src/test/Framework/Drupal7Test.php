@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\realistic_dummy_content_api\Framwork;
+namespace Drupal\realistic_dummy_content_api\Framework;
 
 /**
  * Required interface.
@@ -24,25 +24,25 @@ require_once './api/src/Framework/Drupal7.php';
 class Drupal7Test extends \PHPUnit_Framework_TestCase {
 
   /**
-   * Tests Drupal7::implementEntityIsDummy().
+   * Tests Drupal7::entityIsDummy().
    *
-   * @dataProvider providerTestImplementEntityIsDummy
+   * @dataProvider providerTestEntityIsDummy
    */
-  public function testImplementEntityIsDummy($account, $type, $expected) {
+  public function testEntityIsDummy($account, $type, $expected) {
     $framework = $this->getMockBuilder('Drupal\realistic_dummy_content_api\Framework\Drupal7')
       ->setMethods(array('drupalSubstr'))
       ->getMock();;
     $framework->method('drupalSubstr')
       ->will($this->returnCallback('substr'));
 
-    $result = $framework->implementEntityIsDummy($account, $type);
+    $result = $framework->entityIsDummy($account, $type);
     $this->assertTrue($result === $expected, 'Account ' . serialize($account) . ' returned ' . serialize($result) . ' (expected result is ' . $expected . ')');
   }
 
   /**
-   * Data provider for $this->testImplementEntityIsDummy().
+   * Data provider for $this->testEntityIsDummy().
    */
-  public function providerTestImplementEntityIsDummy() {
+  public function providerTestEntityIsDummy() {
     return array(
       array(
         (object) array(

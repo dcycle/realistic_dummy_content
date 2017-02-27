@@ -335,7 +335,7 @@ class Framework implements FrameworkInterface {
   }
 
   /**
-   * Perform framwork-specific tests, if any.
+   * Perform framework-specific tests, if any.
    */
   public function frameworkSpecificTests(&$errors, &$tests) {
   }

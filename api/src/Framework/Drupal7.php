@@ -1,7 +1,5 @@
 <?php
 
-use Drupal\realistic_dummy_content_api\Framework\Framework;
-
 namespace Drupal\realistic_dummy_content_api\Framework;
 
 /**
