@@ -51,6 +51,10 @@ realistic scenario may be to generate 3 school boards followed by 20 schools.
 You can define this type of recipe based on the example at
 [./realistic_dummy_content/recipe](http://cgit.drupalcode.org/realistic_dummy_content/tree/realistic_dummy_content/recipe/realistic_dummy_content.recipe.inc).
 
+Once your recipe is written, you can run it (create the content) using Drush:
+
+    drush generate-realistic
+
 Field meta data
 -----
 
