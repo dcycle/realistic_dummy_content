@@ -87,7 +87,7 @@ Pull requests can be filed against the [GitHub repo](https://github.com/dcycle/r
 Drupal 7 and Drupal 8 in one "universal" codebase
 -----
 
-The 7.x-2.x and 8.x-2.x codebases are identical and both work on Drupal 7 or Drupal 8 sites.
+The 7.x-2.x and 8.x-2.x codebases are identical and both work on Drupal 7 or Drupal 8 sites. This is discussed inthe blog post ["Can the exact same module code run on Drupal 7 and 8?", Dcycle Blog, Feb. 28, 2017](http://blog.dcycle.com/blog/7b285da4/same-module-drupal-7-and-8).
 
 Docker integration (2.x branch only)
 -----
