@@ -3,6 +3,9 @@
 /**
  * @file
  * Contains a recipe for generating realistic dummy content.
+ *
+ * See the accompanying README.md file for details on how to create your
+ * own recipe based on this one.
  */
 
 // Required as of the 2.x branch.

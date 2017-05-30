@@ -55,6 +55,8 @@ Once your recipe is written, you can run it (create the content) using Drush:
 
     drush generate-realistic
 
+See `./realistic_dummy_content/recipe/README.md` for more details.
+
 Field meta data
 -----
 
