@@ -16,7 +16,11 @@ class RealisticDummyContentDevelGenerateGenerator extends RealisticDummyContentG
     $info['entity_type'] = $this->getType();
     $info['kill'] = $this->getKill();
     $info['num'] = $this->getNum();
-    $info['max_comments'] = 5;
+
+    if (Framework::instance()->moduleExists('comment')) {
+      $info['max_comments'] = 5;
+    }
+
     if ($this->getType() == 'node') {
       // See https://www.drupal.org/node/2324027
       $info = array_merge($info, array(

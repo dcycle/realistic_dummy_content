@@ -14,6 +14,7 @@ set -e
     RealisticDummyContentDatabaseTestCase"
 
 ./exec.sh drupal7 'drush generate-realistic'
+./exec.sh drupal7 'drush dis -y comment && drush generate-realistic'
 
 ./exec.sh drupal7 'drush -y dis realistic_dummy_content'
 ./exec.sh drupal7 'drush -y dis realistic_dummy_content_api'
