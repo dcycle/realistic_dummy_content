@@ -38,7 +38,7 @@ class Mock extends Framework {
   public function moduleInvokeAll($hook) {
     $args = func_get_args();
     $hook = array_shift($args);
-    $this->print('[info] About to let all modules apply hook ' . $hook . ' with arguments ' . serialize($args);
+    $this->print('[info] About to let all modules apply hook ' . $hook . ' with arguments ' . serialize($args));
     if (function_exists('realistic_dummy_content_api_' . $hook)) {
       call_user_func_array('realistic_dummy_content_api_' . $hook, $args);
     }
