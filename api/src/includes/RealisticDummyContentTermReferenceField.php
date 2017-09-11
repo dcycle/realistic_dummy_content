@@ -2,12 +2,15 @@
 
 namespace Drupal\realistic_dummy_content_api\includes;
 
+use Drupal\realistic_dummy_content_api\traits\RealisticDummyContentDrupalTrait;
 use Drupal\realistic_dummy_content_api\Framework\Framework;
 
 /**
  * Represents a term reference field.
  */
 class RealisticDummyContentTermReferenceField extends RealisticDummyContentField {
+
+  use RealisticDummyContentDrupalTrait;
 
   /**
    * {@inheritdoc}
@@ -45,14 +48,15 @@ class RealisticDummyContentTermReferenceField extends RealisticDummyContentField
    * @throws \Exception
    */
   public function getTid($name) {
-    $vocabularies = Framework::instance()->getAllVocabularies();
-    $field_info = Framework::instance()->fieldInfoField($this->getName());
+    $vocabularies = $this->getAllVocabularies();
+    $field_info = $this->fieldInfoField($this->getName());
     $candidate_existing_terms = array();
-    foreach ($field_info['settings']['allowed_values'] as $vocabulary) {
-      $vocabulary_name = $vocabulary['vocabulary'];
+    foreach ($field_info['settings']['allowed_values'] as $setting) {
+      $vocabulary_name = $setting['vocabulary'];
       foreach ($vocabularies as $vocabulary) {
         if ($vocabulary->machine_name == $vocabulary_name) {
           $candidate_existing_terms = array_merge($candidate_existing_terms, taxonomy_get_tree(Framework::instance()->vocabularyIdentifier($vocabulary)));
+          break 2;
         }
       }
     }
