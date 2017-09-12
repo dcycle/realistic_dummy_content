@@ -26,18 +26,30 @@ trait RealisticDummyContentDrupalTrait {
     return Framework::instance()->getAllVocabularies();
   }
 
+  /**
+   * Mockable wrapper around Framework::taxonomyLoadTree().
+   */
   public function taxonomyLoadTree($vid) {
     return Framework::instance()->taxonomyLoadTree($vid);
   }
 
+  /**
+   * Mockable wrapper around Framework::termId().
+   */
   public function termId($term) {
     return Framework::instance()->termId($term);
   }
 
+  /**
+   * Mockable wrapper around Framework::termName().
+   */
   public function termName($term) {
     return Framework::instance()->termName($term);
   }
 
+  /**
+   * Mockable wrapper around Framework::vocabularyMachineName().
+   */
   public function vocabularyMachineName($vocabulary) {
     return Framework::instance()->vocabularyMachineName($vocabulary);
   }

@@ -415,6 +415,10 @@ class Framework implements FrameworkInterface {
     return count($errors) != 0;
   }
 
+  public function taxonomyLoadTree($vid) {
+    return $this->implementor()->taxonomyLoadTree($vid);
+  }
+
   /**
    * {@inheritdoc}
    */

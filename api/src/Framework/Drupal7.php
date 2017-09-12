@@ -470,8 +470,12 @@ class Drupal7 extends Framework implements FrameworkInterface {
     return 'filtered_html';
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function taxonomyLoadTree($vid) {
-    return taxonomy_load_tree($vid);
+    $terms = taxonomy_get_tree($vid);
+    return array_map(function ($a) { return $a->tid; }, $terms);
   }
 
   /**
