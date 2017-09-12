@@ -21,6 +21,7 @@ class RealisticDummyContentTermReferenceFieldTest extends \PHPUnit_Framework_Tes
    *   Information about the current field.
    */
   public function testGetTid(array $vocabularies, array $field_info) {
+
     $object = $this->getMockBuilder(RealisticDummyContentTermReferenceField::class)
       ->setMethods([
         'one',
@@ -32,7 +33,7 @@ class RealisticDummyContentTermReferenceFieldTest extends \PHPUnit_Framework_Tes
     $object->method('two')
       ->will($this->returnCallback(array($this, 'callback')));
     $object->method('three')
-        ->will($this->throwException(new \Exception));
+      ->will($this->throwException(new \Exception));
   }
 
   /**

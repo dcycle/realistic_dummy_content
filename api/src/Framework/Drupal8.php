@@ -445,11 +445,37 @@ class Drupal8 extends Framework implements FrameworkInterface {
     return 'basic_html';
   }
 
+  public function taxonomyLoadTree($vid) {
+    $terms = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadTree(Framework::instance()->vocabularyIdentifier($vocabulary));
+    $tids = $this->termsToTids($terms);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function termId($term) {
+    return $term->id();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function termName($term) {
+    return $term->getName();
+  }
+
   /**
    * {@inheritdoc}
    */
   public function variableDel($variable) {
     // Do nothing in Drupal8 to delete a variable.
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function vocabularyMachineName($vocabulary) {
+    return $this->vocabularyIdentifier($vocabulary);
   }
 
 }

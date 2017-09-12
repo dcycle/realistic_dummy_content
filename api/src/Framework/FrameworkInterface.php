@@ -208,6 +208,9 @@ interface FrameworkInterface {
    */
   public function stateGet($name, $default = NULL);
 
+  public function termId($term);
+  public function termName($term);
+
   /**
    * Starts a timer, see timer_start() in Drupal 7.
    */
@@ -244,6 +247,8 @@ interface FrameworkInterface {
    *   A unique identifier for this framework.
    */
   public function vocabularyIdentifier($vocabulary);
+
+  public function vocabularyMachineName($vocabulary);
 
   /**
    * Logs something to the watchdog.

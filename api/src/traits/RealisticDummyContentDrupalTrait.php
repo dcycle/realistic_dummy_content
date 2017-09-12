@@ -26,4 +26,20 @@ trait RealisticDummyContentDrupalTrait {
     return Framework::instance()->getAllVocabularies();
   }
 
+  public function taxonomyLoadTree($vid) {
+    return Framework::instance()->taxonomyLoadTree($vid);
+  }
+
+  public function termId($term) {
+    return Framework::instance()->termId($term);
+  }
+
+  public function termName($term) {
+    return Framework::instance()->termName($term);
+  }
+
+  public function vocabularyMachineName($vocabulary) {
+    return Framework::instance()->vocabularyMachineName($vocabulary);
+  }
+
 }

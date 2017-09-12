@@ -416,6 +416,20 @@ class Framework implements FrameworkInterface {
   }
 
   /**
+   * {@inheritdoc}
+   */
+  public function termId($term) {
+    return $this->implementor()->termId($term);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function termName($term) {
+    return $this->implementor()->termName($term);
+  }
+
+  /**
    * Tests self::addTestFlag().
    */
   static public function testAddTestFlag() {
@@ -492,6 +506,13 @@ class Framework implements FrameworkInterface {
     $entity = self::instance()->createEntity();
     self::instance()->setEntityProperty($entity, 'title', 'whatever');
     return self::instance()->getEntityProperty($entity, 'title') != 'whatever';
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function vocabularyMachineName($vocabulary) {
+    return $this->implementor()->vocabularyMachineName($vocabulary);
   }
 
 }
