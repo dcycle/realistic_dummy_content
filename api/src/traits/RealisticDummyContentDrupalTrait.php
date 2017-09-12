@@ -27,6 +27,13 @@ trait RealisticDummyContentDrupalTrait {
   }
 
   /**
+   * Mockable wrapper around Framework::newVocabularyTerm().
+   */
+  public function newVocabularyTerm($vocabulary, $name) {
+    return Framework::instance()->newVocabularyTerm($vocabulary, $name;
+  }
+
+  /**
    * Mockable wrapper around Framework::taxonomyLoadTree().
    */
   public function taxonomyLoadTree($vid) {

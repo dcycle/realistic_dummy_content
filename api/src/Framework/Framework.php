@@ -415,8 +415,8 @@ class Framework implements FrameworkInterface {
     return count($errors) != 0;
   }
 
-  public function taxonomyLoadTree($vid) {
-    return $this->implementor()->taxonomyLoadTree($vid);
+  public function taxonomyLoadTree($vocabulary) {
+    return $this->implementor()->taxonomyLoadTree($vocabulary);
   }
 
   /**

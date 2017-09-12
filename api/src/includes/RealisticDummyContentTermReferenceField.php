@@ -58,7 +58,7 @@ class RealisticDummyContentTermReferenceField extends RealisticDummyContentField
       $vocabulary_name = $setting['vocabulary'];
       foreach ($vocabularies as $vocabulary) {
         if ($this->vocabularyMachineName($vocabulary) == $vocabulary_name) {
-          $candidate_existing_terms = array_merge($candidate_existing_terms, $this->taxonomyLoadTree(Framework::instance()->vocabularyIdentifier($vocabulary)));
+          $candidate_existing_terms = array_merge($candidate_existing_terms, $this->taxonomyLoadTree($vocabulary);
           break 2;
         }
       }
@@ -74,7 +74,7 @@ class RealisticDummyContentTermReferenceField extends RealisticDummyContentField
       throw new \Exception('Expecting the taxonomy term reference to reference at least one vocabulary');
     }
 
-    $term = Framework::instance()->newVocabularyTerm($vocabulary, $name);
+    $term = $this->newVocabularyTerm($vocabulary, $name);
 
     return $this->termId($term);
   }

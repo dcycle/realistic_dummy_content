@@ -211,15 +211,15 @@ interface FrameworkInterface {
   /**
    * Load a taxonomy tree.
    *
-   * @param $vid
-   *   A vocabulary identifier.
+   * @param $vocabulary
+   *   A Drupal vocabulary object.
    *
    * @return array
    *   An array of taxonomy term objects.
    *
    * @throws Exception
    */
-  public function taxonomyLoadTree($vid);
+  public function taxonomyLoadTree($vocabulary);
 
   /**
    * Given a taxonomy term, return its id.
