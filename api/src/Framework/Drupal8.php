@@ -450,7 +450,8 @@ class Drupal8 extends Framework implements FrameworkInterface {
    */
   public function taxonomyLoadTree($vid) {
     $terms = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadTree($vid);
-    return array_map(function ($a) { return $a->tid; }, $terms);
+    $tids = array_map(function ($a) { return $a->tid; }, $terms);
+    return Term::loadMultiple($tids);
   }
 
   /**

@@ -211,14 +211,11 @@ interface FrameworkInterface {
   /**
    * Load a taxonomy tree.
    *
-   * This is a simplified version of what Drupal does, and returns only
-   * tids.
-   *
    * @param $vid
    *   A vocabulary identifier.
    *
    * @return array
-   *   An array of tids, for example [3, 5, 8].
+   *   An array of taxonomy term objects.
    *
    * @throws Exception
    */

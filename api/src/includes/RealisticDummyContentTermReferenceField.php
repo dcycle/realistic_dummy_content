@@ -51,22 +51,6 @@ class RealisticDummyContentTermReferenceField extends RealisticDummyContentField
    * @throws \Exception
    */
   public function getTid($name) {
-
-/*
-
-use Drupal\realistic_dummy_content_api\includes\RealisticDummyContentTermReferenceField;
-use Drupal\realistic_dummy_content_api\includes\RealisticDummyContentFieldModifier;
-try {
-  $x = new RealisticDummyContentTermReferenceField(new RealisticDummyContentFieldModifier(node_load(2), 'node'), 'field_tags');
-  dpm($x->getTid('whatever2'));
-}
-catch (Throwable $t) {
-  dpm($t->getMessage());
-}
-
-*/
-
-
     $vocabularies = $this->getAllVocabularies();
     $field_info = $this->fieldInfoField($this->getName());
     $candidate_existing_terms = array();
@@ -80,8 +64,7 @@ catch (Throwable $t) {
       }
     }
     foreach ($candidate_existing_terms as $candidate_existing_term) {
-      dpm($candidate_existing_term);
-      //$candidate_name = $this->termName($candidate_existing_term);
+      $candidate_name = $this->termName($candidate_existing_term);
       if ($candidate_name == $name) {
         return $this->termId($candidate_existing_term);
       }

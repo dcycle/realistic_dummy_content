@@ -474,8 +474,7 @@ class Drupal7 extends Framework implements FrameworkInterface {
    * {@inheritdoc}
    */
   public function taxonomyLoadTree($vid) {
-    $terms = taxonomy_get_tree($vid);
-    return array_map(function ($a) { return $a->tid; }, $terms);
+    return taxonomy_get_tree($vid);
   }
 
   /**
