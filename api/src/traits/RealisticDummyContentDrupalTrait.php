@@ -30,7 +30,7 @@ trait RealisticDummyContentDrupalTrait {
    * Mockable wrapper around Framework::newVocabularyTerm().
    */
   public function newVocabularyTerm($vocabulary, $name) {
-    return Framework::instance()->newVocabularyTerm($vocabulary, $name;
+    return Framework::instance()->newVocabularyTerm($vocabulary, $name);
   }
 
   /**

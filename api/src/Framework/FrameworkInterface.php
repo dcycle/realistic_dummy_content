@@ -211,7 +211,7 @@ interface FrameworkInterface {
   /**
    * Load a taxonomy tree.
    *
-   * @param $vocabulary
+   * @param object $vocabulary
    *   A Drupal vocabulary object.
    *
    * @return array
@@ -287,7 +287,7 @@ interface FrameworkInterface {
   /**
    * Given a vocabulary, return its name.
    *
-   * @param $vocabulary
+   * @param object $vocabulary
    *   A Drupal vocabulary object.
    *
    * @return string

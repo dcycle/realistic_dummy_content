@@ -58,7 +58,7 @@ class RealisticDummyContentTermReferenceField extends RealisticDummyContentField
       $vocabulary_name = $setting['vocabulary'];
       foreach ($vocabularies as $vocabulary) {
         if ($this->vocabularyMachineName($vocabulary) == $vocabulary_name) {
-          $candidate_existing_terms = array_merge($candidate_existing_terms, $this->taxonomyLoadTree($vocabulary);
+          $candidate_existing_terms = array_merge($candidate_existing_terms, $this->taxonomyLoadTree($vocabulary));
           break 2;
         }
       }

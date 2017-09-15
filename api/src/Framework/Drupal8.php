@@ -450,7 +450,9 @@ class Drupal8 extends Framework implements FrameworkInterface {
    */
   public function taxonomyLoadTree($vocabulary) {
     $terms = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadTree($this->vocabularyIdentifier($vocabulary));
-    $tids = array_map(function ($a) { return $a->tid; }, $terms);
+    $tids = array_map(function ($a) {
+      return $a->tid;
+    }, $terms);
     return Term::loadMultiple($tids);
   }
 
