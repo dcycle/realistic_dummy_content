@@ -2,11 +2,6 @@
 
 namespace Drupal\realistic_dummy_content_api\includes;
 
-/**
- * Dummy required parent class.
- */
-class RealisticDummyContentField {}
-
 namespace Drupal\realistic_dummy_content_api\Test;
 
 require_once './api/src/includes/RealisticDummyContentValueField.php';

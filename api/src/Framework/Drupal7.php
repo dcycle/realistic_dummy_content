@@ -473,8 +473,51 @@ class Drupal7 extends Framework implements FrameworkInterface {
   /**
    * {@inheritdoc}
    */
+  public function taxonomyLoadTree($vocabulary) {
+    return taxonomy_get_tree($this->vocabularyIdentifier($vocabulary));
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function termId($term) {
+    if (isset($term->tid) && $term->tid) {
+      return $term->tid;
+    }
+    else {
+      throw new \Exception('tid could not be determined');
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function termName($term) {
+    if (isset($term->name) && $term->name) {
+      return $term->name;
+    }
+    else {
+      throw new \Exception('term name could not be determined');
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function variableDel($variable) {
     variable_del($variable);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function vocabularyMachineName($vocabulary) {
+    if (isset($vocabulary->machine_name) && $vocabulary->machine_name) {
+      return $vocabulary->machine_name;
+    }
+    else {
+      throw new \Exception('vocabulary machine name could not be determined');
+    }
   }
 
 }

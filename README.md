@@ -41,6 +41,11 @@ queue](https://drupal.org/project/issues/2253941?categories=All), or a
 [pull request](https://github.com/dcycle/realistic_dummy_content) for this
 module.
 
+Which version to use
+-----
+
+Use the 7.x-1.0-beta7 version only if you are using PHP 5.3 or earlier. All other users should use x.x-2.x versions.
+
 Creating recipes
 -----
 

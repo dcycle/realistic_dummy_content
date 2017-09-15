@@ -209,6 +209,45 @@ interface FrameworkInterface {
   public function stateGet($name, $default = NULL);
 
   /**
+   * Load a taxonomy tree.
+   *
+   * @param object $vocabulary
+   *   A Drupal vocabulary object.
+   *
+   * @return array
+   *   An array of taxonomy term objects.
+   *
+   * @throws Exception
+   */
+  public function taxonomyLoadTree($vocabulary);
+
+  /**
+   * Given a taxonomy term, return its id.
+   *
+   * @param object $term
+   *   Drupal taxonomy term object.
+   *
+   * @return int
+   *   The taxonomy term id.
+   *
+   * @throws Exception
+   */
+  public function termId($term);
+
+  /**
+   * Given a taxonomy term, return its name.
+   *
+   * @param object $term
+   *   Drupal taxonomy term object.
+   *
+   * @return string
+   *   The taxonomy term name, such as "Bananas".
+   *
+   * @throws Exception
+   */
+  public function termName($term);
+
+  /**
    * Starts a timer, see timer_start() in Drupal 7.
    */
   public function timerStart($id);
@@ -244,6 +283,19 @@ interface FrameworkInterface {
    *   A unique identifier for this framework.
    */
   public function vocabularyIdentifier($vocabulary);
+
+  /**
+   * Given a vocabulary, return its name.
+   *
+   * @param object $vocabulary
+   *   A Drupal vocabulary object.
+   *
+   * @return string
+   *   A vocabulary machine name, such as "fruit".
+   *
+   * @throws Exception
+   */
+  public function vocabularyMachineName($vocabulary);
 
   /**
    * Logs something to the watchdog.

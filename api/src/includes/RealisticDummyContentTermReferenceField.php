@@ -2,12 +2,15 @@
 
 namespace Drupal\realistic_dummy_content_api\includes;
 
+use Drupal\realistic_dummy_content_api\traits\RealisticDummyContentDrupalTrait;
 use Drupal\realistic_dummy_content_api\Framework\Framework;
 
 /**
  * Represents a term reference field.
  */
 class RealisticDummyContentTermReferenceField extends RealisticDummyContentField {
+
+  use RealisticDummyContentDrupalTrait;
 
   /**
    * {@inheritdoc}
@@ -36,29 +39,34 @@ class RealisticDummyContentTermReferenceField extends RealisticDummyContentField
    * "location", then this function will return its tid. If not, the term will
    * be created, and then the tid will be returned.
    *
+   * If two terms have the same name, the tid of the first will be returned.
+   *
    * @param string $name
    *   The string for the taxonomy term.
    *
    * @return int
-   *   The associated pre-existing or just-created tid.
+   *   The associated pre-existing or just-created tid of the first term
+   *   with the desired name.
    *
    * @throws \Exception
    */
   public function getTid($name) {
-    $vocabularies = Framework::instance()->getAllVocabularies();
-    $field_info = Framework::instance()->fieldInfoField($this->getName());
+    $vocabularies = $this->getAllVocabularies();
+    $field_info = $this->fieldInfoField($this->getName());
     $candidate_existing_terms = array();
-    foreach ($field_info['settings']['allowed_values'] as $vocabulary) {
-      $vocabulary_name = $vocabulary['vocabulary'];
+    foreach ($field_info['settings']['allowed_values'] as $setting) {
+      $vocabulary_name = $setting['vocabulary'];
       foreach ($vocabularies as $vocabulary) {
-        if ($vocabulary->machine_name == $vocabulary_name) {
-          $candidate_existing_terms = array_merge($candidate_existing_terms, taxonomy_get_tree(Framework::instance()->vocabularyIdentifier($vocabulary)));
+        if ($this->vocabularyMachineName($vocabulary) == $vocabulary_name) {
+          $candidate_existing_terms = array_merge($candidate_existing_terms, $this->taxonomyLoadTree($vocabulary));
+          break 2;
         }
       }
     }
     foreach ($candidate_existing_terms as $candidate_existing_term) {
-      if ($candidate_existing_term->name == $name) {
-        return $candidate_existing_term->tid;
+      $candidate_name = $this->termName($candidate_existing_term);
+      if ($candidate_name == $name) {
+        return $this->termId($candidate_existing_term);
       }
     }
 
@@ -66,14 +74,9 @@ class RealisticDummyContentTermReferenceField extends RealisticDummyContentField
       throw new \Exception('Expecting the taxonomy term reference to reference at least one vocabulary');
     }
 
-    $term = Framework::instance()->newVocabularyTerm($vocabulary, $name);
+    $term = $this->newVocabularyTerm($vocabulary, $name);
 
-    if (isset($term->tid) && $term->tid) {
-      return $term->tid;
-    }
-    else {
-      throw new \Exception('tid could not be determined');
-    }
+    return $this->termId($term);
   }
 
 }
