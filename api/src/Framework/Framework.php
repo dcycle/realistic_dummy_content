@@ -2,6 +2,7 @@
 
 namespace Drupal\realistic_dummy_content_api\Framework;
 
+use Drupal\realistic_dummy_content_api\traits\Singleton;
 use Drupal\realistic_dummy_content_api\includes\RealisticDummyContentDevelGenerateGenerator;
 
 /**
@@ -13,19 +14,11 @@ use Drupal\realistic_dummy_content_api\includes\RealisticDummyContentDevelGenera
  * separate classes which implement FrameworkInterface.
  */
 class Framework implements FrameworkInterface {
-  static private $testFlag;
-  static private $instance;
-  private $implementor;
 
-  /**
-   * Retrieves a class representing the current framework entrypoint.
-   */
-  static public function instance() {
-    if (!self::$instance) {
-      self::$instance = new Framework();
-    }
-    return self::$instance;
-  }
+  use Singleton;
+
+  static private $testFlag;
+  private $implementor;
 
   /**
    * Retrieves a framework-specific implementor.
