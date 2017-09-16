@@ -134,6 +134,13 @@ Linting is being run for PHP and shell files.
 
 [![CircleCI](https://circleci.com/gh/dcycle/realistic_dummy_content/tree/master.svg?style=svg)](https://circleci.com/gh/dcycle/realistic_dummy_content/tree/master)
 
+Best practices
+-----
+
+We strive to adhere to best practices for software development.
+
+[![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/97/badge)](https://bestpractices.coreinfrastructure.org/projects/97)
+
 Sponsors
 -----
 
