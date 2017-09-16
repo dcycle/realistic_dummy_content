@@ -7,7 +7,7 @@ use Drupal\realistic_dummy_content_api\Framework\Framework;
 /**
  * The "devel generate" dummy content generator.
  */
-class RealisticDummyContentDevelGenerateGenerator extends RealisticDummyContentGenerator {
+class DevelGenerateGenerator extends Generator {
 
   /**
    * {@inheritdoc}

@@ -8,7 +8,7 @@ namespace Drupal\realistic_dummy_content_api\includes;
  * This module can generate dummy content using an extensible system of
  * "generators", which are subclasses of this class.
  */
-abstract class RealisticDummyContentGenerator {
+abstract class Generator {
   private $type;
   private $bundle;
   private $num;

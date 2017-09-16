@@ -5,7 +5,7 @@ namespace Drupal\realistic_dummy_content_api\includes;
 /**
  * This log class can be used whenever you need to log data.
  */
-class RealisticDummyContentDebugLog implements RealisticDummyContentLogInterface {
+class DebugLog implements LogInterface {
 
   /**
    * {@inheritdoc}

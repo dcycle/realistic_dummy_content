@@ -5,7 +5,7 @@ namespace Drupal\realistic_dummy_content_api\includes;
 /**
  * Represents the user picture.
  */
-class RealisticDummyContentUserPicture extends RealisticDummyContentProperty {
+class UserPicture extends Property {
 
   /**
    * {@inheritdoc}

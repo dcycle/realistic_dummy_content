@@ -9,7 +9,7 @@ namespace Drupal\realistic_dummy_content_api\includes;
  * system and such. However during testing we want to abstract that away. This
  * class represents the dummy environment which can be used during unit tests.
  */
-class RealisticDummyContentDummyEnvironment extends RealisticDummyContentEnvironment {
+class DummyEnvironment extends Environment {
   private $files;
 
   /**

@@ -14,7 +14,7 @@ namespace Drupal\realistic_dummy_content_api\includes;
  * at https://drupal.org/project/issues/realistic_dummy_content
  * if you would like to help with this!
  */
-abstract class RealisticDummyContentBase {
+abstract class Base {
 
   /**
    * Retrieves the current environment class.

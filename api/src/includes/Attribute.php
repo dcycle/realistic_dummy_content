@@ -13,7 +13,7 @@ use Drupal\realistic_dummy_content_api\Framework\Framework;
  * We want to abstract away the differences so we can treat both
  * the same way without using control statements in our code.
  */
-abstract class RealisticDummyContentAttribute {
+abstract class Attribute {
   /**
    * Entity managed by this class.
    *

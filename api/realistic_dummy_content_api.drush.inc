@@ -5,7 +5,7 @@
  * Drush integration for the realistic_dummy_content_api module.
  */
 
-use Drupal\realistic_dummy_content_api\includes\RealisticDummyContentDrushLog;
+use Drupal\realistic_dummy_content_api\includes\DrushLog;
 
 /**
  * Implements hook_drush_command().

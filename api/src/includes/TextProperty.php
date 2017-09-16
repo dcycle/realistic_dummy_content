@@ -5,7 +5,7 @@ namespace Drupal\realistic_dummy_content_api\includes;
 /**
  * Represents a text property like a node title or user name.
  */
-class RealisticDummyContentTextProperty extends RealisticDummyContentProperty {
+class TextProperty extends Property {
 
   /**
    * {@inheritdoc}

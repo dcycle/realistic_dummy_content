@@ -13,7 +13,7 @@ define('REALISTIC_DUMMY_CONTENT_API_EXCEPTION_BACKTRACE_LEVEL', 4);
 /**
  * An Exception.
  */
-class RealisticDummyContentException extends \Exception {
+class Exception extends \Exception {
 
   /**
    * Constructor.

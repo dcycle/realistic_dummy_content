@@ -9,7 +9,7 @@
 
 use Drupal\realistic_dummy_content_api\Framework\Framework;
 use Drupal\realistic_dummy_content_api\includes\Math;
-use Drupal\realistic_dummy_content_api\includes\RealisticDummyContentRecipe;
+use Drupal\realistic_dummy_content_api\includes\Recipe;
 
 /**
  * Check arguments' types.
@@ -164,22 +164,22 @@ function realistic_dummy_content_api_realistic_dummy_content_attribute_manipulat
   switch (Framework::instance()->fieldTypeMachineName($info)) {
     case 'picture':
       // The user picture.
-      $class = '\Drupal\realistic_dummy_content_api\includes\RealisticDummyContentUserPicture';
+      $class = '\Drupal\realistic_dummy_content_api\includes\UserPicture';
       break;
 
     case 'text_with_summary':
       // For example the body.
-      $class = '\Drupal\realistic_dummy_content_api\includes\RealisticDummyContentTextWithSummaryField';
+      $class = '\Drupal\realistic_dummy_content_api\includes\TextWithSummaryField';
       break;
 
     case 'taxonomy_term_reference':
       // For example, tags on articles.
-      $class = '\Drupal\realistic_dummy_content_api\includes\RealisticDummyContentTermReferenceField';
+      $class = '\Drupal\realistic_dummy_content_api\includes\TermReferenceField';
       break;
 
     case 'image':
       // For example, images on articles.
-      $class = '\Drupal\realistic_dummy_content_api\includes\RealisticDummyContentImageField';
+      $class = '\Drupal\realistic_dummy_content_api\includes\ImageField';
       break;
 
     default:
@@ -300,8 +300,8 @@ function realistic_dummy_content_api_validate_class($class) {
   if (!class_exists($class)) {
     throw new \Exception(t("@class is not a valid class; make sure you include its file or use Drupal's autoload mechanism: name your include file with the same name as the class, and add it to the .info file, then clear your cache.", array('@class' => $class)));
   }
-  if (!is_subclass_of($class, '\Drupal\realistic_dummy_content_api\includes\RealisticDummyContentBase')) {
-    throw new \Exception(t('@class is a valid class but it is not a subclass of \Drupal\realistic_dummy_content_api\includes\RealisticDummyContentBase.', array('@class' => $class)));
+  if (!is_subclass_of($class, '\Drupal\realistic_dummy_content_api\includes\Base')) {
+    throw new \Exception(t('@class is a valid class but it is not a subclass of \Drupal\realistic_dummy_content_api\includes\Base.', array('@class' => $class)));
   }
 }
 
@@ -314,7 +314,7 @@ function realistic_dummy_content_api_realistic_dummy_content_api_class($entity, 
     // given type. These classes must exist, either through Drupal's
     // autoload system or be included explictely, and they must be
     // subclasses of RealisticDummyContentBase.
-    '\Drupal\realistic_dummy_content_api\includes\RealisticDummyContentFieldModifier',
+    '\Drupal\realistic_dummy_content_api\includes\FieldModifier',
   );
 }
 
@@ -360,8 +360,7 @@ function realistic_dummy_content_api_rand($start, $end, $hash = NULL) {
     return rand($start, $end);
   }
   else {
-    $math = new Math();
-    return $math->sequential($start, $end, $hash);
+    return Math::instance()->sequential($start, $end, $hash);
   }
 }
 
@@ -375,8 +374,8 @@ function realistic_dummy_content_api_rand($start, $end, $hash = NULL) {
  */
 function realistic_dummy_content_api_apply_recipe($log) {
   try {
-    if (!class_exists('\Drupal\realistic_dummy_content_api\includes\RealisticDummyContentRecipe')) {
-      throw new \Exception('Cannot find the class \Drupal\realistic_dummy_content_api\includes\RealisticDummyContentRecipe, this might be solved by uninstalling and reinstalling realistic_dummy_content or rebuilding the registry (Drupal 7), and has been known to happen when upgrading from beta3.');
+    if (!class_exists('\Drupal\realistic_dummy_content_api\includes\Recipe')) {
+      throw new \Exception('Cannot find the class \Drupal\realistic_dummy_content_api\includes\Recipe, this might be solved by uninstalling and reinstalling realistic_dummy_content or rebuilding the registry (Drupal 7), and has been known to happen when upgrading from beta3.');
     }
     RealisticDummyContentRecipe::run($log);
   }

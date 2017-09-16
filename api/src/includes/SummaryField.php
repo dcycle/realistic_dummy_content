@@ -10,7 +10,7 @@ use Drupal\realistic_dummy_content_api\Framework\Framework;
  * This field must have a text format when part of an entity object. Node body
  * is one example.
  */
-class RealisticDummyContentTextWithSummaryField extends RealisticDummyContentField {
+class TextWithSummaryField extends Field {
 
   /**
    * {@inheritdoc}

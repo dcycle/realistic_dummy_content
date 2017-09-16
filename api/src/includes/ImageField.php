@@ -7,7 +7,7 @@ use Drupal\realistic_dummy_content_api\Framework\Framework;
 /**
  * Field modifier for image fields.
  */
-class RealisticDummyContentImageField extends RealisticDummyContentField {
+class ImageField extends Field {
 
   /**
    * {@inheritdoc}

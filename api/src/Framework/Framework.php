@@ -3,7 +3,7 @@
 namespace Drupal\realistic_dummy_content_api\Framework;
 
 use Drupal\realistic_dummy_content_api\traits\Singleton;
-use Drupal\realistic_dummy_content_api\includes\RealisticDummyContentDevelGenerateGenerator;
+use Drupal\realistic_dummy_content_api\includes\DevelGenerateGenerator;
 
 /**
  * The entry point for the framework.

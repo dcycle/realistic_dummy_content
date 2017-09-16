@@ -37,9 +37,9 @@ class DummyFile {
 }
 
 /**
- * Tests for ...\includes\RealisticDummyContentValueField.
+ * Tests for ...\includes\ValueField.
  */
-class RealisticDummyContentValueFieldTest extends \PHPUnit_Framework_TestCase {
+class ValueFieldTest extends \PHPUnit_Framework_TestCase {
 
   /**
    * Test that empty files and non-existing files are treated differently.

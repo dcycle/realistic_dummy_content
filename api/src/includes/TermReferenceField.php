@@ -8,7 +8,7 @@ use Drupal\realistic_dummy_content_api\Framework\Framework;
 /**
  * Represents a term reference field.
  */
-class RealisticDummyContentTermReferenceField extends RealisticDummyContentField {
+class TermReferenceField extends Field {
 
   use RealisticDummyContentDrupalTrait;
 

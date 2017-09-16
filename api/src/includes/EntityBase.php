@@ -10,7 +10,7 @@ use Drupal\realistic_dummy_content_api\Framework\Framework;
  * Class with an abstract Modify() method. Subclasses can have
  * access to entities in order to override demo content in them.
  */
-abstract class RealisticDummyContentEntityBase extends RealisticDummyContentBase {
+abstract class EntityBase extends Base {
   private $hash;
   private $entity;
   private $type;

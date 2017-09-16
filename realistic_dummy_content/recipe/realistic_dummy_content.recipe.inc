@@ -9,7 +9,7 @@
  */
 
 // Required as of the 2.x branch.
-use Drupal\realistic_dummy_content_api\includes\RealisticDummyContentRecipe;
+use Drupal\realistic_dummy_content_api\includes\Recipe;
 
 /**
  * An example recipe. This one creates four pages, and then 10 articles.
@@ -18,7 +18,7 @@ use Drupal\realistic_dummy_content_api\includes\RealisticDummyContentRecipe;
 // We cannot Make this file conform to coding standards because existing
 // projects might have used this as an example and we need to continue
 // supporting this technique for defining recipes.
-class realistic_dummy_content_realistic_dummy_content_recipe extends RealisticDummyContentRecipe {
+class realistic_dummy_content_realistic_dummy_content_recipe extends Recipe {
 
   /**
    * {@inheritdoc}

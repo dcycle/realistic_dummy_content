@@ -5,7 +5,7 @@ namespace Drupal\realistic_dummy_content_api\includes;
 /**
  * The Drush log, allows function to log messages to Drush.
  */
-class RealisticDummyContentDrushLog implements RealisticDummyContentLogInterface {
+class DrushLog implements LogInterface {
 
   /**
    * {@inheritdoc}

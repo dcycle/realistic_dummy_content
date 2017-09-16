@@ -7,14 +7,14 @@ require_once './api/src/includes/RealisticDummyContentAttribute.php';
 require_once './api/src/includes/RealisticDummyContentField.php';
 require_once './api/src/includes/RealisticDummyContentTermReferenceField.php';
 
-use Drupal\realistic_dummy_content_api\includes\RealisticDummyContentTermReferenceField;
+use Drupal\realistic_dummy_content_api\includes\TermReferenceField;
 
 /**
- * Tests for ...\includes\RealisticDummyContentTermReferenceField.
+ * Tests for ...\includes\TermReferenceField.
  *
  * @group realistic_dummy_content
  */
-class RealisticDummyContentTermReferenceFieldTest extends \PHPUnit_Framework_TestCase {
+class TermReferenceFieldTest extends \PHPUnit_Framework_TestCase {
 
   /**
    * Callback: dummy version of ::taxonomyLoadTree().

@@ -4,14 +4,14 @@ namespace Drupal\realistic_dummy_content_api\Test;
 
 require_once './api/src/includes/RealisticDummyContentEnvironment.php';
 
-use Drupal\realistic_dummy_content_api\includes\RealisticDummyContentEnvironment;
+use Drupal\realistic_dummy_content_api\includes\Environment;
 
 /**
  * Dummy file, used to test how fields manage files.
  *
  * @group realistic_dummy_content
  */
-class RealisticDummyContentUnitTestCaseDummyFile {
+class UnitTestCaseDummyFile {
   private $value;
 
   /**
@@ -37,9 +37,9 @@ class RealisticDummyContentUnitTestCaseDummyFile {
 }
 
 /**
- * Tests for ...\includes\RealisticDummyContentEnvironment.
+ * Tests for ...\includes\Environment.
  */
-class RealisticDummyContentEnvironmentTest extends \PHPUnit_Framework_TestCase {
+class EnvironmentTest extends \PHPUnit_Framework_TestCase {
 
   /**
    * Test that file names are properly parsed and combined.

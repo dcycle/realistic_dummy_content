@@ -8,13 +8,13 @@
  * tests are slower than unit tests so we want to limit their use.
  */
 
-use Drupal\realistic_dummy_content_api\includes\RealisticDummyContentFieldModifier;
-use Drupal\realistic_dummy_content_api\includes\RealisticDummyContentDebugLog;
+use Drupal\realistic_dummy_content_api\includes\FieldModifier;
+use Drupal\realistic_dummy_content_api\includes\DebugLog;
 
 /**
  * The test case
  */
-class RealisticDummyContentDatabaseTestCase extends DrupalWebTestCase {
+class DatabaseTestCase extends DrupalWebTestCase {
   /**
    * Info for this test case.
    */

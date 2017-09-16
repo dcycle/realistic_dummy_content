@@ -5,7 +5,7 @@ namespace Drupal\realistic_dummy_content_api\includes;
 /**
  * Interface for a log class.
  */
-interface RealisticDummyContentLogInterface {
+interface LogInterface {
 
   /**
    * Add a log entry for normal execution.

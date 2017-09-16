@@ -35,22 +35,22 @@ function hook_realistic_dummy_content_attribute_manipulator_alter(&$class, &$inf
   switch (Framework::instance()->fieldTypeMachineName($info)) {
     case 'picture':
       // The user picture.
-      $class = '\Drupal\realistic_dummy_content_api\includes\RealisticDummyContentUserPicture';
+      $class = '\Drupal\realistic_dummy_content_api\includes\UserPicture';
       break;
 
     case 'text_with_summary':
       // For example the body.
-      $class = '\Drupal\realistic_dummy_content_api\includes\RealisticDummyContentTextWithSummaryField';
+      $class = '\Drupal\realistic_dummy_content_api\includes\TextWithSummaryField';
       break;
 
     case 'taxonomy_term_reference':
       // For example, tags on articles.
-      $class = '\Drupal\realistic_dummy_content_api\includes\RealisticDummyContentTermReferenceField';
+      $class = '\Drupal\realistic_dummy_content_api\includes\TermReferenceField';
       break;
 
     case 'image':
       // For example, images on articles.
-      $class = '\Drupal\realistic_dummy_content_api\includes\RealisticDummyContentImageField';
+      $class = '\Drupal\realistic_dummy_content_api\includes\ImageField';
       break;
 
     default:
@@ -100,7 +100,7 @@ function hook_realistic_dummy_content_api_class($entity, $type, $filter = array(
     // given type. These classes must exist, either through Drupal's
     // autoload system or be included explictely, and they must be
     // subclasses of RealisticDummyContentBase.
-    '\Drupal\realistic_dummy_content_api\includes\RealisticDummyContentFieldModifier',
+    '\Drupal\realistic_dummy_content_api\includes\FieldModifier',
   );
 }
 

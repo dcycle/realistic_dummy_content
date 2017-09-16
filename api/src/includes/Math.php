@@ -2,10 +2,14 @@
 
 namespace Drupal\realistic_dummy_content_api\includes;
 
+use Drupal\realistic_dummy_content_api\traits\Singleton;
+
 /**
  * Everything having to do with numbers and calculations.
  */
 class Math {
+
+  use Singleton;
 
   /**
    * Generate sequential number based on a hash.

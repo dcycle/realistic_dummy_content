@@ -10,7 +10,7 @@ namespace Drupal\realistic_dummy_content_api\includes;
  * class defines abstract functions representing what the environment should
  * do.
  */
-abstract class RealisticDummyContentEnvironment {
+abstract class Environment {
   /**
    * Private variable containing the environment to use.
    *

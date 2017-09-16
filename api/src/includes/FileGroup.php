@@ -42,7 +42,7 @@ namespace Drupal\realistic_dummy_content_api\includes;
  * used, for example Framework::instance()->filteredHtml() will be used if no
  * format is specified for the body.
  */
-class RealisticDummyContentFileGroup {
+class FileGroup {
 
   private $radical;
   private $file;

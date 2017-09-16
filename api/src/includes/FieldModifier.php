@@ -33,7 +33,7 @@ use Drupal\realistic_dummy_content_api\Framework\Framework;
  * specific manipulators for the fields image, text_with_summary,
  * taxonomy_term_reference...).
  */
-class RealisticDummyContentFieldModifier extends RealisticDummyContentEntityBase {
+class FieldModifier extends EntityBase {
 
   /**
    * Get properties for the entity, for example user's picture or node's name.
@@ -106,12 +106,12 @@ class RealisticDummyContentFieldModifier extends RealisticDummyContentEntityBase
     $class = '';
     switch ($type) {
       case 'property':
-        $original_class = '\Drupal\realistic_dummy_content_api\includes\RealisticDummyContentTextProperty';
+        $original_class = '\Drupal\realistic_dummy_content_api\includes\TextProperty';
         $attribute_type = $name;
         break;
 
       case 'field':
-        $original_class = '\Drupal\realistic_dummy_content_api\includes\RealisticDummyContentValueField';
+        $original_class = '\Drupal\realistic_dummy_content_api\includes\ValueField';
         $field_info = Framework::instance()->fieldInfoField($name);
         $attribute_type = $field_info['type'];
         break;

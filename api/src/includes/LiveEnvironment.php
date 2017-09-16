@@ -9,7 +9,7 @@ namespace Drupal\realistic_dummy_content_api\includes;
  * system and such. However during testing we want to abstract that away. This
  * class represents the live environment.
  */
-class RealisticDummyContentLiveEnvironment extends RealisticDummyContentEnvironment {
+class LiveEnvironment extends Environment {
 
   /**
    * {@inheritdoc}

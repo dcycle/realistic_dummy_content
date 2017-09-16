@@ -10,7 +10,7 @@ use Drupal\realistic_dummy_content_api\Framework\Framework;
  * Represents a generic field which appears in an entity object as
  * array('value' => 'xyz').
  */
-class RealisticDummyContentValueField extends RealisticDummyContentField {
+class ValueField extends Field {
 
   /**
    * {@inheritdoc}
