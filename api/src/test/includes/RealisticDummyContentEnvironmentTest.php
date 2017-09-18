@@ -2,7 +2,7 @@
 
 namespace Drupal\realistic_dummy_content_api\Test;
 
-require_once './api/src/includes/RealisticDummyContentEnvironment.php';
+require_once './api/src/includes/Environment.php';
 
 use Drupal\realistic_dummy_content_api\includes\Environment;
 

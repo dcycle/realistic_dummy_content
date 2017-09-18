@@ -2,7 +2,7 @@
 
 namespace Drupal\realistic_dummy_content_api\includes;
 
-use Drupal\realistic_dummy_content_api\traits\RealisticDummyContentDrupalTrait;
+use Drupal\realistic_dummy_content_api\traits\DrupalTrait;
 use Drupal\realistic_dummy_content_api\Framework\Framework;
 
 /**
@@ -10,7 +10,7 @@ use Drupal\realistic_dummy_content_api\Framework\Framework;
  */
 class TermReferenceField extends Field {
 
-  use RealisticDummyContentDrupalTrait;
+  use DrupalTrait;
 
   /**
    * {@inheritdoc}
