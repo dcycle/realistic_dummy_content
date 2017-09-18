@@ -14,23 +14,27 @@ trait Singleton {
 
   /**
    * Interal instance variable used with the instance() method.
+   *
+   * @var object
    */
   static private $instance;
 
   /**
    * No one but us can call the constructor.
    */
-  private function __construct() {}
+  private function __construct() {
+  }
 
   /**
    * Implements the Singleton design pattern.
    *
    * Only one instance of this class should exist per execution.
    *
-   * @return class using IgniteSingletonTrait
-   *   The single instance of the class.
+   * @return object
+   *   The single instance of a class which uses the
+   *   Singleton trait.
    */
-  static function instance() {
+  static public function instance() {
     if (!self::$instance) {
       self::$instance = new self();
     }
