@@ -2,10 +2,10 @@
 
 namespace Drupal\realistic_dummy_content_api\Test;
 
-require_once './api/src/traits/RealisticDummyContentDrupalTrait.php';
-require_once './api/src/includes/RealisticDummyContentAttribute.php';
-require_once './api/src/includes/RealisticDummyContentField.php';
-require_once './api/src/includes/RealisticDummyContentTermReferenceField.php';
+require_once './api/src/traits/DrupalTrait.php';
+require_once './api/src/includes/Attribute.php';
+require_once './api/src/includes/Field.php';
+require_once './api/src/includes/TermReferenceField.php';
 
 use Drupal\realistic_dummy_content_api\includes\TermReferenceField;
 
@@ -57,7 +57,7 @@ class TermReferenceFieldTest extends \PHPUnit_Framework_TestCase {
    */
   public function testGetTid(string $message, array $vocabularies, array $field_info, bool $expect_exception, string $name, $expected) {
 
-    $object = $this->getMockBuilder(RealisticDummyContentTermReferenceField::class)
+    $object = $this->getMockBuilder(TermReferenceField::class)
       ->setMethods([
         'getAllVocabularies',
         'fieldInfoField',

@@ -2,6 +2,7 @@
 
 namespace Drupal\realistic_dummy_content_api\Test;
 
+require_once './api/src/traits/Singleton.php';
 require_once './api/src/includes/Math.php';
 
 use Drupal\realistic_dummy_content_api\includes\Math;
@@ -31,7 +32,7 @@ class MathTest extends \PHPUnit_Framework_TestCase {
    * @dataProvider providerTestSequential
    */
   public function testSequential($start, $end, $hash, $expected, $offset) {
-    $math = new Math();
+    $math = Math::instance();
 
     $result = $math->sequential($start, $end, $hash, $offset);
     $this->assertTrue($result == $expected, 'Sequential number is as expected for ' . $start . ', ' . $end . ' with hash ' . $hash . ': [expected] ' . $expected . ' = [result] ' . $result);

@@ -10,7 +10,7 @@ use Drupal\realistic_dummy_content_api\Framework\Framework;
  * Add this as a trait to any class, which will then be able to use the
  * methods herein, while test classes will be able to mock them.
  */
-trait RealisticDummyContentDrupalTrait {
+trait DrupalTrait {
 
   /**
    * Mockable wrapper around Framework::fieldInfoField().

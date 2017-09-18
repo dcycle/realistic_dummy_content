@@ -4,7 +4,7 @@ namespace Drupal\realistic_dummy_content_api\includes;
 
 namespace Drupal\realistic_dummy_content_api\Test;
 
-require_once './api/src/includes/RealisticDummyContentValueField.php';
+require_once './api/src/includes/ValueField.php';
 
 /**
  * Dummy file, used to test how fields manage files.
@@ -45,7 +45,7 @@ class ValueFieldTest extends \PHPUnit_Framework_TestCase {
    * Test that empty files and non-existing files are treated differently.
    */
   public function testEmpty() {
-    $field = new RealisticDummyContentValueField('ignore entity', 'ignore name');
+    $field = new ValueField('ignore entity', 'ignore name');
     $null = new DummyFile(NULL);
     $empty = new DummyFile('');
 
