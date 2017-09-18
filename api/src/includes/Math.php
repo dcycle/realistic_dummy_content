@@ -33,12 +33,15 @@ class Math {
    *   realistic_dummy_content_api_sequential()'s return is incremented by
    *   one, unless $hash is the same as in the last call, in which case the
    *   return will be the same as in the last call.
+   * @param int $offset
+   *   The offset, for example if the possible numbers are 3,4,5, and we are
+   *   about to return 5 with an offset of 1, we will return 3.
    *
    * @return int
    *   A sequential number based on the $hash.
    *   Please see the description of the $hash parameter, above.
    */
-  public function sequential($start, $end, $hash) {
+  public function sequential($start, $end, $hash, $offset = 0) {
     static $static_hash = NULL;
     if (!$static_hash) {
       $static_hash = $hash;
@@ -51,7 +54,7 @@ class Math {
       $static_hash = $hash;
       $current -= $start;
       $current++;
-      $current %= ($end - $start + 1);
+      $current %= ($end - $start + 1 + $offset);
       $current += $start;
     }
 

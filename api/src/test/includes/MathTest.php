@@ -22,16 +22,18 @@ class MathTest extends \PHPUnit_Framework_TestCase {
    *   End number passed to realistic_dummy_content_api_sequential().
    * @param string $hash
    *   Hash passed to realistic_dummy_content_api_sequential().
+   * @param int $offset
+   *   The offset.
    * @param int $expected
    *   Expected result which realistic_dummy_content_api_sequential() is
    *   expected to return.
    *
    * @dataProvider providerTestSequential
    */
-  public function testSequential($start, $end, $hash, $expected) {
+  public function testSequential($start, $end, $hash, $expected, $offset) {
     $math = new Math();
 
-    $result = $math->sequential($start, $end, $hash);
+    $result = $math->sequential($start, $end, $hash, $offset);
     $this->assertTrue($result == $expected, 'Sequential number is as expected for ' . $start . ', ' . $end . ' with hash ' . $hash . ': [expected] ' . $expected . ' = [result] ' . $result);
   }
 
@@ -40,16 +42,21 @@ class MathTest extends \PHPUnit_Framework_TestCase {
    */
   public function providerTestSequential() {
     return array(
-      array(0, 3, 'a', 0),
-      array(0, 3, 'a', 0),
-      array(0, 3, 'b', 1),
-      array(0, 3, 'b', 1),
-      array(0, 3, 'c', 2),
-      array(0, 3, 'c', 2),
-      array(0, 3, 'd', 3),
-      array(0, 2, 'd', 2),
-      array(10, 13, 'd', 10),
-      array(11, 12, 'd', 11),
+      array(0, 3, 'a', 0, 0),
+      array(0, 3, 'a', 0, 0),
+      array(0, 3, 'a', 1, 1),
+      array(0, 3, 'a', 2, 2),
+      array(0, 3, 'a', 3, 3),
+      array(0, 3, 'a', 4, 0),
+      array(0, 3, 'a', 0, 0),
+      array(0, 3, 'b', 0, 1),
+      array(0, 3, 'b', 0, 1),
+      array(0, 3, 'c', 0, 2),
+      array(0, 3, 'c', 0, 2),
+      array(0, 3, 'd', 0, 3),
+      array(0, 2, 'd', 0, 2),
+      array(10, 13, 'd', 0, 10),
+      array(11, 12, 'd', 0, 11),
     );
   }
 
