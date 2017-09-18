@@ -360,8 +360,7 @@ function realistic_dummy_content_api_rand($start, $end, $hash = NULL) {
     return rand($start, $end);
   }
   else {
-    $math = new Math();
-    return $math->sequential($start, $end, $hash);
+    return Math::instance()->sequential($start, $end, $hash);
   }
 }
 
