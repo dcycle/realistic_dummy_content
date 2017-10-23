@@ -10,7 +10,7 @@ echo 'Deleting all comment entity content...'
 # We want to interpret $comment as a literal, not a variable.
 # shellcheck disable=SC2016
 drush ev 'foreach(entity_load_multiple("comment") as $comment) { $comment->delete(); }'
-echo 'Running cron to delete the actual comments...'
-drush cron
+echo 'Deleting the comment storage...'
+drush ev "\Drupal::entityManager()->getStorage('field_config')->load('node.article.comment')->delete();"
 echo 'Uninstalling the comme module...'
 drush -y pm-uninstall comment
