@@ -6,6 +6,7 @@ set -e
 
 ./exec.sh drupal8 'drush eval "realistic_dummy_content_api_selftest()"'
 
+./exec.sh drupal8 '/resources/uninstall-comment-module.sh'
 echo -e 'Make sure we can run generate-realistic even if the'
 echo -e 'comment module is disabled.'
 ./exec.sh drupal8 'drush generate-realistic'
