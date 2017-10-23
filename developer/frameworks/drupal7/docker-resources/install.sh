@@ -20,4 +20,5 @@ drush si \
   standard \
   install_configure_form.update_status_module='array(FALSE,FALSE)'
 
+drush dis -y comment
 drush en realistic_dummy_content devel_generate devel -y

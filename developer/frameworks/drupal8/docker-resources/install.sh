@@ -15,4 +15,5 @@ drush si \
   standard \
   install_configure_form.update_status_module='array(FALSE,FALSE)'
 
+drush -y pm-uninstall comment
 drush en realistic_dummy_content devel_generate devel -y
