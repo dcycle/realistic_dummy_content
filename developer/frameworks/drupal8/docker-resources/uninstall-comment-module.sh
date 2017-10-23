@@ -5,6 +5,6 @@
 
 set -e
 
-drush eval "\Drupal::entityManager()->getStorage('field_config')->load('node.article.comment')->delete();"
+drush ev '\Drupal::service("entity_field.manager")->getFieldStorageDefinitions("node")["comment"]->delete();'
 drush cron
 drush -y pm-uninstall comment
