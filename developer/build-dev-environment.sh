@@ -18,17 +18,10 @@ if [ ! -f "$BASEPATH"/"$SCRIPTNAME" ]; then
   exit 1;
 fi
 
-which docker-compose > /dev/null 2> /dev/null || {
-  echo -e "[error] Calling which docker-compose yielded an error."
-  echo -e "        Please run this from within a machine which has Docker and"
-  echo -e "        Docker Compose installed."
-  exit 1;
-}
-
 ./kill.sh
 
-docker-compose build && \
-docker-compose up \
+./docker-compose-in-docker.sh build && \
+./docker-compose-in-docker.sh up \
   -d \
   --remove-orphans
 
