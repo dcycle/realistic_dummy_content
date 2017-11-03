@@ -5,7 +5,7 @@
 
 cd "$DEVPATH"
 DOCKERFILE="frameworks/$COMPOSERCONTAINER/Dockerfile"
-CONTAINER="$(docker-compose ps -q $COMPOSERCONTAINER)"
+CONTAINER="$(./docker-compose-in-docker.sh ps -q $COMPOSERCONTAINER)"
 
 UNIQUEIMAGENAME="$CONTAINER"_image
 
