@@ -23,4 +23,4 @@ if [ -d "$BASEPATH"/tmp ]; then
   rm -rf ./tmp
 fi
 
-docker-compose kill
+./docker-compose-in-docker.sh kill
