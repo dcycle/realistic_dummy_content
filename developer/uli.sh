@@ -22,6 +22,6 @@ for FRAMEWORK in $(/bin/ls frameworks | grep -v README); do
   DOMAIN=$(./docker-compose-in-docker.sh port "$FRAMEWORK" 80)
   echo -e "To log into your $FRAMEWORK environment go to:"
   echo -e ""
-  echo -e ' ==> '"$(./exec.sh "$FRAMEWORK" 'drush uli')"|sed "s/default/$DOMAIN/g"
+  echo -e ' ==> '"$(./docker-compose-in-docker.sh exec -T "$FRAMEWORK" /bin/bash -c 'drush uli')"|sed "s/default/$DOMAIN/g"
   echo -e ""
 done

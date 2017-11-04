@@ -30,7 +30,7 @@ echo -e "Waiting $SECONDS seconds for the database container to warm up."
 sleep "$SECONDS"
 
 for FRAMEWORK in $(/bin/ls frameworks | grep -v README); do
-  ./exec.sh "$FRAMEWORK" '/resources/install.sh'
+  ./docker-compose-in-docker.sh exec -T $FRAMEWORK /bin/bash -c '/resources/install.sh'
 done
 
 echo -e ""
