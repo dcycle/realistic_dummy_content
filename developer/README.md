@@ -13,8 +13,8 @@ Among the useful scripts are:
  * `./build-dev-environment.sh`: Build development
    environments and get one-time login links to the environments.
  * `./kill.sh`: Kill development environments.
- * `./exec.sh drupal7 'drush cc all'`: Run a Drush command
+ * `./docker-compose-in-docker.sh exec -T drupal7 /bin/bash -c 'drush cc all'`: Run a Drush command
    (in this example clear cache) on Drupal 7.
- * `./exec.sh drupal8 'drush cr'`: Run a Drush command
+ * `./docker-compose-in-docker.sh exec -T drupal8 /bin/bash -c 'drush cr'`: Run a Drush command
    (in this example rebuild cache) on Drupal 8.
  * `./uli.sh`: Get one-time login links for all environments.

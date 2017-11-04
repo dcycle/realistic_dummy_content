@@ -4,8 +4,8 @@
 #
 set -e
 
-./exec.sh drupal7 'drush eval "realistic_dummy_content_api_selftest()"'
-./exec.sh drupal7 \
+./docker-compose-in-docker.sh exec -T drupal7 /bin/bash -c 'drush eval "realistic_dummy_content_api_selftest()"'
+./docker-compose-in-docker.sh exec -T drupal7 /bin/bash -c \
   "drush en -y simpletest && \
   php ./scripts/run-tests.sh \
     --class \
@@ -13,10 +13,10 @@ set -e
     --verbose \
     RealisticDummyContentDatabaseTestCase"
 
-./exec.sh drupal7 'drush generate-realistic'
-./exec.sh drupal7 'drush dis -y comment && drush generate-realistic'
+./docker-compose-in-docker.sh exec -T drupal7 /bin/bash -c 'drush generate-realistic'
+./docker-compose-in-docker.sh exec -T drupal7 /bin/bash -c 'drush dis -y comment && drush generate-realistic'
 
-./exec.sh drupal7 'drush -y dis realistic_dummy_content'
-./exec.sh drupal7 'drush -y dis realistic_dummy_content_api'
-./exec.sh drupal7 'drush -y pm-uninstall realistic_dummy_content'
-./exec.sh drupal7 'drush -y pm-uninstall realistic_dummy_content_api'
+./docker-compose-in-docker.sh exec -T drupal7 /bin/bash -c 'drush -y dis realistic_dummy_content'
+./docker-compose-in-docker.sh exec -T drupal7 /bin/bash -c 'drush -y dis realistic_dummy_content_api'
+./docker-compose-in-docker.sh exec -T drupal7 /bin/bash -c 'drush -y pm-uninstall realistic_dummy_content'
+./docker-compose-in-docker.sh exec -T drupal7 /bin/bash -c 'drush -y pm-uninstall realistic_dummy_content_api'
