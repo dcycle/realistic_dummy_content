@@ -44,9 +44,11 @@ module.
 Which version to use
 -----
 
-* Use the x.x-3.x versions with PHP 7 or higher;
-* Use the x.x-2.x versions with PHP versions higher than 5.3;
-* Use the 7.x-1.0-beta7 version if you are using PHP 5.3 or earlier.
+|            | Drupal 7 | Drupal 8    | Backdrop    |
+|------------|----------|-------------|-------------|
+| PHP <= 5.3 | 7.x-1.x  | unsupported | unsupported |
+| PHP < 7.0  | 7.x-2.x  | 8.x-2.x     | 7.x-2.x     |
+| PHP >= 7.0 | 7.x-3.x  | 8.x-3.x     | 7.x-2.x     |
 
 Creating recipes
 -----
