@@ -3,7 +3,6 @@ description = Allows enabled modules to generate kick-ass demo content (see the 
 package = Development
 core = 7.x
 php = 5.4
-backdrop = 1.x
 tags[] = developer
 
 ; Do not use Drupal 7's autoloading mechanism as it does not support namespaces.
