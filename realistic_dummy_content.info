@@ -2,6 +2,7 @@ name = Realistic Dummy Content
 description = Uses the Realistic Dummy Content API, and custom demo images in a specific directory structure, to make customized generated content. Do not enable on production sites.
 package = Development
 core = 7.x
+php = 7.0
 backdrop = 1.x
 tags[] = developer
 
