@@ -50,6 +50,8 @@ Which version to use
 | PHP < 7.0  | 7.x-2.x  | 8.x-2.x     | 7.x-2.x     |
 | PHP >= 7.0 | 7.x-3.x  | 8.x-3.x     | 7.x-2.x     |
 
+If you are a Backdrop user, please see [this issue](https://www.drupal.org/project/realistic_dummy_content/issues/2957505).
+
 Creating recipes
 -----
 
