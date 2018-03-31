@@ -13,6 +13,7 @@ drush si \
   --account-name=admin \
   --account-pass=admin \
   standard \
-  install_configure_form.update_status_module='array(FALSE,FALSE)'
+  install_configure_form.enable_update_status_module=NULL \
+  install_configure_form.enable_update_status_emails=NULL
 
 drush en realistic_dummy_content devel_generate devel -y
