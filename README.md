@@ -44,7 +44,9 @@ module.
 Which version to use
 -----
 
-Use the 7.x-1.0-beta7 version only if you are using PHP 5.3 or earlier. All other users should use x.x-2.x versions.
+* Use the x.x-3.x versions with PHP 7 or higher;
+* Use the x.x-2.x versions with PHP versions higher than 5.3;
+* Use the 7.x-1.0-beta7 version if you are using PHP 5.3 or earlier.
 
 Creating recipes
 -----
