@@ -9,7 +9,7 @@ use Drupal\realistic_dummy_content_api\includes\RealisticDummyContentDevelGenera
  *
  * Using this class as opposed, for example, to Drupal 7-specific functions,
  * allows the code logic to work with more than one framework. Specific
- * frameworks such as Backdrop, Drupal 7 or Drupal 8, are represented by
+ * frameworks such as Drupal 7 or Drupal 8, are represented by
  * separate classes which implement FrameworkInterface.
  */
 class Framework implements FrameworkInterface {
@@ -37,11 +37,6 @@ class Framework implements FrameworkInterface {
         case 'Drupal7':
           module_load_include('php', 'realistic_dummy_content_api', 'src/Framework/Drupal7');
           $this->implementor = new Drupal7();
-          break;
-
-        case 'Backdrop':
-          module_load_include('php', 'realistic_dummy_content_api', 'src/Framework/Backdrop');
-          $this->implementor = new Backdrop();
           break;
 
         case 'Drupal8':

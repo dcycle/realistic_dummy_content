@@ -3,7 +3,6 @@ description = Uses the Realistic Dummy Content API, and custom demo images in a 
 package = Development
 core = 7.x
 php = 7.0
-backdrop = 1.x
 tags[] = developer
 
 ; note that we are using realistic_dummy_content_api as a dependency here purely
