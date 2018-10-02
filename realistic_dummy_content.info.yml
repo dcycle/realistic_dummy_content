@@ -9,4 +9,4 @@ tags:
 # note that we are using realistic_dummy_content_api as a dependency here purely
 # as a convenience. For you own modules, this is not required.
 dependencies:
-  - realistic_dummy_content_api
+  - realistic_dummy_content:realistic_dummy_content_api
