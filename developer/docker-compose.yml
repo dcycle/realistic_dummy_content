@@ -33,7 +33,7 @@ services:
     restart: always
 
   database:
-    image: mysql
+    image: mysql:5
     environment:
       MYSQL_USER: drupal
       MYSQL_PASSWORD: drupal
