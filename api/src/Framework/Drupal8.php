@@ -240,8 +240,9 @@ class Drupal8 extends Framework implements FrameworkInterface {
    * {@inheritdoc}
    */
   public function setEntityProperty(&$entity, $property, $value) {
-    if (!is_array($value)) {
-      $value = array('set' => $value);
+    if (!isset($value['set'])) {
+      $value = (array) $value;
+      $value['set'] = $value;
     }
     $entity->set($property, $value['set']);
     if (isset($value['options']['format'])) {
