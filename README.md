@@ -1,6 +1,8 @@
 Realistic dummy content
 =======================
 
+**[Drupal 9 update: we are waiting for Devel to be Drupal 9-comptabible](https://www.drupal.org/project/realistic_dummy_content/issues/3129941).**
+
 Generate realistic demo content with
 [Devel](https://drupal.org/project/devel)'s `devel_generate` module.
 
@@ -44,13 +46,10 @@ module.
 Which version to use
 -----
 
-|            | Drupal 7 | Drupal 8    | Backdrop    |
-|------------|----------|-------------|-------------|
-| PHP <= 5.3 | 7.x-1.x  | unsupported | unsupported |
-| PHP < 7.0  | 7.x-2.x  | 8.x-2.x     | 7.x-2.x     |
-| PHP >= 7.0 | 7.x-3.x  | 8.x-3.x     | 7.x-2.x     |
-
-If you are a Backdrop user, please see [this issue](https://www.drupal.org/project/realistic_dummy_content/issues/2957505).
+* Drupal 8: 8.x-2.x
+* Drupal 7: 7.x-2.x
+* Backdrop: 7.x-2.x
+* Drupal 9: [not yet supported](https://www.drupal.org/project/realistic_dummy_content/issues/3129941)
 
 Creating recipes
 -----
