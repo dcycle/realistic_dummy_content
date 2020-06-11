@@ -17,4 +17,4 @@ docker run --rm -v "$(pwd):/app/code" \
 # To fix it we cannot use sed because it's used differently on different
 # systems, perl seems a good alternative, see
 # https://stackoverflow.com/a/4247319/1207752
-perl -i -pe's/\)-&gt;/)->/g' README.html
+perl -i -pe's/&amp;&amp;/&&/g' README.html
