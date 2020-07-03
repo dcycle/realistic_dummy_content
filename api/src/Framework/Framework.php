@@ -3,6 +3,7 @@
 namespace Drupal\realistic_dummy_content_api\Framework;
 
 use Drupal\realistic_dummy_content_api\includes\RealisticDummyContentDevelGenerateGenerator;
+use Drupal\user\Entity\User;
 
 /**
  * The entry point for the framework.
@@ -201,7 +202,7 @@ class Framework implements FrameworkInterface {
    * @throws Exception
    */
   public function latestId($table = 'node', $key = 'nid') {
-    return db_query("SELECT $key FROM {$table} ORDER BY $key DESC LIMIT 1")->fetchField();
+    return \Drupal::service('database')->query("SELECT $key FROM {$table} ORDER BY $key DESC LIMIT 1")->fetchField();
   }
 
   /**
@@ -346,7 +347,7 @@ class Framework implements FrameworkInterface {
     $generator = new RealisticDummyContentDevelGenerateGenerator('user', 'user', 1, array('kill' => TRUE));
     $generator->generate();
 
-    $user = user_load(Framework::instance()->latestId('users', 'uid'));
+    $user = User::load(Framework::instance()->latestId('users', 'uid'));
     if (strpos(Framework::instance()->userPictureFilename($user), 'dummyfile') !== FALSE) {
       $tests[] = 'User picture substitution OK, and aliases work correctly.';
     }

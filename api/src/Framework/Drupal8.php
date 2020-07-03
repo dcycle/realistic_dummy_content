@@ -2,6 +2,8 @@
 
 namespace Drupal\realistic_dummy_content_api\Framework;
 
+use Drupal\file\Entity\File;
+use Drupal\node\Entity\Node;
 use Drupal\taxonomy\Entity\Vocabulary;
 use Drupal\taxonomy\Entity\Term;
 use Drupal\Component\Utility\Timer;
@@ -22,7 +24,7 @@ class Drupal8 extends Framework implements FrameworkInterface {
   public function userPictureFilename($user) {
     $value = $user->get('user_picture')->getValue();
     $id = $value[0]['target_id'];
-    $file = file_load($id);
+    $file = File::load($id);
     return $file->getFileUri();
   }
 
@@ -120,7 +122,7 @@ class Drupal8 extends Framework implements FrameworkInterface {
     $bundle = 'article';
 
     // Get definition of target entity type.
-    $entity_def = \Drupal::entityManager()->getDefinition($entity_type);
+    $entity_def = \Drupal::entityTypeManager()->getDefinition($entity_type);
 
     // Load up an array for creation.
     $new_node = array(
@@ -129,10 +131,10 @@ class Drupal8 extends Framework implements FrameworkInterface {
       $entity_def->get('entity_keys')['bundle'] => $bundle,
     );
 
-    $new_post = \Drupal::entityManager()->getStorage($entity_type)->create($new_node);
+    $new_post = \Drupal::entityTypeManager()->getStorage($entity_type)->create($new_node);
     $new_post->save();
 
-    return node_load($this->latestId());
+    return Node::load($this->latestId());
   }
 
   /**
@@ -157,7 +159,7 @@ class Drupal8 extends Framework implements FrameworkInterface {
    */
   public function fieldInfoFields() {
     $return = array();
-    $field_map = \Drupal::entityManager()->getFieldMap();
+    $field_map = \Drupal::service('entity_field.manager')->getFieldMap();
     // Field map returns:
     // entitytype/name(type, bundles(article => article))
     // we must change that into:
@@ -315,26 +317,6 @@ class Drupal8 extends Framework implements FrameworkInterface {
    * {@inheritdoc}
    */
   public function debug($message, $info = NULL) {
-    if ($this->moduleExists('devel')) {
-      if (is_string($message)) {
-        // @codingStandardsIgnoreStart
-        dpm($message, $info);
-        // @codingStandardsIgnoreEnd
-      }
-      else {
-        // @codingStandardsIgnoreStart
-        dpm($info . ' ==>');
-        // @codingStandardsIgnoreEnd
-        if (function_exists('ksm')) {
-          ksm($message);
-        }
-        else {
-          // @codingStandardsIgnoreStart
-          dpm($message);
-          // @codingStandardsIgnoreEnd
-        }
-      }
-    }
     $this->watchdog('<pre>' . print_r(array($info => $message), TRUE) . '</pre>');
   }
 
