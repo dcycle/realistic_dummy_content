@@ -75,6 +75,14 @@ class Framework implements FrameworkInterface {
   /**
    * {@inheritdoc}
    */
+  public function drupalSetMessage($message = NULL, $type = 'status', $repeat = FALSE) {
+    $return = $this->implementor()->drupalSetMessage($message, $type, $repeat);
+    return $return;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function debug($message, $info = NULL) {
     return $this->implementor()->debug($message, $info);
   }

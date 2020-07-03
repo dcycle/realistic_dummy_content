@@ -56,6 +56,13 @@ class Drupal8 extends Framework implements FrameworkInterface {
   /**
    * {@inheritdoc}
    */
+  public function drupalSetMessage($message = NULL, $type = 'status', $repeat = FALSE) {
+    return \Drupal::messenger()->addMessage($message, $type);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function develGenerate($info) {
     if ($info['entity_type'] == 'node') {
       $info['entity_type'] = 'content';

@@ -78,7 +78,7 @@ class Mock extends Framework {
   /**
    * {@inheritdoc}
    */
-  public function configGet($name, $default) {
+  public function configGet($name, $default = NULL) {
     return (isset($this->config[$name])) ? $this->config[$name] : $default;
   }
 
@@ -115,7 +115,7 @@ class Mock extends Framework {
   /**
    * {@inheritdoc}
    */
-  public function debug($message, $info) {
+  public function debug($message, $info = NULL) {
     $this->print('[debug] ' . $message . ' ' . $info);
   }
 

@@ -68,16 +68,10 @@ interface FrameworkInterface {
   public function entityProperties($entity);
 
   /**
-   * Retrieve information about one field.
-   *
-   * @param string $name
-   *   A field name.
-   *
-   * @return array
-   *   Information about a field, corresponds to the return of
-   *   field_info_field() in Drupal 7.
+   * Display a message.
    */
-  public function fieldInfoField($name);
+  public function drupalSetMessage($message = NULL, $type = 'status', $repeat = FALSE);
+
 
   /**
    * Get information about fields.

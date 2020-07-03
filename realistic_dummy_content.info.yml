@@ -2,8 +2,9 @@ type: module
 name: Realistic Dummy Content
 description: Uses the Realistic Dummy Content API, and custom demo images in a specific directory structure, to make customized generated content. Do not enable on production sites.
 package: Development
-core: 8.x
-php: 7.0
+core: '8.x'
+core_version_requirement: ^8 || ^9
+php: '7.x'
 tags:
   - developer
 

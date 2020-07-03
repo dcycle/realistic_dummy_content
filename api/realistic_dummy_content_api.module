@@ -143,7 +143,7 @@ function realistic_dummy_content_api_entity_presave($entity, $type = NULL) {
   // Hook implementations should never throw exceptions, so we'll catch them
   // all here.
   catch (Exception $e) {
-    drupal_set_message($e->getMessage());
+    Framework::instance()->drupalSetMessage($e->getMessage());
   }
 }
 

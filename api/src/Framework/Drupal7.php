@@ -33,6 +33,13 @@ class Drupal7 extends Framework implements FrameworkInterface {
   /**
    * {@inheritdoc}
    */
+  public function drupalSetMessage($message = NULL, $type = 'status', $repeat = FALSE) {
+    return drupal_set_message($message, $type, $repeat);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function userPictureFilename($user) {
     return $user->picture->filename;
   }

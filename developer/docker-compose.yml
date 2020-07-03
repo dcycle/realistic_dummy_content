@@ -4,6 +4,19 @@
 version: '2'
 
 services:
+  drupal9:
+    build:
+      context: .
+      dockerfile: frameworks/drupal9/Dockerfile
+    ports:
+      - "80"
+    volumes:
+      - ../:/var/www/html/modules/realistic_dummy_content
+      - ./tmp/drupal9:/var/www/html/sites/default
+    links:
+      - database:database
+    working_dir: /var/www/html
+
   drupal8:
     build:
       context: .
@@ -16,7 +29,6 @@ services:
     links:
       - database:database
     working_dir: /var/www/html
-    restart: always
 
   drupal7:
     build:
@@ -30,7 +42,6 @@ services:
     links:
       - database:database
     working_dir: /var/www/html
-    restart: always
 
   database:
     image: mysql:5
@@ -42,4 +53,3 @@ services:
       MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
     ports:
       - "3306"
-    restart: always
