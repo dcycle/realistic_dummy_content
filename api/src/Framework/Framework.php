@@ -3,7 +3,6 @@
 namespace Drupal\realistic_dummy_content_api\Framework;
 
 use Drupal\realistic_dummy_content_api\includes\RealisticDummyContentDevelGenerateGenerator;
-use Drupal\user\Entity\User;
 
 /**
  * The entry point for the framework.
@@ -202,7 +201,14 @@ class Framework implements FrameworkInterface {
    * @throws Exception
    */
   public function latestId($table = 'node', $key = 'nid') {
-    return \Drupal::service('database')->query("SELECT $key FROM {$table} ORDER BY $key DESC LIMIT 1")->fetchField();
+    return Framework::dbQuery("SELECT $key FROM {$table} ORDER BY $key DESC LIMIT 1")->fetchField();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function dbQuery($query) {
+    return $this->implementor()->dbQuery($query);
   }
 
   /**
@@ -220,6 +226,13 @@ class Framework implements FrameworkInterface {
     self::addTestFlag('moduleInvokeAll called');
     $object = $this->implementor();
     return call_user_func_array(array(&$object, 'moduleInvokeAll'), $args);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function userLoad($id) {
+    return $this->implementor()->userLoad($id);
   }
 
   /**
@@ -354,7 +367,7 @@ class Framework implements FrameworkInterface {
     $generator = new RealisticDummyContentDevelGenerateGenerator('user', 'user', 1, array('kill' => TRUE));
     $generator->generate();
 
-    $user = User::load(Framework::instance()->latestId('users', 'uid'));
+    $user = Framework::instance()->userLoad(Framework::instance()->latestId('users', 'uid'));
     if (strpos(Framework::instance()->userPictureFilename($user), 'dummyfile') !== FALSE) {
       $tests[] = 'User picture substitution OK, and aliases work correctly.';
     }

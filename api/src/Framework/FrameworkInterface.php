@@ -256,6 +256,16 @@ interface FrameworkInterface {
   public function timerStop($id);
 
   /**
+   * Performs a database query.
+   */
+  public function dbQuery($query);
+
+  /**
+   * Load a user.
+   */
+  public function userLoad($id);
+
+  /**
    * Return the filename of a user picture.
    *
    * @param object $user

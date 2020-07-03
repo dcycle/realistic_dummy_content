@@ -8,6 +8,7 @@ use Drupal\taxonomy\Entity\Vocabulary;
 use Drupal\taxonomy\Entity\Term;
 use Drupal\Component\Utility\Timer;
 use Drupal\field\Entity\FieldConfig;
+use Drupal\user\Entity\User;
 
 if (!defined('WATCHDOG_ERROR')) {
   define('WATCHDOG_ERROR', 3);
@@ -58,6 +59,20 @@ class Drupal8 extends Framework implements FrameworkInterface {
   /**
    * {@inheritdoc}
    */
+  public function userLoad($id) {
+    return User::load($id);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function dbQuery($query) {
+    return \Drupal::service('database')->query($query);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function drupalSetMessage($message = NULL, $type = 'status', $repeat = FALSE) {
     return \Drupal::messenger()->addMessage($message, $type);
   }
@@ -66,7 +81,7 @@ class Drupal8 extends Framework implements FrameworkInterface {
    * {@inheritdoc}
    */
   public function fileScanDirectory($dir, $mask, $options) {
-    return drupal::service('file_system')->scanDirectory($dir, $mask, $options);
+    return \Drupal::service('file_system')->scanDirectory($dir, $mask, $options);
   }
 
   /**

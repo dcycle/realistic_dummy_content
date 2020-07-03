@@ -19,6 +19,20 @@ class Drupal7 extends Framework implements FrameworkInterface {
   /**
    * {@inheritdoc}
    */
+  public function dbQuery($query) {
+    return db_query($query);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function userLoad($id) {
+    return user_load($id);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function fileScanDirectory($dir, $mask, $options) {
     return file_scan_directory($dir, $mask, $options);
   }
