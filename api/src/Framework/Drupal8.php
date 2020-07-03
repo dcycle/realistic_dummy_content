@@ -65,6 +65,13 @@ class Drupal8 extends Framework implements FrameworkInterface {
   /**
    * {@inheritdoc}
    */
+  public function fileScanDirectory($dir, $mask, $options) {
+    return drupal::service('file_system')->scanDirectory($dir, $mask, $options);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function develGenerate($info) {
     if ($info['entity_type'] == 'node') {
       $info['entity_type'] = 'content';

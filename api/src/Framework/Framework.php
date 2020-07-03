@@ -248,6 +248,13 @@ class Framework implements FrameworkInterface {
   /**
    * {@inheritdoc}
    */
+  public function fileScanDirectory($dir, $mask, $options) {
+    return $this->implementor()->fileScanDirectory($dir, $mask, $options);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function hookUserPresave(&$edit, $account, $category) {
     return $this->implementor()->hookUserPresave($edit, $account, $category);
   }

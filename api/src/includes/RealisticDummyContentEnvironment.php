@@ -2,7 +2,7 @@
 
 namespace Drupal\realistic_dummy_content_api\includes;
 
-use Drupal\Core\File\FileSystemInterface;
+use Drupal\realistic_dummy_content_api\Framework\Framework;
 
 /**
  * The abstract base environment.
@@ -162,7 +162,7 @@ abstract class RealisticDummyContentEnvironment {
    */
   public static function getAllFileGroups($filepath, $extensions) {
     try {
-      $candidate_files = FileSystemInterface::scanDirectory($filepath, '/.*$/', array('key' => 'filename'));
+      $candidate_files = Framework::instance()->fileScanDirectory($filepath, '/.*$/', array('key' => 'filename'));
 
       $files = self::sortCandidateFiles($candidate_files, $extensions);
 

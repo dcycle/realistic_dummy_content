@@ -78,6 +78,11 @@ interface FrameworkInterface {
   public function fieldInfoFields();
 
   /**
+   * Scan a directory.
+   */
+  public function fileScanDirectory($dir, $mask, $options);
+
+  /**
    * Return a Drupal 7-style field name if possible for a given entity.
    *
    * For example if the field type is entity_reference, we can transform that
