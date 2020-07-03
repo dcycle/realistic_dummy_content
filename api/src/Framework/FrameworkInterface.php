@@ -72,7 +72,6 @@ interface FrameworkInterface {
    */
   public function drupalSetMessage($message = NULL, $type = 'status', $repeat = FALSE);
 
-
   /**
    * Get information about fields.
    */

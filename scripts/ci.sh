@@ -4,6 +4,5 @@
 #
 set -e
 
-./scripts/php-drupal9.sh
 cd ./developer && ./test.sh
 cd ..
