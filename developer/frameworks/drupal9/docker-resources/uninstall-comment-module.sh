@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Uninstall the comment module for Drupal 8
+# Uninstall the comment module for Drupal 9
 #
 
 set -e
