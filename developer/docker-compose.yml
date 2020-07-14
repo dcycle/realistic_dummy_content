@@ -11,8 +11,8 @@ services:
     ports:
       - "80"
     volumes:
-      - ../:/var/www/html/modules/realistic_dummy_content
-      - ./tmp/drupal9:/var/www/html/sites/default
+      - "$PWD/../:/var/www/html/modules/realistic_dummy_content"
+      - "$PWD/tmp/drupal9:/var/www/html/sites/default"
     links:
       - database:database
     working_dir: /var/www/html
@@ -24,8 +24,8 @@ services:
     ports:
       - "80"
     volumes:
-      - ../:/var/www/html/modules/realistic_dummy_content
-      - ./tmp/drupal8:/var/www/html/sites/default
+      - "$PWD/../:/var/www/html/modules/realistic_dummy_content"
+      - "$PWD/tmp/drupal8:/var/www/html/sites/default"
     links:
       - database:database
     working_dir: /var/www/html
@@ -37,8 +37,8 @@ services:
     ports:
       - "80"
     volumes:
-      - ../:/var/www/html/sites/all/modules/realistic_dummy_content
-      - ./tmp/drupal7:/var/www/html/sites/default
+      - "$PWD/../:/var/www/html/sites/all/modules/realistic_dummy_content"
+      - "$PWD/tmp/drupal7:/var/www/html/sites/default"
     links:
       - database:database
     working_dir: /var/www/html

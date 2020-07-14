@@ -8,7 +8,7 @@
 set -e
 
 # Used in ./lib/prepare-run.source, below
-export COMPOSERCONTAINER=drupal8
+export COMPOSERCONTAINER=drupal9
 
 if [ -z "$1" ]; then
   echo 'Please specify a command to run.'
@@ -22,7 +22,7 @@ source ./lib/prepare-run.source
 # not the absolute container names that we can retrieve via docker ps.
 docker run \
   -v "$(pwd)"/../:/var/www/html/modules/realistic_dummy_content \
-  -v "$(pwd)"/tmp/drupal8:/var/www/html/sites/default \
+  -v "$(pwd)"/tmp/drupal9:/var/www/html/sites/default \
   --link database:database \
   -w /var/www/html \
   --net "$NETWORK" \
