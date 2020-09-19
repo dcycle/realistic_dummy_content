@@ -2,19 +2,15 @@
 
 namespace Drupal\realistic_dummy_content_api\Test;
 
-require_once './api/src/traits/RealisticDummyContentDrupalTrait.php';
-require_once './api/src/includes/RealisticDummyContentAttribute.php';
-require_once './api/src/includes/RealisticDummyContentField.php';
-require_once './api/src/includes/RealisticDummyContentTermReferenceField.php';
-
 use Drupal\realistic_dummy_content_api\includes\RealisticDummyContentTermReferenceField;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Tests for ...\includes\RealisticDummyContentTermReferenceField.
  *
  * @group realistic_dummy_content
  */
-class RealisticDummyContentTermReferenceFieldTest extends \PHPUnit_Framework_TestCase {
+class RealisticDummyContentTermReferenceFieldTest extends TestCase {
 
   /**
    * Callback: dummy version of ::taxonomyLoadTree().

@@ -2,9 +2,8 @@
 
 namespace Drupal\realistic_dummy_content_api\Test;
 
-require_once './api/src/includes/RealisticDummyContentEnvironment.php';
-
 use Drupal\realistic_dummy_content_api\includes\RealisticDummyContentEnvironment;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Dummy file, used to test how fields manage files.
@@ -39,7 +38,7 @@ class RealisticDummyContentUnitTestCaseDummyFile {
 /**
  * Tests for ...\includes\RealisticDummyContentEnvironment.
  */
-class RealisticDummyContentEnvironmentTest extends \PHPUnit_Framework_TestCase {
+class RealisticDummyContentEnvironmentTest extends TestCase {
 
   /**
    * Test that file names are properly parsed and combined.

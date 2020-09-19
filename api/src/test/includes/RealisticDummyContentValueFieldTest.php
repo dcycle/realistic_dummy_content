@@ -4,7 +4,7 @@ namespace Drupal\realistic_dummy_content_api\includes;
 
 namespace Drupal\realistic_dummy_content_api\Test;
 
-require_once './api/src/includes/RealisticDummyContentValueField.php';
+use PHPUnit\Framework\TestCase;
 
 /**
  * Dummy file, used to test how fields manage files.
@@ -39,7 +39,7 @@ class DummyFile {
 /**
  * Tests for ...\includes\RealisticDummyContentValueField.
  */
-class RealisticDummyContentValueFieldTest extends \PHPUnit_Framework_TestCase {
+class RealisticDummyContentValueFieldTest extends TestCase {
 
   /**
    * Test that empty files and non-existing files are treated differently.

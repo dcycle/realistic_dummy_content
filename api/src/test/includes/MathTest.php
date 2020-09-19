@@ -2,16 +2,15 @@
 
 namespace Drupal\realistic_dummy_content_api\Test;
 
-require_once './api/src/includes/Math.php';
-
 use Drupal\realistic_dummy_content_api\includes\Math;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Tests for \Drupal\realistic_dummy_content_api\includes\Math.
  *
  * @group realistic_dummy_content
  */
-class MathTest extends \PHPUnit_Framework_TestCase {
+class MathTest extends TestCase {
 
   /**
    * Tests Math::sequential().
