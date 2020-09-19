@@ -10,7 +10,14 @@ use PHPUnit\Framework\TestCase;
  *
  * @group realistic_dummy_content
  */
+// @codingStandardsIgnoreStart
 class RealisticDummyContentUnitTestCaseDummyFile {
+
+  /**
+   * The value to return.
+   *
+   * @var mixed
+   */
   private $value;
 
   /**
@@ -34,6 +41,7 @@ class RealisticDummyContentUnitTestCaseDummyFile {
   }
 
 }
+// @codingStandardsIgnoreEnd
 
 /**
  * Tests for ...\includes\RealisticDummyContentEnvironment.
@@ -44,7 +52,7 @@ class RealisticDummyContentEnvironmentTest extends TestCase {
    * Test that file names are properly parsed and combined.
    */
   public function testFiles() {
-    $data = array(
+    $data = [
       'one.txt' => new \stdClass(),
       'reAdme.txt' => new \stdClass(),
       'README.md' => new \stdClass(),
@@ -55,10 +63,10 @@ class RealisticDummyContentEnvironmentTest extends TestCase {
       'two.txt.attribute1.txt' => new \stdClass(),
       'three.png' => new \stdClass(),
       'three.png.alt.txt' => new \stdClass(),
-    );
+    ];
     try {
       $parsed = RealisticDummyContentEnvironment::sortCandidateFiles($data);
-      $parsed_images = RealisticDummyContentEnvironment::sortCandidateFiles($data, array('png'));
+      $parsed_images = RealisticDummyContentEnvironment::sortCandidateFiles($data, ['png']);
     }
     catch (Exception $e) {
       $this->assertFalse(TRUE, 'Got exception ' . $e->getMessage());

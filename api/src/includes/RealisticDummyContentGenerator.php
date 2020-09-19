@@ -9,19 +9,48 @@ namespace Drupal\realistic_dummy_content_api\includes;
  * "generators", which are subclasses of this class.
  */
 abstract class RealisticDummyContentGenerator {
+  /**
+   * The type of entity to generate.
+   *
+   * @var string
+   */
   private $type;
+
+  /**
+   * The bundle of the entity to generate.
+   *
+   * @var mixed
+   */
   private $bundle;
+
+  /**
+   * The amount of entities to generate.
+   *
+   * @var mixed
+   */
   private $num;
+
+  /**
+   * Placeholder for more information about this entity generation.
+   *
+   * @var mixed
+   */
   private $more;
 
   /**
    * Constructor.
    *
+   * @param string $type
+   *   An entity type such as "user" or "node".
+   * @param mixed $bundle
+   *   An entity bundle.
+   * @param mixed $num
+   *   Number of entities to generate.
    * @param array $more
    *   Can contain:
    *     kill => TRUE|FALSE.
    */
-  public function __construct($type, $bundle, $num, $more) {
+  public function __construct(string $type, $bundle, $num, array $more) {
     $this->type = $type;
     $this->bundle = $bundle;
     $this->num = $num;

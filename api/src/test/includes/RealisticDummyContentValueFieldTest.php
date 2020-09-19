@@ -11,7 +11,14 @@ use PHPUnit\Framework\TestCase;
  *
  * @group realistic_dummy_content
  */
+// @codingStandardsIgnoreStart
 class DummyFile {
+
+  /**
+   * The value to return.
+   *
+   * @var mixed
+   */
   private $value;
 
   /**
@@ -35,6 +42,7 @@ class DummyFile {
   }
 
 }
+// @codingStandardsIgnoreEnd
 
 /**
  * Tests for ...\includes\RealisticDummyContentValueField.

@@ -88,7 +88,7 @@ abstract class RealisticDummyContentEnvironment {
    *   Undefined in case the filename is invalid; otherwise returns the contents
    *   of the file.
    */
-  public abstract function implementFileGetContents($filename);
+  abstract public function implementFileGetContents($filename);
 
   /**
    * Save the file data to the real or test environment.
@@ -111,7 +111,7 @@ abstract class RealisticDummyContentEnvironment {
   /**
    * Implements $this->fileSaveData().
    */
-  public abstract function implementFileSaveData($data, $destination = NULL);
+  abstract public function implementFileSaveData($data, $destination = NULL);
 
   /**
    * Saves a file.
@@ -124,7 +124,7 @@ abstract class RealisticDummyContentEnvironment {
   /**
    * Implements $this->fileSave().
    */
-  public abstract function implementFileSave(stdClass $file);
+  abstract public function implementFileSave(stdClass $file);
 
   /**
    * Returns all files with a given extension for a given filepath.
@@ -158,21 +158,21 @@ abstract class RealisticDummyContentEnvironment {
    *   An empty array in case of an error, or an array of objects of type
    *   RealisticDummyContentFileGroup.
    */
-  public static function getAllFileGroups($filepath, $extensions) {
+  public static function getAllFileGroups($filepath, array $extensions) {
     try {
-      $candidate_files = file_scan_directory($filepath, '/.*$/', array('key' => 'filename'));
+      $candidate_files = file_scan_directory($filepath, '/.*$/', ['key' => 'filename']);
 
       $files = self::sortCandidateFiles($candidate_files, $extensions);
 
-      $return = array();
+      $return = [];
       foreach ($files as $radical => $attributes) {
 
-        $return[] = new RealisticDummyContentFileGroup($radical, isset($attributes['file']) ? $attributes['file'] : NULL, isset($attributes['attributes']) ? $attributes['attributes'] : array());
+        $return[] = new RealisticDummyContentFileGroup($radical, isset($attributes['file']) ? $attributes['file'] : NULL, isset($attributes['attributes']) ? $attributes['attributes'] : []);
       }
       return $return;
     }
     catch (Exception $e) {
-      return array();
+      return [];
     }
   }
 
@@ -217,7 +217,7 @@ abstract class RealisticDummyContentEnvironment {
    *
    * @throws RealisticDummyContentException
    */
-  public static function sortCandidateFiles($candidate_files, $extensions = NULL) {
+  public static function sortCandidateFiles(array $candidate_files, $extensions = NULL) {
     foreach ($candidate_files as $candidate_filename => $candidate_file) {
       if (!is_string($candidate_filename)) {
         // Explicitly load the Exception class, because during unit tests the
@@ -257,8 +257,8 @@ abstract class RealisticDummyContentEnvironment {
    *
    * @throws \Exception
    */
-  public static function implementSortCandidateFiles($candidate_files, $extensions = NULL) {
-    $return = array();
+  public static function implementSortCandidateFiles(array $candidate_files, array $extensions = NULL) {
+    $return = [];
     foreach ($candidate_files as $candidate_filename => $candidate_file) {
       if (self::validCandidateFilename($candidate_filename, $extensions)) {
         self::addFileToArray($return, $candidate_filename, $candidate_file);
@@ -288,7 +288,7 @@ abstract class RealisticDummyContentEnvironment {
    * Retrieves the parts constituting a filename.
    */
   public static function getFileParts($name) {
-    $return = array();
+    $return = [];
     $parts = explode('.', $name);
     if (count($parts) >= 4) {
       $return['attribute_extention'] = array_pop($parts);

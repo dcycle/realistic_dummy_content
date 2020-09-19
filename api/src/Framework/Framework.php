@@ -13,14 +13,31 @@ use Drupal\realistic_dummy_content_api\includes\RealisticDummyContentDevelGenera
  * implement FrameworkInterface.
  */
 class Framework implements FrameworkInterface {
+  /**
+   * Whether we are in a test or not.
+   *
+   * @var mixed
+   */
   static private $testFlag;
+
+  /**
+   * The Framework instance.
+   *
+   * @var mixed
+   */
   static private $instance;
+
+  /**
+   * The Framework implementor.
+   *
+   * @var mixed
+   */
   private $implementor;
 
   /**
    * Retrieves a class representing the current framework entrypoint.
    */
-  static public function instance() {
+  public static function instance() {
     if (!self::$instance) {
       self::$instance = new Framework();
     }
@@ -62,7 +79,7 @@ class Framework implements FrameworkInterface {
   /**
    * {@inheritdoc}
    */
-  public function createEntity($info = array()) {
+  public function createEntity($info = []) {
     $return = $this->implementor()->createEntity($info);
     return $return;
   }
@@ -135,7 +152,7 @@ class Framework implements FrameworkInterface {
   /**
    * {@inheritdoc}
    */
-  public function formatProperty($type, $value, $options = array()) {
+  public function formatProperty($type, $value, $options = []) {
     return $this->implementor()->formatProperty($type, $value, $options);
   }
 
@@ -205,7 +222,7 @@ class Framework implements FrameworkInterface {
     $args = func_get_args();
     self::addTestFlag('moduleInvokeAll called');
     $object = $this->implementor();
-    return call_user_func_array(array(&$object, 'moduleInvokeAll'), $args);
+    return call_user_func_array([&$object, 'moduleInvokeAll'], $args);
   }
 
   /**
@@ -304,9 +321,9 @@ class Framework implements FrameworkInterface {
   /**
    * Adds a flag during execution for testing.
    */
-  static public function addTestFlag($flag) {
+  public static function addTestFlag($flag) {
     if (!is_array(self::$testFlag)) {
-      self::$testFlag = array();
+      self::$testFlag = [];
     }
     self::$testFlag[$flag] = $flag;
   }
@@ -314,7 +331,7 @@ class Framework implements FrameworkInterface {
   /**
    * Clears all test flags.
    */
-  static public function clearTestFlag($flag) {
+  public static function clearTestFlag($flag) {
     unset(self::$testFlag[$flag]);
   }
 
@@ -329,8 +346,8 @@ class Framework implements FrameworkInterface {
    * @param array $tests
    *   Will be populated with passing test strings.
    */
-  public function endToEndTests(&$errors, &$tests) {
-    $generator = new RealisticDummyContentDevelGenerateGenerator('user', 'user', 1, array('kill' => TRUE));
+  public function endToEndTests(array &$errors, array &$tests) {
+    $generator = new RealisticDummyContentDevelGenerateGenerator('user', 'user', 1, ['kill' => TRUE]);
     $generator->generate();
 
     $user = user_load(Framework::instance()->latestId('users', 'uid'));
@@ -341,7 +358,7 @@ class Framework implements FrameworkInterface {
       $errors[] = 'User picture substitution does not work.';
     }
 
-    $generator = new RealisticDummyContentDevelGenerateGenerator('node', 'article', 1, array('kill' => TRUE));
+    $generator = new RealisticDummyContentDevelGenerateGenerator('node', 'article', 1, ['kill' => TRUE]);
     $generator->generate();
   }
 
@@ -365,7 +382,7 @@ class Framework implements FrameworkInterface {
   /**
    * Retrieves whether or not a given test flag is set.
    */
-  static public function getTestFlag($flag) {
+  public static function getTestFlag($flag) {
     return isset(self::$testFlag[$flag]);
   }
 
@@ -374,8 +391,8 @@ class Framework implements FrameworkInterface {
    */
   public function selfTest() {
     $all = get_class_methods(get_class($this));
-    $errors = array();
-    $tests = array();
+    $errors = [];
+    $tests = [];
     foreach ($all as $method_name) {
       if (substr($method_name, 0, strlen('test')) == 'test') {
         continue;
@@ -429,7 +446,7 @@ class Framework implements FrameworkInterface {
   /**
    * Tests self::addTestFlag().
    */
-  static public function testAddTestFlag() {
+  public static function testAddTestFlag() {
     self::addTestFlag('whatever');
     return !self::getTestFlag('whatever');
   }
@@ -446,7 +463,7 @@ class Framework implements FrameworkInterface {
   /**
    * Tests self::createEntity().
    */
-  static public function testCreateEntity() {
+  public static function testCreateEntity() {
     $entity = self::instance()->createEntity();
     return !is_object($entity);
   }
@@ -455,27 +472,27 @@ class Framework implements FrameworkInterface {
    * Tests self::entityIsDummy().
    */
   public function testEntityIsDummy() {
-    return $this->entityIsDummy('whatever', 'whatever') || !$this->entityIsDummy((object) array('devel_generate' => TRUE), 'whatever');
+    return $this->entityIsDummy('whatever', 'whatever') || !$this->entityIsDummy((object) ['devel_generate' => TRUE], 'whatever');
   }
 
   /**
    * Tests self::getEntityProperty().
    */
-  static public function testGetEntityProperty() {
+  public static function testGetEntityProperty() {
     return self::testSetEntityProperty();
   }
 
   /**
    * Tests self::getTestFlag().
    */
-  static public function testGetTestFlag() {
+  public static function testGetTestFlag() {
     return self::testAddTestFlag();
   }
 
   /**
    * Test self::hookEntityPresave().
    */
-  static public function testHookEntityPresave() {
+  public static function testHookEntityPresave() {
     self::instance()->createEntity();
     return !static::getTestFlag('hookEntityPresave called');
   }
@@ -483,7 +500,7 @@ class Framework implements FrameworkInterface {
   /**
    * Test for self::instance().
    */
-  static public function testInstance() {
+  public static function testInstance() {
     return !is_a(self::instance(), '\Drupal\realistic_dummy_content_api\Framework\Framework');
   }
 
@@ -499,7 +516,7 @@ class Framework implements FrameworkInterface {
   /**
    * Tests self::setEntityProperty().
    */
-  static public function testSetEntityProperty() {
+  public static function testSetEntityProperty() {
     $entity = self::instance()->createEntity();
     self::instance()->setEntityProperty($entity, 'title', 'whatever');
     return self::instance()->getEntityProperty($entity, 'title') != 'whatever';

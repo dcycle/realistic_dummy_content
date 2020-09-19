@@ -24,7 +24,7 @@
  *   for example to determine which type of entity reference manipulator
  *   to create.
  */
-function hook_realistic_dummy_content_attribute_manipulator_alter(&$class, &$info) {
+function hook_realistic_dummy_content_attribute_manipulator_alter(&$class, array &$info) {
   $type = isset($info['type']) ? $info['type'] : NULL;
   $machine_name = isset($info['machine_name']) ? $info['machine_name'] : NULL;
   $entity = isset($info['entity']) ? $info['entity'] : NULL;
@@ -70,7 +70,7 @@ function hook_realistic_dummy_content_attribute_manipulator_alter(&$class, &$inf
  * @param string $type
  *   The entity type of the information to change, for example 'user' or 'node'.
  * @param array $filter
- *   (Default is array()).
+ *   (Default is []).
  *   If set, only certain fields will be considered when manipulating
  *   the object. This can be useful, for example for users, because
  *   two separate manipulations need to be performed, depending on whether
@@ -94,14 +94,14 @@ function hook_realistic_dummy_content_attribute_manipulator_alter(&$class, &$inf
  * @return array
  *   Array of objects which are a subclass of RealisticDummyContentBase.
  */
-function hook_realistic_dummy_content_api_class($entity, $type, $filter = array()) {
-  return array(
+function hook_realistic_dummy_content_api_class($entity, $type, array $filter = []) {
+  return [
     // Insert class names for all classes which can modify entities for the
     // given type. These classes must exist, either through Drupal's
     // autoload system or be included explictely, and they must be
     // subclasses of RealisticDummyContentBase.
     '\Drupal\realistic_dummy_content_api\includes\RealisticDummyContentFieldModifier',
-  );
+  ];
 }
 
 /**

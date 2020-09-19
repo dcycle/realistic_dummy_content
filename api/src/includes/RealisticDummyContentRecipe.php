@@ -16,6 +16,12 @@ use Drupal\realistic_dummy_content_api\Framework\Framework;
  * ./realistic_dummy_content/recipe/realistic_dummy_content.recipe.inc.
  */
 abstract class RealisticDummyContentRecipe {
+
+  /**
+   * The logger.
+   *
+   * @var mixed
+   */
   private static $log;
 
   /**
@@ -29,14 +35,14 @@ abstract class RealisticDummyContentRecipe {
     foreach ($objects as $object) {
       $object->_Run_();
     }
-    self::$log->log(t('Realistic dummy content generation operation completed in @time milliseconds', array('@time' => self::stopTime('run'))));
+    self::$log->log(t('Realistic dummy content generation operation completed in @time milliseconds', ['@time' => self::stopTime('run')]));
   }
 
   /**
    * Find all recipe objects defined by all modules.
    */
   public static function findObjects() {
-    $objects = array();
+    $objects = [];
     // We need to cycle through all active modules and look for those
     // which contain a class module_name_realistic_dummy_content_recipe
     // in the file realistic_dummy_content/recipe/module_name.recipe.inc.
@@ -70,7 +76,7 @@ abstract class RealisticDummyContentRecipe {
    *
    * @throws \Exception
    */
-  static public function loadRecipeClass($module) {
+  public static function loadRecipeClass($module) {
     $path = Framework::instance()->getPath('module', $module) . '/realistic_dummy_content/recipe/' . $module . '.recipe.inc';
     $fullpath = Framework::instance()->frameworkRoot() . '/' . $path;
     if (!file_exists($fullpath)) {
@@ -86,12 +92,18 @@ abstract class RealisticDummyContentRecipe {
   /**
    * Return a concrete generator class to generate content.
    *
+   * @param string $type
+   *   An entity type such as "user" or "node".
+   * @param mixed $bundle
+   *   An entity bundle.
+   * @param mixed $count
+   *   Number of entities to generate.
    * @param array $more
    *   Can contain:
    *     kill => TRUE|FALSE.
    */
-  public static function getGenerator($type, $bundle, $count, $more) {
-    if (in_array($type, array('user', 'node'))) {
+  public static function getGenerator(string $type, $bundle, $count, array $more) {
+    if (in_array($type, ['user', 'node'])) {
       if (Framework::instance()->moduleExists('devel_generate')) {
         return new RealisticDummyContentDevelGenerateGenerator($type, $bundle, $count, $more);
       }
@@ -107,21 +119,24 @@ abstract class RealisticDummyContentRecipe {
   /**
    * Create new entities.
    */
-  public function newEntities($type, $bundle, $count, $more = array()) {
-    self::startTime(array($type, $bundle, $count));
+  public function newEntities($type, $bundle, $count, $more = []) {
+    self::startTime([$type, $bundle, $count]);
     if ($generator = self::getGenerator($type, $bundle, $count, $more)) {
       $generator->generate();
     }
     else {
-      self::$log->error(t('Could not find a generator for @type @bundle.', array('@type' => $type, '@bundle' => $bundle)));
+      self::$log->error(t('Could not find a generator for @type @bundle.', [
+        '@type' => $type,
+        '@bundle' => $bundle,
+      ]));
     }
-    $time = self::stopTime(array($type, $bundle, $count));
-    self::$log->log(t('@type @bundle: @n created in @time milliseconds', array(
+    $time = self::stopTime([$type, $bundle, $count]);
+    self::$log->log(t('@type @bundle: @n created in @time milliseconds', [
       '@type' => $type,
       '@bundle' => $bundle,
       '@n' => $count,
       '@time' => $time,
-    )));
+    ]));
   }
 
   /**

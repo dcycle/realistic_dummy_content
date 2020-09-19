@@ -76,14 +76,14 @@ class RealisticDummyContentTermReferenceFieldTest extends TestCase {
         ],
       ]);
     $object->method('vocabularyMachineName')
-      ->will($this->returnCallback(array($this, 'callbackVocabularyMachineName')));
+      ->will($this->returnCallback([$this, 'callbackVocabularyMachineName']));
     $object->method('taxonomyLoadTree')
-      ->will($this->returnCallback(array($this, 'callbackTaxonomyLoadTree')));
+      ->will($this->returnCallback([$this, 'callbackTaxonomyLoadTree']));
     $object->method('termId')
-      ->will($this->returnCallback(array($this, 'callbackTermId')));
+      ->will($this->returnCallback([$this, 'callbackTermId']));
     $object->method('termName')
       // For our purposes termId and termName can be identical.
-      ->will($this->returnCallback(array($this, 'callbackTermId')));
+      ->will($this->returnCallback([$this, 'callbackTermId']));
 
     if ($expect_exception) {
       $this->expectException(\Exception::class);

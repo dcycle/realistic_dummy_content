@@ -57,23 +57,23 @@ class Mock extends Framework {
    * {@inheritdoc}
    */
   public function fieldInfoFields() {
-    return array(
-      'some-field-name' => array(
-        'node' => array(
+    return [
+      'some-field-name' => [
+        'node' => [
           'article',
-        ),
-      ),
-    );
+        ],
+      ],
+    ];
   }
 
   /**
    * {@inheritdoc}
    */
   public function moduleList() {
-    return array(
+    return [
       'realistic_dummy_content',
       'realistic_dummy_content_api',
-    );
+    ];
   }
 
   /**

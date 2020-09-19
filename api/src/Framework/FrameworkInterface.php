@@ -26,7 +26,7 @@ interface FrameworkInterface {
    *     entity_type => node|user|...
    *     dummy => FALSE|TRUE.
    */
-  public function createEntity($info = array());
+  public function createEntity(array $info = []);
 
   /**
    * Use devel generate to generate dummy content.
@@ -40,7 +40,7 @@ interface FrameworkInterface {
    *     num: int
    *     kill: bool.
    */
-  public function develGenerate($info);
+  public function develGenerate(array $info);
 
   /**
    * Prints debugging information.
@@ -96,7 +96,7 @@ interface FrameworkInterface {
    * @return string
    *   A Drupal 7-style field type machine name.
    */
-  public function fieldTypeMachineName($info);
+  public function fieldTypeMachineName(array $info);
 
   /**
    * Saves a file to disk.
@@ -126,7 +126,7 @@ interface FrameworkInterface {
    * @return mixed
    *   The file data formatted for placement in an entity.
    */
-  public function formatProperty($type, $value, $options = array());
+  public function formatProperty($type, $value, array $options = []);
 
   /**
    * Return the root path of the framework.
@@ -300,6 +300,8 @@ interface FrameworkInterface {
    *
    * See watchdog() for more details on this function.
    *
+   * @param mixed $message
+   *   A message to log.
    * @param int $severity
    *   The litteral severity as defined in:
    *   https://api.drupal.org/api/drupal/includes%21bootstrap.inc/function/watchdog/7.x,

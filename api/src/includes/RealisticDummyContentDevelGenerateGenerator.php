@@ -23,15 +23,15 @@ class RealisticDummyContentDevelGenerateGenerator extends RealisticDummyContentG
 
     if ($this->getType() == 'node') {
       // See https://www.drupal.org/node/2324027
-      $info = array_merge($info, array(
-        'node_types' => array(
+      $info = array_merge($info, [
+        'node_types' => [
           $this->getBundle() => $this->getBundle(),
-        ),
-        'users' => array(
+        ],
+        'users' => [
           1,
-        ),
+        ],
         'title_length' => 3,
-      ));
+      ]);
     }
     Framework::instance()->develGenerate($info);
   }

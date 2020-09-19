@@ -44,7 +44,7 @@ class RealisticDummyContentFieldModifier extends RealisticDummyContentEntityBase
    *   [RealisticDummyContentAttribute]
    */
   public function getProperties() {
-    $modifiable_properties = array();
+    $modifiable_properties = [];
     $fields = $this->getFields();
     foreach (Framework::instance()->entityProperties($this->getEntity()) as $property => $info) {
       if (!in_array($property, array_keys($fields)) && $this->filter($property)) {
@@ -63,7 +63,7 @@ class RealisticDummyContentFieldModifier extends RealisticDummyContentEntityBase
    *   [RealisticDummyContentAttribute]
    */
   public function getFields() {
-    $modifiable_fields = array();
+    $modifiable_fields = [];
     $type = $this->getType();
     $bundle = $this->getBundle();
     // Get _all_ defined fields. This should return an associative array.
@@ -102,7 +102,7 @@ class RealisticDummyContentFieldModifier extends RealisticDummyContentEntityBase
    *   Name of the property or field, for example 'body', 'picture', 'title',
    *   'field_image'.
    */
-  public function addModifier(&$modifiers, $type, $name) {
+  public function addModifier(array &$modifiers, $type, $name) {
     $class = '';
     switch ($type) {
       case 'property':
@@ -121,12 +121,12 @@ class RealisticDummyContentFieldModifier extends RealisticDummyContentEntityBase
     }
     $class = $original_class;
 
-    $info = array(
+    $info = [
       'type' => $type,
       'machine_name' => $attribute_type,
       'entity' => $this->getEntity(),
       'field_name' => $name,
-    );
+    ];
     Framework::instance()->alter('realistic_dummy_content_attribute_manipulator', $class, $info);
 
     if (!$class) {
@@ -140,7 +140,10 @@ class RealisticDummyContentFieldModifier extends RealisticDummyContentEntityBase
       $modifier = new $class($this, $name);
     }
     else {
-      watchdog('realistic_dummy_content_api', 'Class does not exist: @c. This is probably because a third-party module has implemented realistic_dummy_content_api_realistic_dummy_content_attribute_manipular_alter() with a class that cannot be implemented. @original will used instead.', array('@c' => $class, '@original' => $original_class));
+      watchdog('realistic_dummy_content_api', 'Class does not exist: @c. This is probably because a third-party module has implemented realistic_dummy_content_api_realistic_dummy_content_attribute_manipular_alter() with a class that cannot be implemented. @original will used instead.', [
+        '@c' => $class,
+        '@original' => $original_class,
+      ]);
       $modifier = new $original_class($this, $name);
     }
 
