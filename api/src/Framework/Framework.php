@@ -7,10 +7,10 @@ use Drupal\realistic_dummy_content_api\includes\RealisticDummyContentDevelGenera
 /**
  * The entry point for the framework.
  *
- * Using this class as opposed, for example, to Drupal 7-specific functions,
+ * Using this class as opposed, for example, to Drupal 8-specific functions,
  * allows the code logic to work with more than one framework. Specific
- * frameworks such as Drupal 7 or Drupal 8, are represented by
- * separate classes which implement FrameworkInterface.
+ * frameworks such as Drupal 8 are represented by separate classes which
+ * implement FrameworkInterface.
  */
 class Framework implements FrameworkInterface {
   static private $testFlag;
@@ -34,11 +34,6 @@ class Framework implements FrameworkInterface {
     if (!$this->implementor) {
       $framework = realistic_dummy_content_api_version();
       switch ($framework) {
-        case 'Drupal7':
-          module_load_include('php', 'realistic_dummy_content_api', 'src/Framework/Drupal7');
-          $this->implementor = new Drupal7();
-          break;
-
         case 'Drupal8':
           $this->implementor = new Drupal8();
           break;
@@ -223,8 +218,8 @@ class Framework implements FrameworkInterface {
   /**
    * {@inheritdoc}
    */
-  public function hookEntityPresave($entity, $type) {
-    $return = self::implementor()->hookEntityPresave($entity, $type);
+  public function hookEntityPresave($entity) {
+    $return = self::implementor()->hookEntityPresave($entity);
     static::addTestFlag('hookEntityPresave called');
     return $return;
   }

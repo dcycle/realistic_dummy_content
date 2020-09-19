@@ -134,11 +134,9 @@ define('REALISTIC_DUMMY_CONTENT_API_RANDOM', TRUE);
 /**
  * Implements hook_entity_presave().
  */
-function realistic_dummy_content_api_entity_presave($entity, $type = NULL) {
+function realistic_dummy_content_api_entity_presave($entity) {
   try {
-    // In Drupal 7, $entity and $type will be populated. In Drupal 8, only
-    // $entity will be populated.
-    Framework::instance()->hookEntityPresave($entity, $type);
+    Framework::instance()->hookEntityPresave($entity);
   }
   // Hook implementations should never throw exceptions, so we'll catch them
   // all here.
@@ -372,9 +370,6 @@ function realistic_dummy_content_api_rand($start, $end, $hash = NULL) {
  */
 function realistic_dummy_content_api_apply_recipe($log) {
   try {
-    if (!class_exists('\Drupal\realistic_dummy_content_api\includes\RealisticDummyContentRecipe')) {
-      throw new \Exception('Cannot find the class \Drupal\realistic_dummy_content_api\includes\RealisticDummyContentRecipe, this might be solved by uninstalling and reinstalling realistic_dummy_content or rebuilding the registry (Drupal 7), and has been known to happen when upgrading from beta3.');
-    }
     RealisticDummyContentRecipe::run($log);
   }
   catch (Exception $e) {

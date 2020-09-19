@@ -29,9 +29,8 @@ class Drupal8 extends Framework implements FrameworkInterface {
   /**
    * {@inheritdoc}
    */
-  public function hookEntityPresave($entity, $type) {
+  public function hookEntityPresave($entity) {
     try {
-      // $type is NULL in Drupal8; we'll compute it here.
       $type = $this->getEntityType($entity);
       if (realistic_dummy_content_api_is_dummy($entity, $type)) {
         $candidate = $entity;

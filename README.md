@@ -1,8 +1,6 @@
 Realistic dummy content
 =======================
 
-**[Drupal 9 update: we are waiting for Devel to be Drupal 9-comptabible](https://www.drupal.org/project/realistic_dummy_content/issues/3129941).**
-
 Generate realistic demo content with
 [Devel](https://drupal.org/project/devel)'s `devel_generate` module.
 
@@ -43,14 +41,6 @@ queue](https://drupal.org/project/issues/2253941?categories=All), or a
 [pull request](https://github.com/dcycle/realistic_dummy_content) for this
 module.
 
-Which version to use
------
-
-* Drupal 8: 8.x-2.x
-* Drupal 7: 7.x-2.x
-* Backdrop: 7.x-2.x
-* Drupal 9: [not yet supported](https://www.drupal.org/project/realistic_dummy_content/issues/3129941)
-
 Creating recipes
 -----
 
@@ -86,8 +76,7 @@ In the above example, `realistic_dummy_content` sees two possible body values,
 _one of which with a specific input format_; and two possible images, _one of
 which with a specific alt text_. Meta data is never compulsory, and in the case
 where a meta attribute is needed, a reasonable fallback value is used, for
-example `filtered_html` (Drupal 7) or `basic_html` (Drupal 8) will be used if no
-format is specified for the body.
+example `basic_html` will be used if no format is specified for the body.
 
 Issue queue and pull requests
 -----
@@ -96,23 +85,18 @@ See the [issue queue](https://drupal.org/project/issues/2253941?categories=All) 
 
 Pull requests can be filed against the [GitHub repo](https://github.com/dcycle/realistic_dummy_content).
 
-Drupal 7 and Drupal 8 in one "universal" codebase
------
-
-The 7.x-2.x and 8.x-2.x codebases are identical and both work on Drupal 7 or Drupal 8 sites. This is discussed inthe blog post ["Can the exact same module code run on Drupal 7 and 8?", Dcycle Blog, Feb. 28, 2017](http://blog.dcycle.com/blog/7b285da4/same-module-drupal-7-and-8).
-
-Docker integration (2.x branch only)
+Docker integration
 -----
 
 To test this module you can run:
 
     cd ./development && ./test.sh
 
-To create a development environment for Drupal 7, make sure you have Docker installed (for example on a CoreOS vagrant machine on Mac OS), then you can run:
+To create a development environment, make sure you have Docker installed, then you can run:
 
     cd ./development && ./build-dev-environment.sh
 
-This will install two development environments, one for Drupal 7 and one for Drupal 8. When you change any code, it will reflected in both your environments in real time.
+This will install two development environments for Drupal 8. When you change any code, it will reflected in your environment in real time.
 
 Continuous integration and automated tests
 -----
@@ -123,21 +107,9 @@ Automated tests are run using
 is being phased out because it's slow), and [PHPUnit](https://phpunit.de).
 Linting is being run for PHP and shell files.
 
-### 7.x-1.x branch
+### 3.x branch (default)
 
-[![CircleCI](https://circleci.com/gh/dcycle/realistic_dummy_content/tree/7.x-1.x.svg?style=svg)](https://circleci.com/gh/dcycle/realistic_dummy_content/tree/7.x-1.x)
-
-### 7.x-2.x branch
-
-[![CircleCI](https://circleci.com/gh/dcycle/realistic_dummy_content/tree/7.x-2.x.svg?style=svg)](https://circleci.com/gh/dcycle/realistic_dummy_content/tree/7.x-2.x)
-
-### 8.x-2.x branch
-
-[![CircleCI](https://circleci.com/gh/dcycle/realistic_dummy_content/tree/8.x-2.x.svg?style=svg)](https://circleci.com/gh/dcycle/realistic_dummy_content/tree/8.x-2.x)
-
-### master branch
-
-[![CircleCI](https://circleci.com/gh/dcycle/realistic_dummy_content/tree/master.svg?style=svg)](https://circleci.com/gh/dcycle/realistic_dummy_content/tree/master)
+[![CircleCI](https://circleci.com/gh/dcycle/realistic_dummy_content/tree/3.x.svg?style=svg)](https://circleci.com/gh/dcycle/realistic_dummy_content/tree/3.x)
 
 Best practices
 -----

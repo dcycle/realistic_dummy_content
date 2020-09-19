@@ -40,6 +40,5 @@ echo -e "Congratulations! Your development environments are ready."
 echo -e ""
 ./uli.sh
 echo -e ""
-echo -e "The same code for realistic_dummy_content can be used for"
-echo -e "Drupal 7 and Drupal 8. Changes you make to the code at "
-echo -e "$(pwd) will be reflected on both environments."
+echo -e "Changes you make to the code at"
+echo -e "$(pwd) will be reflected on your environment."

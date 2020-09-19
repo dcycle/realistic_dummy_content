@@ -55,9 +55,8 @@ interface FrameworkInterface {
   /**
    * Retrieve properties of an entity.
    *
-   * Properties are different from fields. In Drupal 7, node titles are
-   * properties, but field_image is a field. In Drupal 8, (almost?)
-   * everything is a field.
+   * In Drupal 8, (almost?) everything is a field. This function is here
+   * for historical reasons (in Drupal 7 there were properties _and_ fields).
    *
    * @param object $entity
    *   A Drupal entity object.
@@ -115,8 +114,7 @@ interface FrameworkInterface {
   /**
    * Formats a property to add it to an entity.
    *
-   * In Drupal 7, this might be array(LANGUAGE_NONE => ...); in Drupal8 it is
-   * just the file id, or value.
+   * In Drupal8 it is just the file id, or value.
    *
    * @param string $type
    *   Can be 'file', 'value', ...
@@ -158,7 +156,7 @@ interface FrameworkInterface {
   /**
    * React to an entity just before it is saved.
    */
-  public function hookEntityPresave($entity, $type);
+  public function hookEntityPresave($entity);
 
   /**
    * Hook called in D7 when a user is inserted.

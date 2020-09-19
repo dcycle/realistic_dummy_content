@@ -20,8 +20,6 @@ class RealisticDummyContentImageField extends RealisticDummyContentField {
    * {@inheritdoc}
    */
   public function implementValueFromFile($file) {
-    // Note that this is not called for the user picture in Drupal 7, which
-    // does not use the field system.
     if (!$file->value()) {
       return NULL;
     }
