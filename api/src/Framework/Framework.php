@@ -79,7 +79,7 @@ class Framework implements FrameworkInterface {
   /**
    * {@inheritdoc}
    */
-  public function createEntity($info = []) {
+  public function createEntity(array $info = []) {
     $return = $this->implementor()->createEntity($info);
     return $return;
   }
@@ -94,7 +94,7 @@ class Framework implements FrameworkInterface {
   /**
    * {@inheritdoc}
    */
-  public function develGenerate($info) {
+  public function develGenerate(array $info) {
     return $this->implementor()->develGenerate($info);
   }
 
@@ -130,7 +130,7 @@ class Framework implements FrameworkInterface {
   /**
    * {@inheritdoc}
    */
-  public function fieldTypeMachineName($info) {
+  public function fieldTypeMachineName(array $info) {
     return $this->implementor()->fieldTypeMachineName($info);
   }
 
@@ -152,7 +152,7 @@ class Framework implements FrameworkInterface {
   /**
    * {@inheritdoc}
    */
-  public function formatProperty($type, $value, $options = []) {
+  public function formatProperty($type, $value, array $options = []) {
     return $this->implementor()->formatProperty($type, $value, $options);
   }
 

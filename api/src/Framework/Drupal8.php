@@ -55,7 +55,7 @@ class Drupal8 extends Framework implements FrameworkInterface {
   /**
    * {@inheritdoc}
    */
-  public function develGenerate($info) {
+  public function develGenerate(array $info) {
     if ($info['entity_type'] == 'node') {
       $info['entity_type'] = 'content';
     }
@@ -251,7 +251,7 @@ class Drupal8 extends Framework implements FrameworkInterface {
   /**
    * {@inheritdoc}
    */
-  public function formatProperty($type, $value, $options = []) {
+  public function formatProperty($type, $value, array $options = []) {
     switch ($type) {
       case 'file':
         return ['set' => $value->id(), 'options' => $options];
@@ -288,7 +288,7 @@ class Drupal8 extends Framework implements FrameworkInterface {
   /**
    * {@inheritdoc}
    */
-  public function fieldTypeMachineName($info) {
+  public function fieldTypeMachineName(array $info) {
     $machine_name = isset($info['machine_name']) ? $info['machine_name'] : NULL;
     $entity = isset($info['entity']) ? $info['entity'] : NULL;
     $field_name = isset($info['field_name']) ? $info['field_name'] : NULL;
@@ -334,7 +334,7 @@ class Drupal8 extends Framework implements FrameworkInterface {
   /**
    * {@inheritdoc}
    */
-  public function createEntity($info = []) {
+  public function createEntity(array $info = []) {
     if (isset($info['entity_type']) && $info['entity_type'] != 'node') {
       throw new \Exception(__FUNCTION__ . ' unknown entity type.');
     }
