@@ -119,7 +119,7 @@ abstract class RealisticDummyContentAttribute {
    * @return string
    *   'property' or 'field'
    */
-  public abstract function getType();
+  abstract public function getType();
 
   /**
    * Changes this attribute by looking for data in files.
@@ -144,7 +144,7 @@ abstract class RealisticDummyContentAttribute {
    * @param array $files
    *   An array of files.
    */
-  public function changeFromFiles($files) {
+  public function changeFromFiles(array $files) {
     $value = $this->valueFromFiles($files);
     if ($value === NULL) {
       // NULL indicates we could not find a value with which to replace the
@@ -168,14 +168,14 @@ abstract class RealisticDummyContentAttribute {
   public function getExtensions() {
     // By default, use only text files. Other manipulators, say, for image
     // fields or file fields, can specify other extension types.
-    return array('txt');
+    return ['txt'];
   }
 
   /**
    * Get all candidate files for a given field for this entity.
    */
   public function getCandidateFiles() {
-    $files = array();
+    $files = [];
     foreach (Framework::instance()->moduleList() as $module) {
       $filepath = DRUPAL_ROOT . '/' . drupal_get_path('module', $module) . '/realistic_dummy_content/fields/' . $this->getEntityType() . '/' . $this->getBundle() . '/' . $this->getName();
       $files = array_merge($files, RealisticDummyContentEnvironment::getAllFileGroups($filepath, $this->getExtensions()));
@@ -226,7 +226,7 @@ abstract class RealisticDummyContentAttribute {
    *
    * @throws \Exception.
    */
-  protected abstract function implementValueFromFile($file);
+  abstract protected function implementValueFromFile($file);
 
   /**
    * Given a list of files, return a value from one of them.
@@ -239,7 +239,7 @@ abstract class RealisticDummyContentAttribute {
    *   "format", or NULL if there are no files to choose from or the files have
    *   the wrong extension.
    */
-  public function valueFromFiles($files) {
+  public function valueFromFiles(array $files) {
     try {
       if (count($files)) {
         $rand_index = $this->rand(0, count($files) - 1);
@@ -259,7 +259,7 @@ abstract class RealisticDummyContentAttribute {
    *   An array of extension for image files.
    */
   public function getImageExtensions() {
-    return array('gif', 'png', 'jpg');
+    return ['gif', 'png', 'jpg'];
   }
 
   /**
@@ -269,7 +269,7 @@ abstract class RealisticDummyContentAttribute {
    *   An array of extension for text files.
    */
   public function getTextExtensions() {
-    return array('txt');
+    return ['txt'];
   }
 
   /**

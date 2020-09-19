@@ -10,6 +10,12 @@ namespace Drupal\realistic_dummy_content_api\includes;
  * class represents the dummy environment which can be used during unit tests.
  */
 class RealisticDummyContentDummyEnvironment extends RealisticDummyContentEnvironment {
+
+  /**
+   * Array of files.
+   *
+   * @var array
+   */
   private $files;
 
   /**
@@ -17,7 +23,7 @@ class RealisticDummyContentDummyEnvironment extends RealisticDummyContentEnviron
    */
   public function createFile($path, $data) {
     if (!is_array($this->files)) {
-      $this->files = array();
+      $this->files = [];
     }
     $this->files[$path] = $data;
   }
@@ -41,11 +47,11 @@ class RealisticDummyContentDummyEnvironment extends RealisticDummyContentEnviron
       throw new \Exception('the dummy file system is not designed to use null destination');
     }
     $parsed = parse_url($destination);
-    $return_array = array(
+    $return_array = [
       'fid' => 1,
       'uri' => $destination,
       'filename' => $parsed['host'],
-    );
+    ];
     return (object) $return_array;
   }
 

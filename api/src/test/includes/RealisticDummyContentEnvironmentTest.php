@@ -2,16 +2,22 @@
 
 namespace Drupal\realistic_dummy_content_api\Test;
 
-require_once './api/src/includes/RealisticDummyContentEnvironment.php';
-
 use Drupal\realistic_dummy_content_api\includes\RealisticDummyContentEnvironment;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Dummy file, used to test how fields manage files.
  *
  * @group realistic_dummy_content
  */
+// @codingStandardsIgnoreStart
 class RealisticDummyContentUnitTestCaseDummyFile {
+
+  /**
+   * The value to return.
+   *
+   * @var mixed
+   */
   private $value;
 
   /**
@@ -35,17 +41,18 @@ class RealisticDummyContentUnitTestCaseDummyFile {
   }
 
 }
+// @codingStandardsIgnoreEnd
 
 /**
  * Tests for ...\includes\RealisticDummyContentEnvironment.
  */
-class RealisticDummyContentEnvironmentTest extends \PHPUnit_Framework_TestCase {
+class RealisticDummyContentEnvironmentTest extends TestCase {
 
   /**
    * Test that file names are properly parsed and combined.
    */
   public function testFiles() {
-    $data = array(
+    $data = [
       'one.txt' => new \stdClass(),
       'reAdme.txt' => new \stdClass(),
       'README.md' => new \stdClass(),
@@ -56,10 +63,10 @@ class RealisticDummyContentEnvironmentTest extends \PHPUnit_Framework_TestCase {
       'two.txt.attribute1.txt' => new \stdClass(),
       'three.png' => new \stdClass(),
       'three.png.alt.txt' => new \stdClass(),
-    );
+    ];
     try {
       $parsed = RealisticDummyContentEnvironment::sortCandidateFiles($data);
-      $parsed_images = RealisticDummyContentEnvironment::sortCandidateFiles($data, array('png'));
+      $parsed_images = RealisticDummyContentEnvironment::sortCandidateFiles($data, ['png']);
     }
     catch (Exception $e) {
       $this->assertFalse(TRUE, 'Got exception ' . $e->getMessage());

@@ -53,7 +53,7 @@ class RealisticDummyContentTermReferenceField extends RealisticDummyContentField
   public function getTid($name) {
     $vocabularies = $this->getAllVocabularies();
     $field_info = $this->fieldInfoField($this->getName());
-    $candidate_existing_terms = array();
+    $candidate_existing_terms = [];
     foreach ($field_info['settings']['allowed_values'] as $setting) {
       $vocabulary_name = $setting['vocabulary'];
       foreach ($vocabularies as $vocabulary) {

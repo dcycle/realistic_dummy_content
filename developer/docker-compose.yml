@@ -18,20 +18,6 @@ services:
     working_dir: /var/www/html
     restart: always
 
-  drupal7:
-    build:
-      context: .
-      dockerfile: frameworks/drupal7/Dockerfile
-    ports:
-      - "80"
-    volumes:
-      - ../:/var/www/html/sites/all/modules/realistic_dummy_content
-      - ./tmp/drupal7:/var/www/html/sites/default
-    links:
-      - database:database
-    working_dir: /var/www/html
-    restart: always
-
   database:
     image: mysql:5
     environment:

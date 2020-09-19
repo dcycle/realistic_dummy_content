@@ -4,14 +4,14 @@ namespace Drupal\realistic_dummy_content_api\Framework;
 
 namespace Drupal\realistic_dummy_content_api\Test;
 
-require_once './api/src/Framework/Mock.php';
+use PHPUnit\Framework\TestCase;
 
 /**
  * Tests for \Drupal\realistic_dummy_content_api\Framework\Mock.
  *
  * @group realistic_dummy_content
  */
-class MockTest extends \PHPUnit_Framework_TestCase {
+class MockTest extends TestCase {
 
   /**
    * Smoke test.

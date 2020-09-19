@@ -29,9 +29,8 @@ class Drupal8 extends Framework implements FrameworkInterface {
   /**
    * {@inheritdoc}
    */
-  public function hookEntityPresave($entity, $type) {
+  public function hookEntityPresave($entity) {
     try {
-      // $type is NULL in Drupal8; we'll compute it here.
       $type = $this->getEntityType($entity);
       if (realistic_dummy_content_api_is_dummy($entity, $type)) {
         $candidate = $entity;
@@ -41,7 +40,7 @@ class Drupal8 extends Framework implements FrameworkInterface {
       }
     }
     catch (Exception $e) {
-      $this->setMessage(t('realistic_dummy_content_api failed to modify dummy objects: message: @m', array('@m' => $e->getMessage())), 'error', FALSE);
+      $this->setMessage(t('realistic_dummy_content_api failed to modify dummy objects: message: @m', ['@m' => $e->getMessage()]), 'error', FALSE);
     }
   }
 
@@ -56,17 +55,17 @@ class Drupal8 extends Framework implements FrameworkInterface {
   /**
    * {@inheritdoc}
    */
-  public function develGenerate($info) {
+  public function develGenerate(array $info) {
     if ($info['entity_type'] == 'node') {
       $info['entity_type'] = 'content';
     }
-    $info = array_merge(array(
+    $info = array_merge([
       'pass' => 'some-password',
       'time_range' => 0,
-      'roles' => array(),
-    ), $info);
+      'roles' => [],
+    ], $info);
     $plugin_manager = \Drupal::service('plugin.manager.develgenerate');
-    $instance = $plugin_manager->createInstance($info['entity_type'], array());
+    $instance = $plugin_manager->createInstance($info['entity_type'], []);
     $instance->generate($info);
   }
 
@@ -116,11 +115,11 @@ class Drupal8 extends Framework implements FrameworkInterface {
     $entity_def = \Drupal::entityManager()->getDefinition($entity_type);
 
     // Load up an array for creation.
-    $new_node = array(
+    $new_node = [
       // Set title.
       'title' => 'test node',
       $entity_def->get('entity_keys')['bundle'] => $bundle,
-    );
+    ];
 
     $new_post = \Drupal::entityManager()->getStorage($entity_type)->create($new_node);
     $new_post->save();
@@ -149,7 +148,7 @@ class Drupal8 extends Framework implements FrameworkInterface {
    * {@inheritdoc}
    */
   public function fieldInfoFields() {
-    $return = array();
+    $return = [];
     $field_map = \Drupal::entityManager()->getFieldMap();
     // Field map returns:
     // entitytype/name(type, bundles(article => article))
@@ -178,7 +177,7 @@ class Drupal8 extends Framework implements FrameworkInterface {
    * @param array $field_info
    *   Information about the field.
    */
-  public function addFieldSettings(&$return, $field, $field_info) {
+  public function addFieldSettings(array &$return, $field, array $field_info) {
     if ($field_info['type'] == 'entity_reference') {
       if (isset($field_info['bundles']) && count($field_info['bundles'])) {
         $bundle = array_pop($field_info['bundles']);
@@ -187,11 +186,10 @@ class Drupal8 extends Framework implements FrameworkInterface {
           $settings = $config->getSettings();
 
           if (isset($settings['handler_settings']['target_bundles'])) {
-            foreach ($settings['handler_settings']['target_bundles'] as
-            $target) {
-              $return[$field]['settings']['allowed_values'][] = array(
+            foreach ($settings['handler_settings']['target_bundles'] as $target) {
+              $return[$field]['settings']['allowed_values'][] = [
                 'vocabulary' => $target,
-              );
+              ];
             }
           }
         }
@@ -253,7 +251,7 @@ class Drupal8 extends Framework implements FrameworkInterface {
   /**
    * {@inheritdoc}
    */
-  public function formatProperty($type, $value, $options = array()) {
+  public function formatProperty($type, $value, array $options = []) {
     switch ($type) {
       case 'file':
         return ['set' => $value->id(), 'options' => $options];
@@ -290,7 +288,7 @@ class Drupal8 extends Framework implements FrameworkInterface {
   /**
    * {@inheritdoc}
    */
-  public function fieldTypeMachineName($info) {
+  public function fieldTypeMachineName(array $info) {
     $machine_name = isset($info['machine_name']) ? $info['machine_name'] : NULL;
     $entity = isset($info['entity']) ? $info['entity'] : NULL;
     $field_name = isset($info['field_name']) ? $info['field_name'] : NULL;
@@ -319,7 +317,9 @@ class Drupal8 extends Framework implements FrameworkInterface {
         dpm($info . ' ==>');
         // @codingStandardsIgnoreEnd
         if (function_exists('ksm')) {
+          // @codingStandardsIgnoreStart
           ksm($message);
+          // @codingStandardsIgnoreEnd
         }
         else {
           // @codingStandardsIgnoreStart
@@ -328,13 +328,13 @@ class Drupal8 extends Framework implements FrameworkInterface {
         }
       }
     }
-    $this->watchdog('<pre>' . print_r(array($info => $message), TRUE) . '</pre>');
+    $this->watchdog('<pre>' . print_r([$info => $message], TRUE) . '</pre>');
   }
 
   /**
    * {@inheritdoc}
    */
-  public function createEntity($info = array()) {
+  public function createEntity(array $info = []) {
     if (isset($info['entity_type']) && $info['entity_type'] != 'node') {
       throw new \Exception(__FUNCTION__ . ' unknown entity type.');
     }
@@ -347,7 +347,7 @@ class Drupal8 extends Framework implements FrameworkInterface {
    * {@inheritdoc}
    */
   public function entityProperties($entity) {
-    return array();
+    return [];
   }
 
   /**

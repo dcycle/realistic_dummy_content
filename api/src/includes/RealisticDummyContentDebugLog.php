@@ -10,7 +10,7 @@ class RealisticDummyContentDebugLog implements RealisticDummyContentLogInterface
   /**
    * {@inheritdoc}
    */
-  public function log($text, $vars = array()) {
+  public function log($text, $vars = []) {
     // @codingStandardsIgnoreStart
     // Cannot pass a litteral to t() here.
     debug(t($text, $vars));
@@ -20,7 +20,7 @@ class RealisticDummyContentDebugLog implements RealisticDummyContentLogInterface
   /**
    * {@inheritdoc}
    */
-  public function error($text, $vars = array()) {
+  public function error($text, $vars = []) {
     // @codingStandardsIgnoreStart
     // Cannot pass a litteral to t() here.
     debug(t($text, $vars));

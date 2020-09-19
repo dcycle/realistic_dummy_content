@@ -12,6 +12,3 @@ You can do the same if you want to have the same dummy content in, say field_ima
 
     cd realistic_dummy_content/fields/my_content_type
     ln -s ../article/field_image field_image
-
-For another example of symbolic links see
-./realistic_dummy_content/fields/user/user/README.txt.

@@ -2,19 +2,15 @@
 
 namespace Drupal\realistic_dummy_content_api\Test;
 
-require_once './api/src/traits/RealisticDummyContentDrupalTrait.php';
-require_once './api/src/includes/RealisticDummyContentAttribute.php';
-require_once './api/src/includes/RealisticDummyContentField.php';
-require_once './api/src/includes/RealisticDummyContentTermReferenceField.php';
-
 use Drupal\realistic_dummy_content_api\includes\RealisticDummyContentTermReferenceField;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Tests for ...\includes\RealisticDummyContentTermReferenceField.
  *
  * @group realistic_dummy_content
  */
-class RealisticDummyContentTermReferenceFieldTest extends \PHPUnit_Framework_TestCase {
+class RealisticDummyContentTermReferenceFieldTest extends TestCase {
 
   /**
    * Callback: dummy version of ::taxonomyLoadTree().
@@ -80,14 +76,14 @@ class RealisticDummyContentTermReferenceFieldTest extends \PHPUnit_Framework_Tes
         ],
       ]);
     $object->method('vocabularyMachineName')
-      ->will($this->returnCallback(array($this, 'callbackVocabularyMachineName')));
+      ->will($this->returnCallback([$this, 'callbackVocabularyMachineName']));
     $object->method('taxonomyLoadTree')
-      ->will($this->returnCallback(array($this, 'callbackTaxonomyLoadTree')));
+      ->will($this->returnCallback([$this, 'callbackTaxonomyLoadTree']));
     $object->method('termId')
-      ->will($this->returnCallback(array($this, 'callbackTermId')));
+      ->will($this->returnCallback([$this, 'callbackTermId']));
     $object->method('termName')
       // For our purposes termId and termName can be identical.
-      ->will($this->returnCallback(array($this, 'callbackTermId')));
+      ->will($this->returnCallback([$this, 'callbackTermId']));
 
     if ($expect_exception) {
       $this->expectException(\Exception::class);

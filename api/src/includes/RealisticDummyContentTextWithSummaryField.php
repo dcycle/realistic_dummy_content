@@ -27,11 +27,11 @@ class RealisticDummyContentTextWithSummaryField extends RealisticDummyContentFie
     }
     if ($value) {
       $return = Framework::instance()->formatProperty('text_with_summary',
-        $value, array('format' => $format));
+        $value, ['format' => $format]);
       return $return;
     }
     else {
-      return array();
+      return [];
     }
   }
 

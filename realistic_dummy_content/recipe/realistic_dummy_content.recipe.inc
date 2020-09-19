@@ -27,8 +27,8 @@ class realistic_dummy_content_realistic_dummy_content_recipe extends RealisticDu
     // If you want sequential numbering rather than random numbering, use
     // variable_set('realistic_dummy_content_api_rand',
     // REALISTIC_DUMMY_CONTENT_API_SEQUENTIAL);.
-    $this->NewEntities('node', 'page', 4, array('kill' => TRUE));
-    $this->NewEntities('node', 'article', 10, array('kill' => TRUE));
+    $this->NewEntities('node', 'page', 4, ['kill' => TRUE]);
+    $this->NewEntities('node', 'article', 10, ['kill' => TRUE]);
   }
 // @codingStandardsIgnoreEnd
 

@@ -26,7 +26,7 @@ interface FrameworkInterface {
    *     entity_type => node|user|...
    *     dummy => FALSE|TRUE.
    */
-  public function createEntity($info = array());
+  public function createEntity(array $info = []);
 
   /**
    * Use devel generate to generate dummy content.
@@ -40,7 +40,7 @@ interface FrameworkInterface {
    *     num: int
    *     kill: bool.
    */
-  public function develGenerate($info);
+  public function develGenerate(array $info);
 
   /**
    * Prints debugging information.
@@ -55,9 +55,8 @@ interface FrameworkInterface {
   /**
    * Retrieve properties of an entity.
    *
-   * Properties are different from fields. In Drupal 7, node titles are
-   * properties, but field_image is a field. In Drupal 8, (almost?)
-   * everything is a field.
+   * In Drupal 8, (almost?) everything is a field. This function is here
+   * for historical reasons (in Drupal 7 there were properties _and_ fields).
    *
    * @param object $entity
    *   A Drupal entity object.
@@ -97,7 +96,7 @@ interface FrameworkInterface {
    * @return string
    *   A Drupal 7-style field type machine name.
    */
-  public function fieldTypeMachineName($info);
+  public function fieldTypeMachineName(array $info);
 
   /**
    * Saves a file to disk.
@@ -115,8 +114,7 @@ interface FrameworkInterface {
   /**
    * Formats a property to add it to an entity.
    *
-   * In Drupal 7, this might be array(LANGUAGE_NONE => ...); in Drupal8 it is
-   * just the file id, or value.
+   * In Drupal8 it is just the file id, or value.
    *
    * @param string $type
    *   Can be 'file', 'value', ...
@@ -128,7 +126,7 @@ interface FrameworkInterface {
    * @return mixed
    *   The file data formatted for placement in an entity.
    */
-  public function formatProperty($type, $value, $options = array());
+  public function formatProperty($type, $value, array $options = []);
 
   /**
    * Return the root path of the framework.
@@ -158,7 +156,7 @@ interface FrameworkInterface {
   /**
    * React to an entity just before it is saved.
    */
-  public function hookEntityPresave($entity, $type);
+  public function hookEntityPresave($entity);
 
   /**
    * Hook called in D7 when a user is inserted.
@@ -302,6 +300,8 @@ interface FrameworkInterface {
    *
    * See watchdog() for more details on this function.
    *
+   * @param mixed $message
+   *   A message to log.
    * @param int $severity
    *   The litteral severity as defined in:
    *   https://api.drupal.org/api/drupal/includes%21bootstrap.inc/function/watchdog/7.x,

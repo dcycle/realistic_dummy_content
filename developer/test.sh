@@ -1,7 +1,7 @@
 #!/bin/bash
 #
-# Runs some linting and unit tests, then creates instances of Drupal 7 and
-# Drupal 8, and runs some tests on those environments.
+# Runs some linting and unit tests, then creates an instance of
+# Drupal 8, and runs some tests on the environment.
 #
 set -e
 

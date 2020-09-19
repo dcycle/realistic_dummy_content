@@ -15,7 +15,7 @@ class Mock extends Framework {
    * {@inheritdoc}
    */
   public function newEntity($entity) {
-    $this->hookEntityPresave($entity, $entity->type);
+    $this->hookEntityPresave($entity);
     $id = rand();
     $this->entites[$id] = $entity;
     return $id;
@@ -24,11 +24,12 @@ class Mock extends Framework {
   /**
    * {@inheritdoc}
    */
-  public function hookEntityPresave($entity, $type) {
+  public function hookEntityPresave($entity) {
+    $type = $entity->type();
     $this->print('[info] About to save ' . $this->toString($entity) . ' of type ' . $type);
-    if (realistic_dummy_content_api_is_dummy($entity, $type)) {
+    if (realistic_dummy_content_api_is_dummy($entity)) {
       $this->print('[info] Determined that ' . $this->toString($entity) . ' of type ' . $type . ' is dummy, about to improve it');
-      realistic_dummy_content_api_improve_dummy_content($entity, $type);
+      realistic_dummy_content_api_improve_dummy_content($entity);
     }
   }
 
@@ -56,29 +57,29 @@ class Mock extends Framework {
    * {@inheritdoc}
    */
   public function fieldInfoFields() {
-    return array(
-      'some-field-name' => array(
-        'node' => array(
+    return [
+      'some-field-name' => [
+        'node' => [
           'article',
-        ),
-      ),
-    );
+        ],
+      ],
+    ];
   }
 
   /**
    * {@inheritdoc}
    */
   public function moduleList() {
-    return array(
+    return [
       'realistic_dummy_content',
       'realistic_dummy_content_api',
-    );
+    ];
   }
 
   /**
    * {@inheritdoc}
    */
-  public function configGet($name, $default) {
+  public function configGet($name, $default = NULL) {
     return (isset($this->config[$name])) ? $this->config[$name] : $default;
   }
 
@@ -115,7 +116,7 @@ class Mock extends Framework {
   /**
    * {@inheritdoc}
    */
-  public function debug($message, $info) {
+  public function debug($message, $info = NULL) {
     $this->print('[debug] ' . $message . ' ' . $info);
   }
 

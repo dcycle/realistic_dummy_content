@@ -2,16 +2,15 @@
 
 namespace Drupal\realistic_dummy_content_api\Test;
 
-require_once './api/src/includes/Math.php';
-
 use Drupal\realistic_dummy_content_api\includes\Math;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Tests for \Drupal\realistic_dummy_content_api\includes\Math.
  *
  * @group realistic_dummy_content
  */
-class MathTest extends \PHPUnit_Framework_TestCase {
+class MathTest extends TestCase {
 
   /**
    * Tests Math::sequential().
@@ -39,18 +38,18 @@ class MathTest extends \PHPUnit_Framework_TestCase {
    * Data provider for $this->testSequential().
    */
   public function providerTestSequential() {
-    return array(
-      array(0, 3, 'a', 0),
-      array(0, 3, 'a', 0),
-      array(0, 3, 'b', 1),
-      array(0, 3, 'b', 1),
-      array(0, 3, 'c', 2),
-      array(0, 3, 'c', 2),
-      array(0, 3, 'd', 3),
-      array(0, 2, 'd', 2),
-      array(10, 13, 'd', 10),
-      array(11, 12, 'd', 11),
-    );
+    return [
+      [0, 3, 'a', 0],
+      [0, 3, 'a', 0],
+      [0, 3, 'b', 1],
+      [0, 3, 'b', 1],
+      [0, 3, 'c', 2],
+      [0, 3, 'c', 2],
+      [0, 3, 'd', 3],
+      [0, 2, 'd', 2],
+      [10, 13, 'd', 10],
+      [11, 12, 'd', 11],
+    ];
   }
 
 }

@@ -15,7 +15,7 @@ interface RealisticDummyContentLogInterface {
    * @param array $vars
    *   Variables to insert in the text.
    */
-  public function log($text, $vars = array());
+  public function log($text, array $vars = []);
 
   /**
    * Add a log entry for an error.
@@ -25,6 +25,6 @@ interface RealisticDummyContentLogInterface {
    * @param array $vars
    *   Variables to insert in the text.
    */
-  public function error($text, $vars = array());
+  public function error($text, array $vars = []);
 
 }

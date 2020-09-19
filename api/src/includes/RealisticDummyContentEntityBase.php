@@ -11,9 +11,35 @@ use Drupal\realistic_dummy_content_api\Framework\Framework;
  * access to entities in order to override demo content in them.
  */
 abstract class RealisticDummyContentEntityBase extends RealisticDummyContentBase {
+
+  /**
+   * A hash which uniquely identifies this entity.
+   *
+   * @var mixed
+   */
   private $hash;
+
+  /**
+   * The entity object.
+   *
+   * @var mixed
+   */
   private $entity;
+
+  /**
+   * Entity type for this object, for example user or node.
+   *
+   * @var mixed
+   */
   private $type;
+
+  /**
+   * Fields to consider for this object.
+   *
+   * See the comments in the constructor for details.
+   *
+   * @var mixed
+   */
   private $filter;
 
   /**
@@ -43,8 +69,11 @@ abstract class RealisticDummyContentEntityBase extends RealisticDummyContentBase
    *
    * @throws \Exception
    */
-  public function __construct($entity, $type, $filter = array()) {
-    realistic_dummy_content_api_argcheck(array('is_object', 'realistic_dummy_content_api_argcheck_entitytype'));
+  public function __construct($entity, $type, array $filter = []) {
+    realistic_dummy_content_api_argcheck([
+      'is_object',
+      'realistic_dummy_content_api_argcheck_entitytype',
+    ]);
     $this->entity = $entity;
     $this->hash = md5(serialize($entity));
     $this->type = $type;
@@ -127,7 +156,7 @@ abstract class RealisticDummyContentEntityBase extends RealisticDummyContentBase
    * Subclasses of RealisticDummyContentEntityBase need to override
    * this function to perform modifications on the entity.
    */
-  public abstract function modify();
+  abstract public function modify();
 
   /**
    * Check if a field should or shouldn't be manipulated.

@@ -6,9 +6,6 @@
  * Install, deployment (update), and uninstall hooks for this module.
  */
 
-// The autoloader is in the .module file, which is not automatically present
-// for Drupal 7.
-module_load_include('module', 'realistic_dummy_content_api');
 use Drupal\realistic_dummy_content_api\Framework\Framework;
 
 /**

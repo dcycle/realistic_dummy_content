@@ -44,8 +44,25 @@ namespace Drupal\realistic_dummy_content_api\includes;
  */
 class RealisticDummyContentFileGroup {
 
+  /**
+   * The radical file name. See constructor comments for details.
+   *
+   * @var string
+   */
   private $radical;
+
+  /**
+   * The radical drupal file object. See constructor comments for details.
+   *
+   * @var mixed
+   */
   private $file;
+
+  /**
+   * Attributes for this filegroup. See constructor comments for details.
+   *
+   * @var array
+   */
   private $attributes;
 
   /**
@@ -75,7 +92,7 @@ class RealisticDummyContentFileGroup {
    *
    * @throws RealisticDummyContentException
    */
-  public function __construct($radical, $file, $attributes) {
+  public function __construct($radical, $file, array $attributes) {
     if (!is_string($radical)) {
       throw new RealisticDummyContentException('Please use string for radical');
     }
