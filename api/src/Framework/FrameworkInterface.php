@@ -99,11 +99,6 @@ interface FrameworkInterface {
   public function fieldTypeMachineName(array $info);
 
   /**
-   * Saves a file to disk.
-   */
-  public function fileSave($drupal_file);
-
-  /**
    * Return the default text filter.
    *
    * @return string
@@ -126,7 +121,7 @@ interface FrameworkInterface {
    * @return mixed
    *   The file data formatted for placement in an entity.
    */
-  public function formatProperty($type, $value, array $options = []);
+  public function formatProperty($type, $value, array $options = []) : array;
 
   /**
    * Return the root path of the framework.

@@ -3,6 +3,8 @@
 namespace Drupal\realistic_dummy_content_api\Framework;
 
 use Drupal\realistic_dummy_content_api\includes\RealisticDummyContentDevelGenerateGenerator;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\user\Entity\User;
 
 /**
  * The entry point for the framework.
@@ -13,6 +15,9 @@ use Drupal\realistic_dummy_content_api\includes\RealisticDummyContentDevelGenera
  * implement FrameworkInterface.
  */
 class Framework implements FrameworkInterface {
+
+  use StringTranslationTrait;
+
   /**
    * Whether we are in a test or not.
    *
@@ -137,14 +142,6 @@ class Framework implements FrameworkInterface {
   /**
    * {@inheritdoc}
    */
-  public function fileSave($drupal_file) {
-    $return = $this->implementor()->fileSave($drupal_file);
-    return $return;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function filteredHtml() {
     return $this->implementor()->filteredHtml();
   }
@@ -152,7 +149,7 @@ class Framework implements FrameworkInterface {
   /**
    * {@inheritdoc}
    */
-  public function formatProperty($type, $value, array $options = []) {
+  public function formatProperty($type, $value, array $options = []) : array {
     return $this->implementor()->formatProperty($type, $value, $options);
   }
 
@@ -205,7 +202,7 @@ class Framework implements FrameworkInterface {
    * @throws Exception
    */
   public function latestId($table = 'node', $key = 'nid') {
-    return db_query("SELECT $key FROM {$table} ORDER BY $key DESC LIMIT 1")->fetchField();
+    return \Drupal::database()->query("SELECT $key FROM {$table} ORDER BY $key DESC LIMIT 1")->fetchField();
   }
 
   /**
@@ -350,7 +347,7 @@ class Framework implements FrameworkInterface {
     $generator = new RealisticDummyContentDevelGenerateGenerator('user', 'user', 1, ['kill' => TRUE]);
     $generator->generate();
 
-    $user = user_load(Framework::instance()->latestId('users', 'uid'));
+    $user = User::load(Framework::instance()->latestId('users', 'uid'));
     if (strpos(Framework::instance()->userPictureFilename($user), 'dummyfile') !== FALSE) {
       $tests[] = 'User picture substitution OK, and aliases work correctly.';
     }

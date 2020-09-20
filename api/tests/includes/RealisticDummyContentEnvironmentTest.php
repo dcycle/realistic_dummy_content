@@ -68,7 +68,7 @@ class RealisticDummyContentEnvironmentTest extends TestCase {
       $parsed = RealisticDummyContentEnvironment::sortCandidateFiles($data);
       $parsed_images = RealisticDummyContentEnvironment::sortCandidateFiles($data, ['png']);
     }
-    catch (Exception $e) {
+    catch (\Throwable $e) {
       $this->assertFalse(TRUE, 'Got exception ' . $e->getMessage());
     }
     $this->assertTrue(count($parsed) == 4, '4 parsed files are returned, which excludes the readme riles (4 == ' . count($parsed) . ')');

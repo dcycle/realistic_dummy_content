@@ -15,7 +15,7 @@ class RealisticDummyContentTextWithSummaryField extends RealisticDummyContentFie
   /**
    * {@inheritdoc}
    */
-  public function implementValueFromFile($file) {
+  public function implementValueFromFile($file) : array {
     $value = $file->Value();
     // @TODO use the site's default, not Framework::instance()->filteredHtml(), as the
     // default format.
@@ -23,7 +23,7 @@ class RealisticDummyContentTextWithSummaryField extends RealisticDummyContentFie
     // If the value cannot be determined, which is different from an empty
     // string.
     if ($value === NULL) {
-      return NULL;
+      return [];
     }
     if ($value) {
       $return = Framework::instance()->formatProperty('text_with_summary',

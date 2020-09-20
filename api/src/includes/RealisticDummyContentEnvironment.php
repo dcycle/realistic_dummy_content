@@ -114,19 +114,6 @@ abstract class RealisticDummyContentEnvironment {
   abstract public function implementFileSaveData($data, $destination = NULL);
 
   /**
-   * Saves a file.
-   */
-  public function fileSave(stdClass $file) {
-    $return = $this->implementFileSave($file);
-    return $return;
-  }
-
-  /**
-   * Implements $this->fileSave().
-   */
-  abstract public function implementFileSave(stdClass $file);
-
-  /**
    * Returns all files with a given extension for a given filepath.
    *
    * Files do not always have a one-to-one relationship with the filesystem.
@@ -160,7 +147,8 @@ abstract class RealisticDummyContentEnvironment {
    */
   public static function getAllFileGroups($filepath, array $extensions) {
     try {
-      $candidate_files = file_scan_directory($filepath, '/.*$/', ['key' => 'filename']);
+      $candidate_files = \Drupal::service('file_system')
+        ->scanDirectory($filepath, '/.*$/', ['key' => 'filename']);
 
       $files = self::sortCandidateFiles($candidate_files, $extensions);
 
@@ -171,7 +159,7 @@ abstract class RealisticDummyContentEnvironment {
       }
       return $return;
     }
-    catch (Exception $e) {
+    catch (\Throwable $e) {
       return [];
     }
   }
@@ -445,7 +433,7 @@ abstract class RealisticDummyContentEnvironment {
       }
       return trim(self::get()->fileGetContents($file->uri));
     }
-    catch (Exception $e) {
+    catch (\Throwable $e) {
       return NULL;
     }
   }

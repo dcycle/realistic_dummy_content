@@ -15,7 +15,7 @@ class RealisticDummyContentTermReferenceField extends RealisticDummyContentField
   /**
    * {@inheritdoc}
    */
-  public function implementValueFromFile($file) {
+  public function implementValueFromFile($file) : array {
     try {
       $termname = $file->value();
       if ($termname) {
@@ -23,10 +23,11 @@ class RealisticDummyContentTermReferenceField extends RealisticDummyContentField
           $this->getTid($termname));
         return $return;
       }
+      return [];
     }
     catch (\Exception $e) {
       Framework::instance()->debug('Problem with taxonomy term: ' . $e->getMessage());
-      return NULL;
+      return [];
     }
   }
 

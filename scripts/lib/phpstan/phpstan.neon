@@ -1,0 +1,11 @@
+# See https://github.com/dcycle/docker-phpstan-drupal/blob/master/README.md#custom-config-file
+parameters:
+  excludes_analyse:
+    - */test/*
+    - */tests/*
+    - */Test/*
+    - */realistic_dummy_content/phpunit-autoload.php
+    - */realistic_dummy_content.recipe.inc
+    - */realistic_dummy_content_api.drush.inc
+includes:
+  - /var/www/html/phpstan.neon

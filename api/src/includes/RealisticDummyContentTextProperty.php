@@ -10,7 +10,7 @@ class RealisticDummyContentTextProperty extends RealisticDummyContentProperty {
   /**
    * {@inheritdoc}
    */
-  public function implementValueFromFile($file) {
+  public function implementValueFromFile($file) : array {
     return $file->Value();
   }
 

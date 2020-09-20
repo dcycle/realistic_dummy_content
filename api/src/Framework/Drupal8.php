@@ -6,6 +6,8 @@ use Drupal\taxonomy\Entity\Vocabulary;
 use Drupal\taxonomy\Entity\Term;
 use Drupal\Component\Utility\Timer;
 use Drupal\field\Entity\FieldConfig;
+use Drupal\node\Entity\Node;
+use Drupal\file\Entity\File;
 
 if (!defined('WATCHDOG_ERROR')) {
   define('WATCHDOG_ERROR', 3);
@@ -22,7 +24,7 @@ class Drupal8 extends Framework implements FrameworkInterface {
   public function userPictureFilename($user) {
     $value = $user->get('user_picture')->getValue();
     $id = $value[0]['target_id'];
-    $file = file_load($id);
+    $file = File::load($id);
     return $file->getFileUri();
   }
 
@@ -39,8 +41,8 @@ class Drupal8 extends Framework implements FrameworkInterface {
         $entity = $candidate;
       }
     }
-    catch (Exception $e) {
-      $this->setMessage(t('realistic_dummy_content_api failed to modify dummy objects: message: @m', ['@m' => $e->getMessage()]), 'error', FALSE);
+    catch (\Throwable $e) {
+      $this->setMessage($this->t('realistic_dummy_content_api failed to modify dummy objects: message: @m', ['@m' => $e->getMessage()]), 'error', FALSE);
     }
   }
 
@@ -112,7 +114,7 @@ class Drupal8 extends Framework implements FrameworkInterface {
     $bundle = 'article';
 
     // Get definition of target entity type.
-    $entity_def = \Drupal::entityManager()->getDefinition($entity_type);
+    $entity_def = \Drupal::entityTypeManager()->getDefinition($entity_type);
 
     // Load up an array for creation.
     $new_node = [
@@ -121,10 +123,10 @@ class Drupal8 extends Framework implements FrameworkInterface {
       $entity_def->get('entity_keys')['bundle'] => $bundle,
     ];
 
-    $new_post = \Drupal::entityManager()->getStorage($entity_type)->create($new_node);
+    $new_post = \Drupal::entityTypeManager()->getStorage($entity_type)->create($new_node);
     $new_post->save();
 
-    return node_load($this->latestId());
+    return Node::load($this->latestId());
   }
 
   /**
@@ -149,7 +151,7 @@ class Drupal8 extends Framework implements FrameworkInterface {
    */
   public function fieldInfoFields() {
     $return = [];
-    $field_map = \Drupal::entityManager()->getFieldMap();
+    $field_map = \Drupal::entityFieldManager()->getFieldMap();
     // Field map returns:
     // entitytype/name(type, bundles(article => article))
     // we must change that into:
@@ -251,7 +253,7 @@ class Drupal8 extends Framework implements FrameworkInterface {
   /**
    * {@inheritdoc}
    */
-  public function formatProperty($type, $value, array $options = []) {
+  public function formatProperty($type, $value, array $options = []) : array {
     switch ($type) {
       case 'file':
         return ['set' => $value->id(), 'options' => $options];
@@ -306,28 +308,6 @@ class Drupal8 extends Framework implements FrameworkInterface {
    * {@inheritdoc}
    */
   public function debug($message, $info = NULL) {
-    if ($this->moduleExists('devel')) {
-      if (is_string($message)) {
-        // @codingStandardsIgnoreStart
-        dpm($message, $info);
-        // @codingStandardsIgnoreEnd
-      }
-      else {
-        // @codingStandardsIgnoreStart
-        dpm($info . ' ==>');
-        // @codingStandardsIgnoreEnd
-        if (function_exists('ksm')) {
-          // @codingStandardsIgnoreStart
-          ksm($message);
-          // @codingStandardsIgnoreEnd
-        }
-        else {
-          // @codingStandardsIgnoreStart
-          dpm($message);
-          // @codingStandardsIgnoreEnd
-        }
-      }
-    }
     $this->watchdog('<pre>' . print_r([$info => $message], TRUE) . '</pre>');
   }
 
@@ -373,14 +353,6 @@ class Drupal8 extends Framework implements FrameworkInterface {
    */
   public function frameworkRoot() {
     return DRUPAL_ROOT;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function fileSave($drupal_file) {
-    $drupal_file->save();
-    return $drupal_file;
   }
 
   /**

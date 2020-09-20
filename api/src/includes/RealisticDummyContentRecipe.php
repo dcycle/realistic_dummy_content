@@ -3,6 +3,7 @@
 namespace Drupal\realistic_dummy_content_api\includes;
 
 use Drupal\realistic_dummy_content_api\Framework\Framework;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 
 /**
  * Abstract base "recipe" class.
@@ -16,6 +17,8 @@ use Drupal\realistic_dummy_content_api\Framework\Framework;
  * ./realistic_dummy_content/recipe/realistic_dummy_content.recipe.inc.
  */
 abstract class RealisticDummyContentRecipe {
+
+  use StringTranslationTrait;
 
   /**
    * The logger.
@@ -125,13 +128,13 @@ abstract class RealisticDummyContentRecipe {
       $generator->generate();
     }
     else {
-      self::$log->error(t('Could not find a generator for @type @bundle.', [
+      self::$log->error($this->t('Could not find a generator for @type @bundle.', [
         '@type' => $type,
         '@bundle' => $bundle,
       ]));
     }
     $time = self::stopTime([$type, $bundle, $count]);
-    self::$log->log(t('@type @bundle: @n created in @time milliseconds', [
+    self::$log->log($this->t('@type @bundle: @n created in @time milliseconds', [
       '@type' => $type,
       '@bundle' => $bundle,
       '@n' => $count,

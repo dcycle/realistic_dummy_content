@@ -145,7 +145,7 @@ class RealisticDummyContentFileGroup {
         return NULL;
       }
     }
-    catch (Exception $e) {
+    catch (\Throwable $e) {
       return NULL;
     }
   }
@@ -173,7 +173,7 @@ class RealisticDummyContentFileGroup {
         return $default;
       }
     }
-    catch (Exception $e) {
+    catch (\Throwable $e) {
       return $default;
     }
   }

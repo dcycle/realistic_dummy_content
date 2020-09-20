@@ -15,10 +15,10 @@ class RealisticDummyContentValueField extends RealisticDummyContentField {
   /**
    * {@inheritdoc}
    */
-  public function implementValueFromFile($file) {
+  public function implementValueFromFile($file) : array {
     $value = $file->Value();
     if ($value === NULL) {
-      return;
+      return [];
     }
     return Framework::instance()->formatProperty('value', $value);
   }

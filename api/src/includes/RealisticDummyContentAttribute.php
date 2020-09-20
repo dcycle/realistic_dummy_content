@@ -206,7 +206,7 @@ abstract class RealisticDummyContentAttribute {
         return $this->implementValueFromFile($file);
       }
     }
-    catch (Exception $e) {
+    catch (\Throwable $e) {
       return NULL;
     }
   }
@@ -220,13 +220,13 @@ abstract class RealisticDummyContentAttribute {
    * @param object $file
    *   An object of type RealisticDummyContentFileGroup.
    *
-   * @return null|array
-   *   Returns structured data to be added to the entity object, or NULL if such
-   *   data can't be creatd.
+   * @return array
+   *   Returns structured data to be added to the entity object, or an empty
+   *   array if such data can't be created.
    *
    * @throws \Exception.
    */
-  abstract protected function implementValueFromFile($file);
+  abstract protected function implementValueFromFile($file) : array;
 
   /**
    * Given a list of files, return a value from one of them.
@@ -247,7 +247,7 @@ abstract class RealisticDummyContentAttribute {
         return $this->valueFromFile($file);
       }
     }
-    catch (Exception $e) {
+    catch (\Throwable $e) {
       return NULL;
     }
   }
@@ -298,7 +298,7 @@ abstract class RealisticDummyContentAttribute {
       }
       return $return;
     }
-    catch (Exception $e) {
+    catch (\Throwable $e) {
       return NULL;
     }
   }
