@@ -19,5 +19,5 @@ do
   fi
 done
 
-drush si -y --db-url "mysqli://root:drupal@mysql/drupal" minimal
+drush si -y --db-url "mysqli://root:drupal@mysql/drupal"
 drush en -y realistic_dummy_content devel_generate
