@@ -199,9 +199,10 @@ class Framework implements FrameworkInterface {
    * @return int
    *   The latest key (node nid or user uid) in the database.
    *
-   * @throws Exception
+   * @throws \Exception
    */
   public function latestId($table = 'node', $key = 'nid') {
+    // @phpstan:ignoreError
     return \Drupal::database()->query("SELECT $key FROM {$table} ORDER BY $key DESC LIMIT 1")->fetchField();
   }
 

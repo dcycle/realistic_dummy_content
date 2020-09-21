@@ -9,6 +9,14 @@ namespace Drupal\realistic_dummy_content_api\includes;
  * "generators", which are subclasses of this class.
  */
 abstract class RealisticDummyContentGenerator {
+
+  /**
+   * Whether or not to kill previous content.
+   *
+   * @var bool
+   */
+  private $kill;
+
   /**
    * The type of entity to generate.
    *
@@ -96,5 +104,10 @@ abstract class RealisticDummyContentGenerator {
   public function generate() {
     $this->implementGenerate();
   }
+
+  /**
+   * Generate content. Used internally in the class.
+   */
+  abstract public function implementGenerate();
 
 }

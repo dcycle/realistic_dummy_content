@@ -93,7 +93,7 @@ class RealisticDummyContentFieldModifier extends RealisticDummyContentEntityBase
    * a text format), and others. These are all defined in subclasses and can
    * be extended by module developers.
    *
-   * @param array &$modifiers
+   * @param array $modifiers
    *   Existing array of subclasses of RealisticDummyContentAttribute, to which
    *   new modifiers will be added.
    * @param string $type
@@ -129,6 +129,10 @@ class RealisticDummyContentFieldModifier extends RealisticDummyContentEntityBase
     ];
     Framework::instance()->alter('realistic_dummy_content_attribute_manipulator', $class, $info);
 
+    // PHPStan complains that "Negated boolean expression is always false.",
+    // however it is technically possible for an alter hook to set the class
+    // to NULL or something.
+    // @phpstan:ignoreError
     if (!$class) {
       // third-parties might want to signal that certain fields cannot be
       // modified (they can be too complex for the default modifier and do not
@@ -140,7 +144,8 @@ class RealisticDummyContentFieldModifier extends RealisticDummyContentEntityBase
       $modifier = new $class($this, $name);
     }
     else {
-      watchdog('realistic_dummy_content_api', 'Class does not exist: @c. This is probably because a third-party module has implemented realistic_dummy_content_api_realistic_dummy_content_attribute_manipular_alter() with a class that cannot be implemented. @original will used instead.', [
+      // @phpstan:ignoreError
+      \Drupal::logger('realistic_dummy_content_api')->notice('Class does not exist: @c. This is probably because a third-party module has implemented realistic_dummy_content_api_realistic_dummy_content_attribute_manipular_alter() with a class that cannot be implemented. @original will used instead.', [
         '@c' => $class,
         '@original' => $original_class,
       ]);

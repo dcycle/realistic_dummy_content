@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\realistic_dummy_content_api\Test;
+namespace Drupal\Tests\realistic_dummy_content_api\Unit\includes;
 
 use Drupal\realistic_dummy_content_api\includes\Math;
 use PHPUnit\Framework\TestCase;

@@ -205,6 +205,7 @@ abstract class RealisticDummyContentAttribute {
       if (in_array($file->getRadicalExtension(), $this->getExtensions())) {
         return $this->implementValueFromFile($file);
       }
+      return NULL;
     }
     catch (\Throwable $e) {
       return NULL;

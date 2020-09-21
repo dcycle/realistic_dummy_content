@@ -1,14 +1,12 @@
 <?php
 
-namespace Drupal\realistic_dummy_content_api\Test;
+namespace Drupal\Tests\realistic_dummy_content_api\Unit\includes;
 
 use Drupal\realistic_dummy_content_api\includes\RealisticDummyContentEnvironment;
 use PHPUnit\Framework\TestCase;
 
 /**
  * Dummy file, used to test how fields manage files.
- *
- * @group realistic_dummy_content
  */
 // @codingStandardsIgnoreStart
 class RealisticDummyContentUnitTestCaseDummyFile {
@@ -45,6 +43,8 @@ class RealisticDummyContentUnitTestCaseDummyFile {
 
 /**
  * Tests for ...\includes\RealisticDummyContentEnvironment.
+ *
+ * @group realistic_dummy_content
  */
 class RealisticDummyContentEnvironmentTest extends TestCase {
 

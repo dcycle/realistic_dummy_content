@@ -4,5 +4,5 @@
 #
 set -e
 
-docker run -v "$(pwd)":/app phpunit/phpunit \
+docker run --rm -v "$(pwd)":/app phpunit/phpunit \
   --group realistic_dummy_content

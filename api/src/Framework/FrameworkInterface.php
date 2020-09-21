@@ -118,7 +118,7 @@ interface FrameworkInterface {
    * @param array $options
    *   Extra options such as the format.
    *
-   * @return mixed
+   * @return array
    *   The file data formatted for placement in an entity.
    */
   public function formatProperty($type, $value, array $options = []) : array;
@@ -210,7 +210,7 @@ interface FrameworkInterface {
    * @return array
    *   An array of taxonomy term objects.
    *
-   * @throws Exception
+   * @throws \Exception
    */
   public function taxonomyLoadTree($vocabulary);
 
@@ -223,7 +223,7 @@ interface FrameworkInterface {
    * @return int
    *   The taxonomy term id.
    *
-   * @throws Exception
+   * @throws \Exception
    */
   public function termId($term);
 
@@ -236,7 +236,7 @@ interface FrameworkInterface {
    * @return string
    *   The taxonomy term name, such as "Bananas".
    *
-   * @throws Exception
+   * @throws \Exception
    */
   public function termName($term);
 
@@ -286,7 +286,7 @@ interface FrameworkInterface {
    * @return string
    *   A vocabulary machine name, such as "fruit".
    *
-   * @throws Exception
+   * @throws \Exception
    */
   public function vocabularyMachineName($vocabulary);
 

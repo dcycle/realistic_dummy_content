@@ -42,7 +42,8 @@ class Drupal8 extends Framework implements FrameworkInterface {
       }
     }
     catch (\Throwable $e) {
-      $this->setMessage($this->t('realistic_dummy_content_api failed to modify dummy objects: message: @m', ['@m' => $e->getMessage()]), 'error', FALSE);
+      // @phpstan:ignoreError
+      \Drupal::messenger()->addMessage($this->t('realistic_dummy_content_api failed to modify dummy objects: message: @m', ['@m' => $e->getMessage()]), 'error', FALSE);
     }
   }
 
@@ -66,6 +67,7 @@ class Drupal8 extends Framework implements FrameworkInterface {
       'time_range' => 0,
       'roles' => [],
     ], $info);
+    // @phpstan:ignoreError
     $plugin_manager = \Drupal::service('plugin.manager.develgenerate');
     $instance = $plugin_manager->createInstance($info['entity_type'], []);
     $instance->generate($info);
@@ -80,7 +82,7 @@ class Drupal8 extends Framework implements FrameworkInterface {
    * @return string
    *   An entity type machine name (id).
    *
-   * @throws Exception
+   * @throws \Exception
    */
   public function getEntityType($entity) {
     return $entity->getEntityType()->id();
@@ -107,13 +109,14 @@ class Drupal8 extends Framework implements FrameworkInterface {
    * @return object
    *   A Drupal node object.
    *
-   * @throws Exception
+   * @throws \Exception
    */
   public function createDummyNode() {
     $entity_type = 'node';
     $bundle = 'article';
 
     // Get definition of target entity type.
+    // @phpstan:ignoreError
     $entity_def = \Drupal::entityTypeManager()->getDefinition($entity_type);
 
     // Load up an array for creation.
@@ -123,6 +126,7 @@ class Drupal8 extends Framework implements FrameworkInterface {
       $entity_def->get('entity_keys')['bundle'] => $bundle,
     ];
 
+    // @phpstan:ignoreError
     $new_post = \Drupal::entityTypeManager()->getStorage($entity_type)->create($new_node);
     $new_post->save();
 
@@ -135,6 +139,7 @@ class Drupal8 extends Framework implements FrameworkInterface {
   public function moduleInvokeAll($hook) {
     $args = func_get_args();
     $hook = array_shift($args);
+    // @phpstan:ignoreError
     return \Drupal::moduleHandler()->invokeAll($hook, $args);
   }
 
@@ -151,7 +156,8 @@ class Drupal8 extends Framework implements FrameworkInterface {
    */
   public function fieldInfoFields() {
     $return = [];
-    $field_map = \Drupal::entityFieldManager()->getFieldMap();
+    // @phpstan:ignoreError
+    $field_map = \Drupal::service('entity_field.manager')->getFieldMap();
     // Field map returns:
     // entitytype/name(type, bundles(article => article))
     // we must change that into:
@@ -184,7 +190,7 @@ class Drupal8 extends Framework implements FrameworkInterface {
       if (isset($field_info['bundles']) && count($field_info['bundles'])) {
         $bundle = array_pop($field_info['bundles']);
         $config = FieldConfig::loadByName('node', $bundle, $field);
-        if ($config) {
+        if ($config !== NULL) {
           $settings = $config->getSettings();
 
           if (isset($settings['handler_settings']['target_bundles'])) {
@@ -203,6 +209,7 @@ class Drupal8 extends Framework implements FrameworkInterface {
    * {@inheritdoc}
    */
   public function moduleList() {
+    // @phpstan:ignoreError
     $full_list = \Drupal::moduleHandler()->getModuleList();
     return array_keys($full_list);
   }
@@ -211,6 +218,7 @@ class Drupal8 extends Framework implements FrameworkInterface {
    * {@inheritdoc}
    */
   public function configGet($name, $default = NULL) {
+    // @phpstan:ignoreError
     $candidate = \Drupal::config('realistic_dummy_content_api')->get($name);
     return $candidate ? $candidate : $default;
   }
@@ -219,6 +227,7 @@ class Drupal8 extends Framework implements FrameworkInterface {
    * {@inheritdoc}
    */
   public function alter($type, &$data, &$context1 = NULL, &$context2 = NULL, &$context3 = NULL) {
+    // @phpstan:ignoreError
     return \Drupal::moduleHandler()->alter($type, $data, $context1, $context2);
   }
 
@@ -233,6 +242,7 @@ class Drupal8 extends Framework implements FrameworkInterface {
    * {@inheritdoc}
    */
   public function stateGet($name, $default = NULL) {
+    // @phpstan:ignoreError
     return \Drupal::state()->get($name, $default);
   }
 
@@ -272,6 +282,7 @@ class Drupal8 extends Framework implements FrameworkInterface {
    * {@inheritdoc}
    */
   public function moduleExists($module) {
+    // @phpstan:ignoreError
     return \Drupal::moduleHandler()->moduleExists($module);
   }
 
@@ -280,9 +291,11 @@ class Drupal8 extends Framework implements FrameworkInterface {
    */
   public function watchdog($message, $severity = 5) {
     if ($severity == WATCHDOG_ERROR) {
+      // @phpstan:ignoreError
       \Drupal::logger('realistic_dummy_content_api')->error($message);
     }
     else {
+      // @phpstan:ignoreError
       \Drupal::logger('realistic_dummy_content_api')->notice($message);
     }
   }
@@ -422,6 +435,7 @@ class Drupal8 extends Framework implements FrameworkInterface {
    * {@inheritdoc}
    */
   public function taxonomyLoadTree($vocabulary) {
+    // @phpstan:ignoreError
     $terms = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadTree($this->vocabularyIdentifier($vocabulary));
     $tids = array_map(function ($a) {
       return $a->tid;

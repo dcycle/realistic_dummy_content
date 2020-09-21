@@ -19,7 +19,7 @@ abstract class RealisticDummyContentEnvironment {
    * environment can be live, or simulated as during tests. This is a form of
    * mocking. See http://en.wikipedia.org/wiki/Mock_object.
    *
-   * @var object
+   * @var null|object
    */
   static private $env;
 
@@ -62,7 +62,7 @@ abstract class RealisticDummyContentEnvironment {
    *
    * @throws \Exception
    */
-  public function fileGetContents($filename) {
+  public function fileGetContents($filename) : string {
     if (!$filename) {
       throw new RealisticDummyContentException('Please use valid filename');
     }
@@ -84,11 +84,11 @@ abstract class RealisticDummyContentEnvironment {
    *   A valid filename, for example /drupal/root/sites/all/modules/your_module/
    *   realistic_dummy_content/fields/node/blog/body/03.txt.
    *
-   * @return object
+   * @return string
    *   Undefined in case the filename is invalid; otherwise returns the contents
    *   of the file.
    */
-  abstract public function implementFileGetContents($filename);
+  abstract public function implementFileGetContents($filename) : string;
 
   /**
    * Save the file data to the real or test environment.
@@ -381,12 +381,7 @@ abstract class RealisticDummyContentEnvironment {
    * See those functions for details.
    */
   public static function strToLower($string) {
-    if (function_exists('drupal_strtolower')) {
-      return drupal_strtolower($string);
-    }
-    else {
-      return strtolower($string);
-    }
+    return mb_strtolower($string);
   }
 
   /**

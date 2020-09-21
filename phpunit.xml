@@ -4,7 +4,7 @@
 <phpunit bootstrap="phpunit-autoload.php">
   <testsuites>
     <testsuite name="realistic_dummy_content">
-      <directory>./api/src/test</directory>
+      <directory>./api/tests</directory>
     </testsuite>
   </testsuites>
 </phpunit>
