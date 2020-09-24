@@ -251,17 +251,6 @@ interface FrameworkInterface {
   public function timerStop($id);
 
   /**
-   * Return the filename of a user picture.
-   *
-   * @param object $user
-   *   A Drupal user object.
-   *
-   * @return string
-   *   A string representing the filename of the user picture if possible.
-   */
-  public function userPictureFilename($user);
-
-  /**
    * Delete a variable.
    */
   public function variableDel($variable);

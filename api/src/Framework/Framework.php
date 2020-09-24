@@ -291,13 +291,6 @@ class Framework implements FrameworkInterface {
   /**
    * {@inheritdoc}
    */
-  public function userPictureFilename($user) {
-    return $this->implementor()->userPictureFilename($user);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function variableDel($variable) {
     return $this->implementor()->variableDel($variable);
   }
@@ -349,12 +342,6 @@ class Framework implements FrameworkInterface {
     $generator->generate();
 
     $user = User::load(Framework::instance()->latestId('users', 'uid'));
-    if (strpos(Framework::instance()->userPictureFilename($user), 'dummyfile') !== FALSE) {
-      $tests[] = 'User picture substitution OK, and aliases work correctly.';
-    }
-    else {
-      $errors[] = 'User picture substitution does not work.';
-    }
 
     $generator = new RealisticDummyContentDevelGenerateGenerator('node', 'article', 1, ['kill' => TRUE]);
     $generator->generate();

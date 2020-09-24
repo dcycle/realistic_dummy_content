@@ -21,16 +21,6 @@ class Drupal8 extends Framework implements FrameworkInterface {
   /**
    * {@inheritdoc}
    */
-  public function userPictureFilename($user) {
-    $value = $user->get('user_picture')->getValue();
-    $id = $value[0]['target_id'];
-    $file = File::load($id);
-    return $file->getFileUri();
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function hookEntityPresave($entity) {
     try {
       $type = $this->getEntityType($entity);

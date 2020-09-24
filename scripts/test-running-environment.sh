@@ -10,14 +10,10 @@ URL="$(docker-compose port drupal 80)"
 echo 'Make sure values returned make sense with base and submodules enabled'
 curl "$URL" | grep 'Drupal'
 
-#/bin/bash
-#
-# Self-tests.
-#
-set -e
-
+echo " => Running self-test"
 docker-compose exec drupal /bin/bash -c 'drush eval "realistic_dummy_content_api_selftest()"'
-docker-compose exec drupal /bin/bash -c '/resources/uninstall-comment-module.sh'
+echo " => Uninstalling comment module"
+docker-compose exec drupal /bin/bash -c '/var/www/html/modules/custom/realistic_dummy_content/scripts/lib/docker-resources/uninstall-comment-module.sh'
 echo -e 'Make sure we can run generate-realistic even if the'
 echo -e 'comment module is disabled.'
 docker-compose exec drupal /bin/bash -c 'drush generate-realistic'
