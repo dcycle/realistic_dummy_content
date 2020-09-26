@@ -7,7 +7,6 @@ use Drupal\taxonomy\Entity\Term;
 use Drupal\Component\Utility\Timer;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\node\Entity\Node;
-use Drupal\file\Entity\File;
 
 if (!defined('WATCHDOG_ERROR')) {
   define('WATCHDOG_ERROR', 3);

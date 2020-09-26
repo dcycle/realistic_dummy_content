@@ -9,6 +9,20 @@ services:
       context: .
       dockerfile: Dockerfile8
     volumes:
+      - "sitesdefault:/var/www/html/sites/default"
+      - ".:/var/www/html/modules/custom/realistic_dummy_content"
+    ports:
+      - "80"
+    links:
+      - mysql:mysql
+    working_dir: /var/www/html
+
+  drupal8drush8:
+    build:
+      context: .
+      dockerfile: Dockerfile8drush8
+    volumes:
+      - "sitesdefault:/var/www/html/sites/default"
       - ".:/var/www/html/modules/custom/realistic_dummy_content"
     ports:
       - "80"
@@ -22,6 +36,9 @@ services:
       MYSQL_DATABASE: drupal
       MYSQL_ROOT_PASSWORD: drupal
       MYSQL_ALLOW_EMPTY_PASSWORD: 'no'
+
+volumes:
+  sitesdefault:
 
 # Specifying the network name makes it predictable on all environments,
 # for example when we run browser tests.

@@ -1,0 +1,3 @@
+FROM dcycle/drupal:8
+
+RUN drush dl devel

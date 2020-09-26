@@ -341,7 +341,7 @@ class Framework implements FrameworkInterface {
     $generator = new RealisticDummyContentDevelGenerateGenerator('user', 'user', 1, ['kill' => TRUE]);
     $generator->generate();
 
-    $user = User::load(Framework::instance()->latestId('users', 'uid'));
+    User::load(Framework::instance()->latestId('users', 'uid'));
 
     $generator = new RealisticDummyContentDevelGenerateGenerator('node', 'article', 1, ['kill' => TRUE]);
     $generator->generate();
