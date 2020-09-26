@@ -24,3 +24,5 @@ docker-compose exec drupal8drush8 /bin/bash -c 'drush generate-realistic'
 
 docker-compose exec drupal /bin/bash -c 'drush -y pm-uninstall realistic_dummy_content'
 docker-compose exec drupal /bin/bash -c 'drush -y pm-uninstall realistic_dummy_content_api'
+echo " => Checking if errors occurred and are present in the watchdog"
+docker-compose exec drupal /bin/bash -c '(drush ws|grep Error && exit 1 || exit 0)'

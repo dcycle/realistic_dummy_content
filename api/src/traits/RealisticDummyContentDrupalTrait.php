@@ -2,6 +2,8 @@
 
 namespace Drupal\realistic_dummy_content_api\traits;
 
+use Drupal\Core\Utility\Error;
+use Drupal\Core\Logger\RfcLogLevel;
 use Drupal\realistic_dummy_content_api\Framework\Framework;
 
 /**
@@ -59,6 +61,40 @@ trait RealisticDummyContentDrupalTrait {
    */
   public function vocabularyMachineName($vocabulary) {
     return Framework::instance()->vocabularyMachineName($vocabulary);
+  }
+
+  /**
+   * Log a \Throwable to the watchdog.
+   *
+   * Modeled after Core's watchdog_exception().
+   *
+   * @param \Throwable $t
+   *   A \throwable.
+   * @param mixed $message
+   *   The message to store in the log. If empty, a text that contains all
+   *   useful information about the passed-in exception is used.
+   * @param mixed $variables
+   *   Array of variables to replace in the message on display or NULL if
+   *   message is already translated or not possible to translate.
+   * @param mixed $severity
+   *   The severity of the message, as per RFC 3164.
+   * @param mixed $link
+   *   A link to associate with the message.
+   */
+  public function watchdogThrowable(\Throwable $t, $message = NULL, $variables = [], $severity = RfcLogLevel::ERROR, $link = NULL) {
+
+    // Use a default value if $message is not set.
+    if (empty($message)) {
+      $message = '%type: @message in %function (line %line of %file).';
+    }
+
+    if ($link) {
+      $variables['link'] = $link;
+    }
+
+    $variables += Error::decodeException($t);
+
+    \Drupal::logger('steward_common')->log($severity, $message, $variables);
   }
 
 }

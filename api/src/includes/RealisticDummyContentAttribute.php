@@ -3,6 +3,7 @@
 namespace Drupal\realistic_dummy_content_api\includes;
 
 use Drupal\realistic_dummy_content_api\Framework\Framework;
+use Drupal\realistic_dummy_content_api\traits\RealisticDummyContentDrupalTrait;
 
 /**
  * Represents either a field or a property for an entity.
@@ -14,6 +15,9 @@ use Drupal\realistic_dummy_content_api\Framework\Framework;
  * the same way without using control statements in our code.
  */
 abstract class RealisticDummyContentAttribute {
+
+  use RealisticDummyContentDrupalTrait;
+
   /**
    * Entity managed by this class.
    *
@@ -299,7 +303,8 @@ abstract class RealisticDummyContentAttribute {
       }
       return $return;
     }
-    catch (\Throwable $e) {
+    catch (\Throwable $t) {
+      $this->watchdogThrowable($t);
       return NULL;
     }
   }
