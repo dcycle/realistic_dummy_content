@@ -328,13 +328,8 @@ abstract class RealisticDummyContentAttribute {
     $random = $file->getRadical();
     $drupal_file = $this->env()->fileSaveData($file->value(), 'public://dummyfile' . $random . '.' . $file->getRadicalExtension());
     $drupal_file->uid = $this->getUid();
-    $return = Framework::instance()->fileSave($drupal_file);
-
-    if (!is_object($return)) {
-      throw new \Exception('Internal error, ' . __FUNCTION__ . ' expecting to return an object');
-    }
-
-    return $return;
+    $drupal_file->save();
+    return $drupal_file;
   }
 
 }
