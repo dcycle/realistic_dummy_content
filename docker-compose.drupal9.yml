@@ -1,0 +1,10 @@
+---
+# This file is used by ./scripts/deploy.sh to override the base version for use
+# with Drupal 9.
+version: '2'
+
+services:
+  drupal:
+    build:
+      context: .
+      dockerfile: Dockerfile9

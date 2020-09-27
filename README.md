@@ -1,8 +1,6 @@
 Realistic dummy content
 =======================
 
-**[Drupal 9 update: we are waiting for Devel to be Drupal 9-comptabible](https://www.drupal.org/project/realistic_dummy_content/issues/3129941).**
-
 Generate realistic demo content with
 [Devel](https://drupal.org/project/devel)'s `devel_generate` module.
 
@@ -126,3 +124,8 @@ Sponsors
  * [Dcycle](http://dcycle.com/) (Current)
  * [The Linux Foundation](http://www.linuxfoundation.org/) (previous)
  * [CGI](http://cgi.com/) (Initial development)
+
+Drupal 9
+-----
+
+This project is Drupal 9-compatible.
