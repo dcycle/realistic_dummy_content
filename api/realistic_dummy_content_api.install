@@ -2,7 +2,6 @@
 
 /**
  * @file
- *
  * Install, deployment (update), and uninstall hooks for this module.
  */
 

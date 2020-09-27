@@ -6,6 +6,7 @@ use Drupal\taxonomy\Entity\Vocabulary;
 use Drupal\taxonomy\Entity\Term;
 use Drupal\Component\Utility\Timer;
 use Drupal\field\Entity\FieldConfig;
+use Drupal\node\Entity\Node;
 
 if (!defined('WATCHDOG_ERROR')) {
   define('WATCHDOG_ERROR', 3);
@@ -15,16 +16,6 @@ if (!defined('WATCHDOG_ERROR')) {
  * Drupal 8-specific code.
  */
 class Drupal8 extends Framework implements FrameworkInterface {
-
-  /**
-   * {@inheritdoc}
-   */
-  public function userPictureFilename($user) {
-    $value = $user->get('user_picture')->getValue();
-    $id = $value[0]['target_id'];
-    $file = file_load($id);
-    return $file->getFileUri();
-  }
 
   /**
    * {@inheritdoc}
@@ -39,8 +30,9 @@ class Drupal8 extends Framework implements FrameworkInterface {
         $entity = $candidate;
       }
     }
-    catch (Exception $e) {
-      $this->setMessage(t('realistic_dummy_content_api failed to modify dummy objects: message: @m', ['@m' => $e->getMessage()]), 'error', FALSE);
+    catch (\Throwable $e) {
+      // @phpstan-ignore-next-line
+      \Drupal::messenger()->addMessage($this->t('realistic_dummy_content_api failed to modify dummy objects: message: @m', ['@m' => $e->getMessage()]), 'error', FALSE);
     }
   }
 
@@ -64,6 +56,7 @@ class Drupal8 extends Framework implements FrameworkInterface {
       'time_range' => 0,
       'roles' => [],
     ], $info);
+    // @phpstan-ignore-next-line
     $plugin_manager = \Drupal::service('plugin.manager.develgenerate');
     $instance = $plugin_manager->createInstance($info['entity_type'], []);
     $instance->generate($info);
@@ -78,7 +71,7 @@ class Drupal8 extends Framework implements FrameworkInterface {
    * @return string
    *   An entity type machine name (id).
    *
-   * @throws Exception
+   * @throws \Exception
    */
   public function getEntityType($entity) {
     return $entity->getEntityType()->id();
@@ -105,14 +98,15 @@ class Drupal8 extends Framework implements FrameworkInterface {
    * @return object
    *   A Drupal node object.
    *
-   * @throws Exception
+   * @throws \Exception
    */
   public function createDummyNode() {
     $entity_type = 'node';
     $bundle = 'article';
 
     // Get definition of target entity type.
-    $entity_def = \Drupal::entityManager()->getDefinition($entity_type);
+    // @phpstan-ignore-next-line
+    $entity_def = \Drupal::entityTypeManager()->getDefinition($entity_type);
 
     // Load up an array for creation.
     $new_node = [
@@ -121,10 +115,11 @@ class Drupal8 extends Framework implements FrameworkInterface {
       $entity_def->get('entity_keys')['bundle'] => $bundle,
     ];
 
-    $new_post = \Drupal::entityManager()->getStorage($entity_type)->create($new_node);
+    // @phpstan-ignore-next-line
+    $new_post = \Drupal::entityTypeManager()->getStorage($entity_type)->create($new_node);
     $new_post->save();
 
-    return node_load($this->latestId());
+    return Node::load($this->latestId());
   }
 
   /**
@@ -133,6 +128,7 @@ class Drupal8 extends Framework implements FrameworkInterface {
   public function moduleInvokeAll($hook) {
     $args = func_get_args();
     $hook = array_shift($args);
+    // @phpstan-ignore-next-line
     return \Drupal::moduleHandler()->invokeAll($hook, $args);
   }
 
@@ -149,7 +145,8 @@ class Drupal8 extends Framework implements FrameworkInterface {
    */
   public function fieldInfoFields() {
     $return = [];
-    $field_map = \Drupal::entityManager()->getFieldMap();
+    // @phpstan-ignore-next-line
+    $field_map = \Drupal::service('entity_field.manager')->getFieldMap();
     // Field map returns:
     // entitytype/name(type, bundles(article => article))
     // we must change that into:
@@ -182,7 +179,7 @@ class Drupal8 extends Framework implements FrameworkInterface {
       if (isset($field_info['bundles']) && count($field_info['bundles'])) {
         $bundle = array_pop($field_info['bundles']);
         $config = FieldConfig::loadByName('node', $bundle, $field);
-        if ($config) {
+        if ($config !== NULL) {
           $settings = $config->getSettings();
 
           if (isset($settings['handler_settings']['target_bundles'])) {
@@ -201,6 +198,7 @@ class Drupal8 extends Framework implements FrameworkInterface {
    * {@inheritdoc}
    */
   public function moduleList() {
+    // @phpstan-ignore-next-line
     $full_list = \Drupal::moduleHandler()->getModuleList();
     return array_keys($full_list);
   }
@@ -209,6 +207,7 @@ class Drupal8 extends Framework implements FrameworkInterface {
    * {@inheritdoc}
    */
   public function configGet($name, $default = NULL) {
+    // @phpstan-ignore-next-line
     $candidate = \Drupal::config('realistic_dummy_content_api')->get($name);
     return $candidate ? $candidate : $default;
   }
@@ -217,6 +216,7 @@ class Drupal8 extends Framework implements FrameworkInterface {
    * {@inheritdoc}
    */
   public function alter($type, &$data, &$context1 = NULL, &$context2 = NULL, &$context3 = NULL) {
+    // @phpstan-ignore-next-line
     return \Drupal::moduleHandler()->alter($type, $data, $context1, $context2);
   }
 
@@ -231,6 +231,7 @@ class Drupal8 extends Framework implements FrameworkInterface {
    * {@inheritdoc}
    */
   public function stateGet($name, $default = NULL) {
+    // @phpstan-ignore-next-line
     return \Drupal::state()->get($name, $default);
   }
 
@@ -251,7 +252,7 @@ class Drupal8 extends Framework implements FrameworkInterface {
   /**
    * {@inheritdoc}
    */
-  public function formatProperty($type, $value, array $options = []) {
+  public function formatProperty($type, $value, array $options = []) : array {
     switch ($type) {
       case 'file':
         return ['set' => $value->id(), 'options' => $options];
@@ -270,6 +271,7 @@ class Drupal8 extends Framework implements FrameworkInterface {
    * {@inheritdoc}
    */
   public function moduleExists($module) {
+    // @phpstan-ignore-next-line
     return \Drupal::moduleHandler()->moduleExists($module);
   }
 
@@ -278,9 +280,11 @@ class Drupal8 extends Framework implements FrameworkInterface {
    */
   public function watchdog($message, $severity = 5) {
     if ($severity == WATCHDOG_ERROR) {
+      // @phpstan-ignore-next-line
       \Drupal::logger('realistic_dummy_content_api')->error($message);
     }
     else {
+      // @phpstan-ignore-next-line
       \Drupal::logger('realistic_dummy_content_api')->notice($message);
     }
   }
@@ -306,28 +310,6 @@ class Drupal8 extends Framework implements FrameworkInterface {
    * {@inheritdoc}
    */
   public function debug($message, $info = NULL) {
-    if ($this->moduleExists('devel')) {
-      if (is_string($message)) {
-        // @codingStandardsIgnoreStart
-        dpm($message, $info);
-        // @codingStandardsIgnoreEnd
-      }
-      else {
-        // @codingStandardsIgnoreStart
-        dpm($info . ' ==>');
-        // @codingStandardsIgnoreEnd
-        if (function_exists('ksm')) {
-          // @codingStandardsIgnoreStart
-          ksm($message);
-          // @codingStandardsIgnoreEnd
-        }
-        else {
-          // @codingStandardsIgnoreStart
-          dpm($message);
-          // @codingStandardsIgnoreEnd
-        }
-      }
-    }
     $this->watchdog('<pre>' . print_r([$info => $message], TRUE) . '</pre>');
   }
 
@@ -373,14 +355,6 @@ class Drupal8 extends Framework implements FrameworkInterface {
    */
   public function frameworkRoot() {
     return DRUPAL_ROOT;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function fileSave($drupal_file) {
-    $drupal_file->save();
-    return $drupal_file;
   }
 
   /**
@@ -450,6 +424,7 @@ class Drupal8 extends Framework implements FrameworkInterface {
    * {@inheritdoc}
    */
   public function taxonomyLoadTree($vocabulary) {
+    // @phpstan-ignore-next-line
     $terms = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadTree($this->vocabularyIdentifier($vocabulary));
     $tids = array_map(function ($a) {
       return $a->tid;

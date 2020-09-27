@@ -19,7 +19,7 @@ abstract class RealisticDummyContentEnvironment {
    * environment can be live, or simulated as during tests. This is a form of
    * mocking. See http://en.wikipedia.org/wiki/Mock_object.
    *
-   * @var object
+   * @var null|object
    */
   static private $env;
 
@@ -62,7 +62,7 @@ abstract class RealisticDummyContentEnvironment {
    *
    * @throws \Exception
    */
-  public function fileGetContents($filename) {
+  public function fileGetContents($filename) : string {
     if (!$filename) {
       throw new RealisticDummyContentException('Please use valid filename');
     }
@@ -84,11 +84,11 @@ abstract class RealisticDummyContentEnvironment {
    *   A valid filename, for example /drupal/root/sites/all/modules/your_module/
    *   realistic_dummy_content/fields/node/blog/body/03.txt.
    *
-   * @return object
+   * @return string
    *   Undefined in case the filename is invalid; otherwise returns the contents
    *   of the file.
    */
-  abstract public function implementFileGetContents($filename);
+  abstract public function implementFileGetContents($filename) : string;
 
   /**
    * Save the file data to the real or test environment.
@@ -112,19 +112,6 @@ abstract class RealisticDummyContentEnvironment {
    * Implements $this->fileSaveData().
    */
   abstract public function implementFileSaveData($data, $destination = NULL);
-
-  /**
-   * Saves a file.
-   */
-  public function fileSave(stdClass $file) {
-    $return = $this->implementFileSave($file);
-    return $return;
-  }
-
-  /**
-   * Implements $this->fileSave().
-   */
-  abstract public function implementFileSave(stdClass $file);
 
   /**
    * Returns all files with a given extension for a given filepath.
@@ -160,7 +147,8 @@ abstract class RealisticDummyContentEnvironment {
    */
   public static function getAllFileGroups($filepath, array $extensions) {
     try {
-      $candidate_files = file_scan_directory($filepath, '/.*$/', ['key' => 'filename']);
+      $candidate_files = \Drupal::service('file_system')
+        ->scanDirectory($filepath, '/.*$/', ['key' => 'filename']);
 
       $files = self::sortCandidateFiles($candidate_files, $extensions);
 
@@ -171,7 +159,7 @@ abstract class RealisticDummyContentEnvironment {
       }
       return $return;
     }
-    catch (Exception $e) {
+    catch (\Throwable $e) {
       return [];
     }
   }
@@ -393,12 +381,7 @@ abstract class RealisticDummyContentEnvironment {
    * See those functions for details.
    */
   public static function strToLower($string) {
-    if (function_exists('drupal_strtolower')) {
-      return drupal_strtolower($string);
-    }
-    else {
-      return strtolower($string);
-    }
+    return mb_strtolower($string);
   }
 
   /**
@@ -445,7 +428,7 @@ abstract class RealisticDummyContentEnvironment {
       }
       return trim(self::get()->fileGetContents($file->uri));
     }
-    catch (Exception $e) {
+    catch (\Throwable $e) {
       return NULL;
     }
   }

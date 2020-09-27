@@ -1,6 +1,12 @@
 <?php
 
+// @codingStandardsIgnoreStart
 /**
  * @file
- * This is where we would put mock versions of required classes for testing.
+ * Mock versions of required classes for testing.
  */
+
+namespace Drupal\Core\StringTranslation {
+  trait StringTranslationTrait {}
+}
+// @codingStandardsIgnoreEnd

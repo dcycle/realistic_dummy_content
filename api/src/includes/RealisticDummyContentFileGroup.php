@@ -80,7 +80,7 @@ class RealisticDummyContentFileGroup {
    *   The radical file name, which may or may not exist on the filesystem.
    *   For example, if the file is called a.b.c, the radical is a.c, even though
    *   a.c does not exist on the filesystem.
-   * @param object $file
+   * @param null|object $file
    *   The radical drupal file object, or NULL if it does not exist on the file
    *   system.
    * @param array $attributes
@@ -95,9 +95,6 @@ class RealisticDummyContentFileGroup {
   public function __construct($radical, $file, array $attributes) {
     if (!is_string($radical)) {
       throw new RealisticDummyContentException('Please use string for radical');
-    }
-    if ($file && !is_object($file)) {
-      throw new RealisticDummyContentException('Please use NULL or object for file');
     }
     if (!is_array($attributes)) {
       throw new RealisticDummyContentException('Please use array for attributes');
@@ -131,9 +128,10 @@ class RealisticDummyContentFileGroup {
   /**
    * Returns the value of the radical file if one exists.
    *
-   * @return null|object
-   *   NULL if a radical file does not exist, if it does not have contents, or
-   *   if an error occurred. Otherwise returns the contents of the file.
+   * @return string
+   *   An empty string if a radical file does not exist, if it does not have
+   *   contents, or if an error occurred. Otherwise returns the contents of the
+   *   file.
    */
   public function value() {
     try {
@@ -142,11 +140,11 @@ class RealisticDummyContentFileGroup {
         return trim(RealisticDummyContentEnvironment::get()->fileGetContents($file->uri));
       }
       else {
-        return NULL;
+        return '';
       }
     }
-    catch (Exception $e) {
-      return NULL;
+    catch (\Throwable $e) {
+      return '';
     }
   }
 
@@ -173,7 +171,7 @@ class RealisticDummyContentFileGroup {
         return $default;
       }
     }
-    catch (Exception $e) {
+    catch (\Throwable $e) {
       return $default;
     }
   }

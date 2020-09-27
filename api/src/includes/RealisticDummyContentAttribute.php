@@ -3,6 +3,7 @@
 namespace Drupal\realistic_dummy_content_api\includes;
 
 use Drupal\realistic_dummy_content_api\Framework\Framework;
+use Drupal\realistic_dummy_content_api\traits\RealisticDummyContentDrupalTrait;
 
 /**
  * Represents either a field or a property for an entity.
@@ -14,6 +15,9 @@ use Drupal\realistic_dummy_content_api\Framework\Framework;
  * the same way without using control statements in our code.
  */
 abstract class RealisticDummyContentAttribute {
+
+  use RealisticDummyContentDrupalTrait;
+
   /**
    * Entity managed by this class.
    *
@@ -205,8 +209,9 @@ abstract class RealisticDummyContentAttribute {
       if (in_array($file->getRadicalExtension(), $this->getExtensions())) {
         return $this->implementValueFromFile($file);
       }
+      return NULL;
     }
-    catch (Exception $e) {
+    catch (\Throwable $e) {
       return NULL;
     }
   }
@@ -220,13 +225,13 @@ abstract class RealisticDummyContentAttribute {
    * @param object $file
    *   An object of type RealisticDummyContentFileGroup.
    *
-   * @return null|array
-   *   Returns structured data to be added to the entity object, or NULL if such
-   *   data can't be creatd.
+   * @return array
+   *   Returns structured data to be added to the entity object, or an empty
+   *   array if such data can't be created.
    *
    * @throws \Exception.
    */
-  abstract protected function implementValueFromFile($file);
+  abstract protected function implementValueFromFile($file) : array;
 
   /**
    * Given a list of files, return a value from one of them.
@@ -247,7 +252,7 @@ abstract class RealisticDummyContentAttribute {
         return $this->valueFromFile($file);
       }
     }
-    catch (Exception $e) {
+    catch (\Throwable $e) {
       return NULL;
     }
   }
@@ -298,7 +303,8 @@ abstract class RealisticDummyContentAttribute {
       }
       return $return;
     }
-    catch (Exception $e) {
+    catch (\Throwable $t) {
+      $this->watchdogThrowable($t);
       return NULL;
     }
   }
@@ -322,13 +328,8 @@ abstract class RealisticDummyContentAttribute {
     $random = $file->getRadical();
     $drupal_file = $this->env()->fileSaveData($file->value(), 'public://dummyfile' . $random . '.' . $file->getRadicalExtension());
     $drupal_file->uid = $this->getUid();
-    $return = Framework::instance()->fileSave($drupal_file);
-
-    if (!is_object($return)) {
-      throw new \Exception('Internal error, ' . __FUNCTION__ . ' expecting to return an object');
-    }
-
-    return $return;
+    $drupal_file->save();
+    return $drupal_file;
   }
 
 }

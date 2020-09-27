@@ -99,11 +99,6 @@ interface FrameworkInterface {
   public function fieldTypeMachineName(array $info);
 
   /**
-   * Saves a file to disk.
-   */
-  public function fileSave($drupal_file);
-
-  /**
    * Return the default text filter.
    *
    * @return string
@@ -123,10 +118,10 @@ interface FrameworkInterface {
    * @param array $options
    *   Extra options such as the format.
    *
-   * @return mixed
+   * @return array
    *   The file data formatted for placement in an entity.
    */
-  public function formatProperty($type, $value, array $options = []);
+  public function formatProperty($type, $value, array $options = []) : array;
 
   /**
    * Return the root path of the framework.
@@ -215,7 +210,7 @@ interface FrameworkInterface {
    * @return array
    *   An array of taxonomy term objects.
    *
-   * @throws Exception
+   * @throws \Exception
    */
   public function taxonomyLoadTree($vocabulary);
 
@@ -228,7 +223,7 @@ interface FrameworkInterface {
    * @return int
    *   The taxonomy term id.
    *
-   * @throws Exception
+   * @throws \Exception
    */
   public function termId($term);
 
@@ -241,7 +236,7 @@ interface FrameworkInterface {
    * @return string
    *   The taxonomy term name, such as "Bananas".
    *
-   * @throws Exception
+   * @throws \Exception
    */
   public function termName($term);
 
@@ -254,17 +249,6 @@ interface FrameworkInterface {
    * Stops a timer and returns data, see timer_stop() in Drupal 7.
    */
   public function timerStop($id);
-
-  /**
-   * Return the filename of a user picture.
-   *
-   * @param object $user
-   *   A Drupal user object.
-   *
-   * @return string
-   *   A string representing the filename of the user picture if possible.
-   */
-  public function userPictureFilename($user);
 
   /**
    * Delete a variable.
@@ -291,7 +275,7 @@ interface FrameworkInterface {
    * @return string
    *   A vocabulary machine name, such as "fruit".
    *
-   * @throws Exception
+   * @throws \Exception
    */
   public function vocabularyMachineName($vocabulary);
 

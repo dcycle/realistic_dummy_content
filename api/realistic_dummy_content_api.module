@@ -23,33 +23,30 @@ use Drupal\realistic_dummy_content_api\includes\RealisticDummyContentRecipe;
  *
  * @throws \Exception
  */
-function realistic_dummy_content_api_argcheck($callbacks) {
+function realistic_dummy_content_api_argcheck(array $callbacks) {
   $trace = debug_backtrace();
   $checks = [];
   $errors = FALSE;
   foreach ($callbacks as $index => $callback) {
     $argument = $trace[1]['args'][$index];
     if (!$callback($argument)) {
-      $checks[] = t('Argument @index is a @realtype, so @callback returned FALSE.', array(
+      $checks[] = t('Argument @index is a @realtype, so @callback returned FALSE.', [
         '@index' => $index,
         '@realtype' => gettype($argument),
         '@callback' => $callback,
-      ));
+      ]);
       $errors = TRUE;
     }
-    $checks[] = t('Argument @index is OK: it is a @realtype, so @callback returned TRUE.', array(
+    $checks[] = t('Argument @index is OK: it is a @realtype, so @callback returned TRUE.', [
       '@index' => $index,
       '@realtype' => gettype($argument),
       '@callback' => $callback,
-    ));
+    ]);
   }
   if ($errors) {
     $calling_function = realistic_dummy_content_api_calling_function(3);
     $called_function = realistic_dummy_content_api_calling_function(2);
-    throw new \Exception(t('@calling called @called with bad argument types:', array(
-      '@calling' => $calling_function,
-      '@called' => $called_function,
-    )) . ' ' . implode('; ', $checks));
+    throw new \Exception($calling_function . ' called ' . $called_function . ' with bad argument types:' . implode('; ', $checks));
   }
 }
 
@@ -97,28 +94,6 @@ function realistic_dummy_content_api_calling_function($level = 2) {
   return $r . ' in ' . $caller['file'] . ' (line ' . $caller['line'] . ')';
 }
 
-spl_autoload_register(function ($class_name) {
-  if (realistic_dummy_content_api_version() == 'Drupal8') {
-    return;
-  }
-  if (strpos($class_name, 'realistic_dummy_content') === FALSE) {
-    return;
-  }
-  try {
-    $parts = explode('\\', $class_name);
-    // Remove "Drupal" from the beginning of the class name.
-    array_shift($parts);
-    $module = array_shift($parts);
-    $path = 'src/' . implode('/', $parts);
-    if (!module_load_include('php', $module, $path)) {
-      throw new \Exception('Expected to find ' . $class_name . ' at ' . $module . '/' . $path . '.php, but that file does not exist.');
-    }
-  }
-  catch (Exception $e) {
-    throw new \Exception('Autoloader at ' . __FILE__ . ' was asked by ' . realistic_dummy_content_api_calling_function(4) . ' to autoload the class ' . $class_name . ' but found the following error: ' . $e->getMessage());
-  }
-});
-
 /**
  * Type of number generation.
  */
@@ -140,7 +115,7 @@ function realistic_dummy_content_api_entity_presave($entity) {
   }
   // Hook implementations should never throw exceptions, so we'll catch them
   // all here.
-  catch (Exception $e) {
+  catch (\Throwable $e) {
     drupal_set_message($e->getMessage());
   }
 }
@@ -157,11 +132,6 @@ function realistic_dummy_content_api_realistic_dummy_content_attribute_manipulat
   // property you can do so by implementing this hook and reproducing what's
   // below for your own field or property type.
   switch (Framework::instance()->fieldTypeMachineName($info)) {
-    case 'picture':
-      // The user picture.
-      $class = '\Drupal\realistic_dummy_content_api\includes\RealisticDummyContentUserPicture';
-      break;
-
     case 'text_with_summary':
       // For example the body.
       $class = '\Drupal\realistic_dummy_content_api\includes\RealisticDummyContentTextWithSummaryField';
@@ -179,27 +149,6 @@ function realistic_dummy_content_api_realistic_dummy_content_attribute_manipulat
 
     default:
       break;
-  }
-}
-
-/**
- * hook_user_insert and hook_user_presave should not be called in Drupal 8.
- *
- * In Drupal 8 this work is done in hook_entity_presave().
- */
-if (realistic_dummy_content_api_version() != 'Drupal8') {
-  /**
-   * Implements hook_user_insert().
-   */
-  function realistic_dummy_content_api_user_insert(&$edit, $account, $category) {
-    Framework::instance()->hookUserInsert($edit, $account, $category);
-  }
-
-  /**
-   * Implements hook_user_presave().
-   */
-  function realistic_dummy_content_api_user_presave(&$edit, $account, $category) {
-    Framework::instance()->hookUserPresave($edit, $account, $category);
   }
 }
 
@@ -372,7 +321,7 @@ function realistic_dummy_content_api_apply_recipe($log) {
   try {
     RealisticDummyContentRecipe::run($log);
   }
-  catch (Exception $e) {
+  catch (\Throwable $e) {
     $log->log('An exception occurred while trying to apply a recipe');
     $log->error($e->getMessage());
   }

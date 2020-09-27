@@ -3,6 +3,8 @@
 namespace Drupal\realistic_dummy_content_api\Framework;
 
 use Drupal\realistic_dummy_content_api\includes\RealisticDummyContentDevelGenerateGenerator;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\user\Entity\User;
 
 /**
  * The entry point for the framework.
@@ -13,6 +15,9 @@ use Drupal\realistic_dummy_content_api\includes\RealisticDummyContentDevelGenera
  * implement FrameworkInterface.
  */
 class Framework implements FrameworkInterface {
+
+  use StringTranslationTrait;
+
   /**
    * Whether we are in a test or not.
    *
@@ -137,14 +142,6 @@ class Framework implements FrameworkInterface {
   /**
    * {@inheritdoc}
    */
-  public function fileSave($drupal_file) {
-    $return = $this->implementor()->fileSave($drupal_file);
-    return $return;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function filteredHtml() {
     return $this->implementor()->filteredHtml();
   }
@@ -152,7 +149,7 @@ class Framework implements FrameworkInterface {
   /**
    * {@inheritdoc}
    */
-  public function formatProperty($type, $value, array $options = []) {
+  public function formatProperty($type, $value, array $options = []) : array {
     return $this->implementor()->formatProperty($type, $value, $options);
   }
 
@@ -202,10 +199,11 @@ class Framework implements FrameworkInterface {
    * @return int
    *   The latest key (node nid or user uid) in the database.
    *
-   * @throws Exception
+   * @throws \Exception
    */
   public function latestId($table = 'node', $key = 'nid') {
-    return db_query("SELECT $key FROM {$table} ORDER BY $key DESC LIMIT 1")->fetchField();
+    // @phpstan-ignore-next-line
+    return \Drupal::database()->query("SELECT $key FROM {$table} ORDER BY $key DESC LIMIT 1")->fetchField();
   }
 
   /**
@@ -293,13 +291,6 @@ class Framework implements FrameworkInterface {
   /**
    * {@inheritdoc}
    */
-  public function userPictureFilename($user) {
-    return $this->implementor()->userPictureFilename($user);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function variableDel($variable) {
     return $this->implementor()->variableDel($variable);
   }
@@ -350,13 +341,7 @@ class Framework implements FrameworkInterface {
     $generator = new RealisticDummyContentDevelGenerateGenerator('user', 'user', 1, ['kill' => TRUE]);
     $generator->generate();
 
-    $user = user_load(Framework::instance()->latestId('users', 'uid'));
-    if (strpos(Framework::instance()->userPictureFilename($user), 'dummyfile') !== FALSE) {
-      $tests[] = 'User picture substitution OK, and aliases work correctly.';
-    }
-    else {
-      $errors[] = 'User picture substitution does not work.';
-    }
+    User::load(Framework::instance()->latestId('users', 'uid'));
 
     $generator = new RealisticDummyContentDevelGenerateGenerator('node', 'article', 1, ['kill' => TRUE]);
     $generator->generate();

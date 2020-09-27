@@ -14,8 +14,12 @@ class RealisticDummyContentLiveEnvironment extends RealisticDummyContentEnvironm
   /**
    * {@inheritdoc}
    */
-  public function implementFileGetContents($filename) {
-    return file_get_contents($filename);
+  public function implementFileGetContents($filename) : string {
+    $return = file_get_contents($filename);
+    if ($return === FALSE) {
+      throw new \Exception('Cannot get contents of ' . $filename);
+    }
+    return $return;
   }
 
   /**
@@ -23,13 +27,6 @@ class RealisticDummyContentLiveEnvironment extends RealisticDummyContentEnvironm
    */
   public function implementFileSaveData($data, $destination = NULL) {
     return file_save_data($data, $destination);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function implementFileSave(stdClass $file) {
-    return file_save($file);
   }
 
 }

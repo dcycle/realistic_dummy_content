@@ -19,11 +19,11 @@ class RealisticDummyContentImageField extends RealisticDummyContentField {
   /**
    * {@inheritdoc}
    */
-  public function implementValueFromFile($file) {
+  public function implementValueFromFile($file) : array {
     if (!$file->value()) {
-      return NULL;
+      return [];
     }
-    $return = NULL;
+    $return = [];
     $file = $this->imageSave($file);
     if ($file) {
       $return = Framework::instance()->formatProperty('file', $file);
