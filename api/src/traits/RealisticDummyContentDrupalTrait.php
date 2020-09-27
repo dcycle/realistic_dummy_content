@@ -94,7 +94,7 @@ trait RealisticDummyContentDrupalTrait {
 
     $variables += Error::decodeException($t);
 
-    // @phpstan:ignoreError
+    // @phpstan-ignore-next-line
     \Drupal::logger('steward_common')->log($severity, $message, $variables);
   }
 

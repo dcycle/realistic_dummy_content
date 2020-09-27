@@ -202,7 +202,7 @@ class Framework implements FrameworkInterface {
    * @throws \Exception
    */
   public function latestId($table = 'node', $key = 'nid') {
-    // @phpstan:ignoreError
+    // @phpstan-ignore-next-line
     return \Drupal::database()->query("SELECT $key FROM {$table} ORDER BY $key DESC LIMIT 1")->fetchField();
   }
 

@@ -11,7 +11,7 @@ class RealisticDummyContentDrushLog implements RealisticDummyContentLogInterface
    * {@inheritdoc}
    */
   public function log($text, $vars = []) {
-    // @phpstan:ignoreError
+    // @phpstan-ignore-next-line
     \Drupal::logger("realistic_dummy_content_api")->notice(dt($text, $vars));
   }
 
