@@ -1,0 +1,6 @@
+FROM dcycle/drupal:9
+
+RUN export COMPOSER_MEMORY_LIMIT=-1 && composer require drupal/devel
+
+# Disable opcache for easier development
+RUN echo 'opcache.enable=0' >> /usr/local/etc/php/php.ini
