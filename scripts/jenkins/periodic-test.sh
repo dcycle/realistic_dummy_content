@@ -12,4 +12,5 @@ sleep 90
 ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no \
   root@"$IP" \
   "git clone http://github.com/dcycle/realistic_dummy_content && \
+  cd realistic_dummy_content && \
   ./scripts/ci.sh"
