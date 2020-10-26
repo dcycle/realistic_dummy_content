@@ -28,7 +28,7 @@ fi
 echo ''
 echo '-----'
 echo 'Running the deploy scripts on the container.'
-docker-compose exec drupal /bin/bash -c 'cd ./modules/custom/realistic_dummy_content/scripts/lib/docker-resources && ./deploy.sh'
+docker-compose exec -T drupal /bin/bash -c 'cd ./modules/custom/realistic_dummy_content/scripts/lib/docker-resources && ./deploy.sh'
 
 echo ''
 echo '-----'

@@ -4,4 +4,4 @@
 #
 set -e
 
-docker-compose exec drupal /bin/bash -c "drush -l $(docker-compose port drupal 80) uli"
+docker-compose exec -T drupal /bin/bash -c "drush -l $(docker-compose port drupal 80) uli"
