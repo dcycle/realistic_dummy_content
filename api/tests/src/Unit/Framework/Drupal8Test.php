@@ -62,12 +62,6 @@ class Drupal8Test extends TestCase {
     $class2 = $class1;
     $class2->whatever = "Hello World";
 
-    $class3 = $class1;
-    $class3->whatever->value;
-    $class3->height = 100;
-    $class3->width = 100;
-    $class3->width = 100;
-
     return [
       [
         'message' => 'Base case',
@@ -78,15 +72,6 @@ class Drupal8Test extends TestCase {
       ],
       [
         'message' => 'Value has "set" property',
-        'entity' => $class1,
-        'property' => 'whatever',
-        'value' => [
-          'set' => 'Hello World',
-        ],
-        'expected' => $class2,
-      ],
-      [
-        'message' => 'No height or width',
         'entity' => $class1,
         'property' => 'whatever',
         'value' => [
