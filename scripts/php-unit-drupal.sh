@@ -4,4 +4,4 @@
 #
 set -e
 
-docker-compose exec drupal /bin/bash -c 'drush en -y simpletest && php core/scripts/run-tests.sh realistic_dummy_content'
+docker-compose exec -T drupal /bin/bash -c 'drush en -y simpletest && php core/scripts/run-tests.sh realistic_dummy_content'
