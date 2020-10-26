@@ -53,11 +53,13 @@ class Drupal8Test extends TestCase {
    * Provider for testSetEntityProperty().
    */
   public function providerSetEntityProperty() {
+    // @codingStandardsIgnoreStart
     $class1 = new class {
       function set($param, $value) {
         $this->{$param} = $value;
       }
     };
+    // @codingStandardsIgnoreEnd
 
     $class2 = $class1;
     $class2->whatever = "Hello World";
