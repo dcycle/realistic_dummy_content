@@ -247,6 +247,8 @@ class Drupal8 extends Framework implements FrameworkInterface {
     if (isset($value['options']['format'])) {
       $entity->{$property}->format = $value['options']['format'];
     }
+    unset($entity->{$property}->height);
+    unset($entity->{$property}->width);
   }
 
   /**
