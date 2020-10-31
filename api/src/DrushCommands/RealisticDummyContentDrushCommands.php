@@ -1,6 +1,7 @@
 <?php
 
 namespace Drupal\realistic_dummy_content_api\DrushCommands;
+
 use Drush\Commands\DrushCommands;
 use Drupal\realistic_dummy_content_api\includes\RealisticDummyContentDrushLog;
 
