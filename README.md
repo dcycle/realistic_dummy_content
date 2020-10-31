@@ -31,7 +31,7 @@ This project contains two modules:
    realistic dummy content you want to generate. If you don't want the example
    stock images that ship with this module, you can disable Realistic Dummy
    Content (realistic\_dummy\_content) and leave Realistic Dummy Content API
-   (realistic\_dummy\_content\_api) enabled.
+   (realistic\_dummy\_content\_api) enabled along with your own custom module.
 
 Developers can also extend Realistic Dummy Content by implementing hooks
 defined in `./api/realistic_dummy_content_api.api.php`. Specifically, if you
@@ -45,11 +45,10 @@ Creating recipes
 -----
 
 Often, sites require a set number of entities to be created in a specific
-sequence. For example, if your site defines schools which have [entity
-references](https://www.drupal.org/project/entityreference) to school boards, a
-realistic scenario may be to generate 3 school boards followed by 20 schools.
-You can define this type of recipe based on the example at
-[./realistic_dummy_content/recipe](http://cgit.drupalcode.org/realistic_dummy_content/tree/realistic_dummy_content/recipe/realistic_dummy_content.recipe.inc).
+sequence. For example, if your site defines schools which have entity
+references to school boards, a realistic scenario may be to generate 3 school
+boards followed by 20 schools. You can define this type of recipe based on the
+example at [./realistic_dummy_content/recipe](http://cgit.drupalcode.org/realistic_dummy_content/tree/realistic_dummy_content/recipe/realistic_dummy_content.recipe.inc).
 
 Once your recipe is written, you can run it (create the content) (only Drush 8 is currently supported):
 
@@ -85,31 +84,34 @@ See the [issue queue](https://drupal.org/project/issues/2253941?categories=All) 
 
 Pull requests can be filed against the [GitHub repo](https://github.com/dcycle/realistic_dummy_content).
 
-Docker integration
+Local development and docker integration
 -----
 
-To test this module you can run:
+To evaluate, develop for and test this module you can install Docker and run, for Drupal 9:
 
-    cd ./development && ./test.sh
+    ./scripts/deploy.sh 9
 
-To create a development environment, make sure you have Docker installed, then you can run:
+For Drupal 8:
 
-    cd ./development && ./build-dev-environment.sh
+    ./scripts/deploy.sh
 
-This will install two development environments for Drupal 8. When you change any code, it will reflected in your environment in real time.
+This will install a complete working development environment including a database. When you change any code, it will reflected in your environment in real time.
 
 Continuous integration and automated tests
 -----
 
 Automated tests are run using
 [CircleCI](https://circleci.com/gh/dcycle/realistic_dummy_content),
-[Docker](https://www.docker.com/products/docker), Drupal's Simpletest (which
-is being phased out because it's slow), and [PHPUnit](https://phpunit.de).
-Linting is being run for PHP and shell files.
+[Docker](https://www.docker.com/products/docker) and
+[PHPUnit](https://phpunit.de). Linting is being run for PHP and shell files.
 
 ### 3.x branch (default)
 
 [![CircleCI](https://circleci.com/gh/dcycle/realistic_dummy_content/tree/3.x.svg?style=svg)](https://circleci.com/gh/dcycle/realistic_dummy_content/tree/3.x)
+
+### Other branches
+
+Other branches are no longer actively supported.
 
 Best practices
 -----
