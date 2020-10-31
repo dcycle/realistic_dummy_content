@@ -1,0 +1,7 @@
+---
+services:
+  realistic_dummy_content_api.drush_commands:
+    class: >-
+      \Drupal\realistic_dummy_content_api\DrushCommands\RealisticDummyContentDrushCommands
+    tags:
+      - {name: drush.command}

@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Drush integration for the realistic_dummy_content_api module.
+ * Drush < 9 integration for the realistic_dummy_content_api module.
  */
 
 use Drupal\realistic_dummy_content_api\includes\RealisticDummyContentDrushLog;
@@ -22,6 +22,5 @@ function realistic_dummy_content_api_drush_command() {
  * Callback: Generates realistic content.
  */
 function drush_realistic_dummy_content_api_generate_realistic() {
-  module_load_include('php', 'realistic_dummy_content_api', 'src/includes/RealisticDummyContentDrushLog');
   realistic_dummy_content_api_apply_recipe(new RealisticDummyContentDrushLog());
 }

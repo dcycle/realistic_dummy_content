@@ -95,7 +95,9 @@ For Drupal 8:
 
     ./scripts/deploy.sh
 
-This will install a complete working development environment including a database. When you change any code, it will reflected in your environment in real time.
+This will install a complete working development environment including a database. When you change any code, it will reflected in your environment in real time. Once you are done with your local environment run:
+
+    ./scripts/destroy.sh
 
 Continuous integration and automated tests
 -----
