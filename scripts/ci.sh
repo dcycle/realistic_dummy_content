@@ -13,7 +13,7 @@ echo '=> Deploy a Drupal 8 environment.'
 echo '=> Drupal PHPUnit tests on required Drupal 8 environment.'
 ./scripts/php-unit-drupal.sh
 
-echo '=> Tests on Drupal 8 environment using drush 8 and drush 9.'
+echo '=> Tests on Drupal 8 environment using drush 8 and drush 10.'
 ./scripts/test-running-environment.sh
 ./scripts/test-running-environment-drush.sh drupal
 ./scripts/test-running-environment-drush.sh drupal8drush8
