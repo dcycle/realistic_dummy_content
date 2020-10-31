@@ -19,7 +19,7 @@ class RealisticDummyContentDrushCommands extends DrushCommands {
    *
    * @command realistic_dummy_content_api:generate-realistic
    * @aliases generate-realistic,grc
-   * @usage generate-realistic
+   * @usage realistic_dummy_content_api:generate-realistic
    *   Generates realistic dummy content by looking in each active module for a
    *   file called realistic_dummy_content/recipe/module_name.recipe.inc, which
    *   should contain a subclass of RealisticDummyContentRecipe called
