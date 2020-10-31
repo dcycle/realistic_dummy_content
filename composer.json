@@ -1,0 +1,18 @@
+{
+  "name": "drupal/realistic_dummy_content",
+  "description": "Generate realistic dummy content.",
+  "type": "drupal-module",
+  "autoload": {
+    "psr-4": {
+      "Drupal\\realistic_dummy_content\\": "src/",
+      "Drupal\\realistic_dummy_content_api\\": "api/src/"
+    }
+  },
+  "extra": {
+    "drush": {
+      "services": {
+        "drush.services.yml": "^9"
+      }
+    }
+  }
+}
