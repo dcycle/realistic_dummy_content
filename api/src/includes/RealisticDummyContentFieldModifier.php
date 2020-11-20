@@ -139,7 +139,7 @@ class RealisticDummyContentFieldModifier extends RealisticDummyContentEntityBase
       // yet have a custom modifier).
       return;
     }
-    // @TODO check if class is abstract
+    // @todo check if class is abstract
     elseif (class_exists($class)) {
       $modifier = new $class($this, $name);
     }

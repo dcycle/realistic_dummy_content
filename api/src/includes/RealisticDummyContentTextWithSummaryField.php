@@ -17,8 +17,8 @@ class RealisticDummyContentTextWithSummaryField extends RealisticDummyContentFie
    */
   public function implementValueFromFile($file) : array {
     $value = $file->Value();
-    // @TODO use the site's default, not Framework::instance()->filteredHtml(), as the
-    // default format.
+    // @todo use the site's default, not Framework::instance()->filteredHtml(),
+    // as the default format.
     $format = $file->Attribute('format', Framework::instance()->filteredHtml());
     // If the value cannot be determined, which is different from an empty
     // string.
