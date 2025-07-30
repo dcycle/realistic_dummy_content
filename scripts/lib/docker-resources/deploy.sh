@@ -19,7 +19,7 @@ do
   fi
 done
 
-drush si -y --db-url "mysqli://root:drupal@mysql/drupal"
+drush si -y --db-url="mysql://root:drupal@mysql/drupal"
 chown -R www-data:www-data /var/www/html/sites/default/files
 drush cr
 drush en -y realistic_dummy_content devel_generate

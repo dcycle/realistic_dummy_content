@@ -16,13 +16,9 @@ class RealisticDummyContentValueFieldTest extends TestCase {
    * Smoke test.
    */
   public function testSmoke() {
-    $object = $this->getMockBuilder(RealisticDummyContentValueField::class)
-      // NULL = no methods are mocked; otherwise list the methods here.
-      ->setMethods(NULL)
-      ->disableOriginalConstructor()
-      ->getMock();
-
-    $this->assertTrue(is_object($object));
+    $reflection = new \ReflectionClass(RealisticDummyContentValueField::class);
+    $object = $reflection->newInstanceWithoutConstructor();
+    $this->assertInstanceOf(RealisticDummyContentValueField::class, $object);
   }
 
 }

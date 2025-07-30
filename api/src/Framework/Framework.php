@@ -23,14 +23,14 @@ class Framework implements FrameworkInterface {
    *
    * @var mixed
    */
-  static private $testFlag;
+  private static $testFlag;
 
   /**
    * The Framework instance.
    *
    * @var mixed
    */
-  static private $instance;
+  private static $instance;
 
   /**
    * The Framework implementor.

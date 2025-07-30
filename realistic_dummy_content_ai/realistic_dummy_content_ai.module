@@ -1,0 +1,33 @@
+<?php
+
+/**
+ * @file
+ * Provides AI-generated images for realistic dummy content.
+ */
+
+use Drupal\realistic_dummy_content_api\Framework\Framework;
+
+/**
+ * Implements hook_help().
+ */
+function realistic_dummy_content_ai_help($route_name) {
+  switch ($route_name) {
+    case 'help.page.realistic_dummy_content_ai':
+      return '<p>' . t('Provides AI-generated content and images for realistic dummy content.') . '</p>';
+  }
+}
+
+/**
+ * Implements hook_realistic_dummy_content_attribute_manipulator_alter().
+ */
+function realistic_dummy_content_ai_realistic_dummy_content_attribute_manipulator_alter(&$class, &$info) {
+  $field_type = Framework::instance()->fieldTypeMachineName($info);
+  switch ($field_type) {
+    case 'string_long':
+    case 'text_long':
+    case 'text_with_summary':
+      $class = '\Drupal\realistic_dummy_content_ai\Includes\RealisticDummyContentAITextWithSummaryField';
+      break;
+  }
+
+}

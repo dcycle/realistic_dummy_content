@@ -1,26 +1,24 @@
 ---
 # This file is used by developers who use ./scripts/deploy.sh to set up a local
 # development environment to help with development this module.
-version: '2'
 
 services:
+
+  # We are splitting Nginx and Drupal, see
+  # https://blog.dcycle.com/blog/2022-03-25/php-apache-different-containers/
+  webserver:
+    build:
+      context: .
+      dockerfile: Dockerfile-nginx-only
+    depends_on:
+      - drupal
+    ports:
+      - "80"
+
   drupal:
     build:
       context: .
-      dockerfile: Dockerfile8
-    volumes:
-      - "sitesdefault:/var/www/html/sites/default"
-      - ".:/var/www/html/modules/custom/realistic_dummy_content"
-    ports:
-      - "80"
-    links:
-      - mysql:mysql
-    working_dir: /var/www/html
-
-  drupal8drush8:
-    build:
-      context: .
-      dockerfile: Dockerfile8drush8
+      dockerfile: Dockerfile11
     volumes:
       - "sitesdefault:/var/www/html/sites/default"
       - ".:/var/www/html/modules/custom/realistic_dummy_content"
@@ -31,7 +29,7 @@ services:
     working_dir: /var/www/html
 
   mysql:
-    image: mysql:5
+    image: mariadb
     environment:
       MYSQL_DATABASE: drupal
       MYSQL_ROOT_PASSWORD: drupal
@@ -45,5 +43,5 @@ volumes:
 # See https://github.com/docker/compose/issues/3736.
 networks:
   default:
-    external:
-      name: realistic_dummy_content_default
+    name: realistic_dummy_content_default
+    external: true

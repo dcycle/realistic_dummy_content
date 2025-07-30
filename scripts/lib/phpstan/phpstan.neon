@@ -7,5 +7,6 @@ parameters:
     - */realistic_dummy_content/phpunit-autoload.php
     - */realistic_dummy_content.recipe.inc
     - */realistic_dummy_content_api.drush.inc
+    - /var/www/html/core/tests/*
 includes:
   - /var/www/html/phpstan.neon

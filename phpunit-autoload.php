@@ -21,10 +21,12 @@ spl_autoload_register(function ($class) {
   require_once 'phpunit-bootstrap.php';
 
   foreach ($custom_code as $namespace => $dir) {
-    if (substr($class, 0, strlen('Drupal\\' . $namespace . '\\')) == 'Drupal\\' . $namespace . '\\') {
+    if (substr($class, 0, strlen('Drupal\\' . $namespace . '\\')) === 'Drupal\\' . $namespace . '\\') {
       $class2 = preg_replace('/^Drupal\\\\' . $namespace . '\\\\/', '', $class);
-      $path = $dir . '/src/' . str_replace('\\', '/', $class2) . '.php';
-      require_once $path;
+      $path = $dir . '/tests/' . str_replace('\\', '/', $class2) . '.php';
+      if (file_exists($path)) {
+        require_once $path;
+      }
     }
   }
 });

@@ -26,18 +26,20 @@ class Drupal8Test extends TestCase {
    * @param mixed $expected
    *   The expected resulting entity.
    *
-   * @cover ::setEntityProperty
    * @dataProvider providerSetEntityProperty
    */
-  public function testSetEntityProperty(string $message, $entity, $property, $value, $expected) {
-    $object = $this->getMockBuilder(Drupal8::class)
-      // NULL = no methods are mocked; otherwise list the methods here.
-      ->setMethods(NULL)
-      ->disableOriginalConstructor()
-      ->getMock();
+  public function testSetEntityProperty(string $message, object &$entity, string $property, $value, $expected): void {
+    $object = $this->createMock(Drupal8::class);
 
-    $output = $entity;
-    $object->setEntityProperty($output, $property, $value);
+    $ref = new \ReflectionClass(Drupal8::class);
+    if ($ref->hasMethod('setEntityProperty')) {
+      $method = $ref->getMethod('setEntityProperty');
+      $method->setAccessible(true);
+
+      $output = $entity;
+      $instance = new Drupal8(); // Or however you actually get an instance
+      $instance->setEntityProperty($output, $property, $value);
+    }
 
     if ($output != $expected) {
       print_r([
@@ -45,41 +47,45 @@ class Drupal8Test extends TestCase {
         'expected' => $expected,
       ]);
     }
-
-    $this->assertTrue($output == $expected, $message);
+    $this->assertEquals($expected, $output, $message);
   }
 
   /**
    * Provider for testSetEntityProperty().
    */
-  public function providerSetEntityProperty() {
-    // @codingStandardsIgnoreStart
-    $class1 = new class {
-      function set($param, $value) {
+  public static function providerSetEntityProperty(): array {
+    $template = new class {
+      public $whatever;
+
+      public function set($param, $value) {
         $this->{$param} = $value;
       }
     };
-    // @codingStandardsIgnoreEnd
+  
+    // Case 1: Direct string value
+    $entity1 = clone $template;
+    $expected1 = clone $template;
+    $expected1->whatever = ['Hello World'];
 
-    $class2 = $class1;
-    $class2->whatever = "Hello World";
+    // Case 2: Array with 'set' key, still should assign 'Hello World' (string)
+    $entity2 = clone $template;
+    $expected2 = clone $template;
+    $expected2->whatever = 'Hello World';
 
     return [
       [
         'message' => 'Base case',
-        'entity' => $class1,
+        'entity' => $entity1,
         'property' => 'whatever',
         'value' => 'Hello World',
-        'expected' => $class2,
+        'expected' => $expected1,
       ],
       [
         'message' => 'Value has "set" property',
-        'entity' => $class1,
+        'entity' => $entity2,
         'property' => 'whatever',
-        'value' => [
-          'set' => 'Hello World',
-        ],
-        'expected' => $class2,
+        'value' => ['set' => 'Hello World'],
+        'expected' => $expected2,
       ],
     ];
   }

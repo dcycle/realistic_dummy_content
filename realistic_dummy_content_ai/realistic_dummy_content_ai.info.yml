@@ -1,0 +1,10 @@
+---
+name: 'Realistic Dummy Content AI'
+type: module
+description: 'Overrides Realistic Dummy Content generation using the AI module.'
+core_version_requirement: ^10 | ^11
+package: Development
+dependencies:
+  - realistic_dummy_content_api
+  - ai
+  - token

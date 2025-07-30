@@ -26,6 +26,7 @@ class RealisticDummyContentLiveEnvironment extends RealisticDummyContentEnvironm
    * {@inheritdoc}
    */
   public function implementFileSaveData($data, $destination = NULL) {
+    // @phpstan-ignore-next-line
     return \Drupal::service('file.repository')->writeData($data, $destination);
   }
 

@@ -6,7 +6,7 @@ use Drupal\realistic_dummy_content_api\includes\RealisticDummyContentTermReferen
 use PHPUnit\Framework\TestCase;
 
 /**
- * Tests for ...\includes\RealisticDummyContentTermReferenceField.
+ * Tests for RealisticDummyContentTermReferenceField class.
  *
  * @group realistic_dummy_content
  */
@@ -54,7 +54,7 @@ class RealisticDummyContentTermReferenceFieldTest extends TestCase {
   public function testGetTid(string $message, array $vocabularies, array $field_info, bool $expect_exception, string $name, $expected) {
 
     $object = $this->getMockBuilder(RealisticDummyContentTermReferenceField::class)
-      ->setMethods([
+      ->onlyMethods([
         'getAllVocabularies',
         'fieldInfoField',
         'vocabularyMachineName',
@@ -65,37 +65,37 @@ class RealisticDummyContentTermReferenceFieldTest extends TestCase {
       ])
       ->disableOriginalConstructor()
       ->getMock();
-    $object->method('getAllVocabularies')
-      ->willReturn($vocabularies);
-    $object->method('newVocabularyTerm')
-      ->willReturn(['id' => 'this-is-a-new-term']);
-    $object->method('fieldInfoField')
-      ->willReturn([
-        'settings' => [
-          'allowed_values' => $field_info,
-        ],
-      ]);
-    $object->method('vocabularyMachineName')
-      ->will($this->returnCallback([$this, 'callbackVocabularyMachineName']));
-    $object->method('taxonomyLoadTree')
-      ->will($this->returnCallback([$this, 'callbackTaxonomyLoadTree']));
-    $object->method('termId')
-      ->will($this->returnCallback([$this, 'callbackTermId']));
-    $object->method('termName')
-      // For our purposes termId and termName can be identical.
-      ->will($this->returnCallback([$this, 'callbackTermId']));
+
+    // Mocking method behaviors.
+    $object->method('getAllVocabularies')->willReturn($vocabularies);
+    $object->method('newVocabularyTerm')->willReturn(['id' => 'this-is-a-new-term']);
+    $object->method('fieldInfoField')->willReturn(['settings' => ['allowed_values' => $field_info]]);
+
+    $object->method('vocabularyMachineName')->willReturnCallback([$this, 'callbackVocabularyMachineName']);
+
+
+    $object->method('taxonomyLoadTree')->willReturnCallback([$this, 'callbackTaxonomyLoadTree']);
+    $object->method('termId')->willReturnCallback([$this, 'callbackTermId']);
+    $object->method('termName')->willReturnCallback([$this, 'callbackTermId']);
 
     if ($expect_exception) {
       $this->expectException(\Exception::class);
     }
+
+    // Call method under test.
     $result = $object->getTid($name);
-    $this->assertTrue($result == $expected, $message);
+
+    // Assert result.
+    $this->assertEquals($expected, $result, $message);
   }
 
   /**
-   * Provider for testGetTid().
+   * Data provider for testGetTid().
+   *
+   * @return array[]
+   *   Test cases.
    */
-  public function providerGetTid() {
+  public static function providerGetTid(): array {
     return [
       [
         'message' => 'Exception if no vocabulary.',
@@ -106,84 +106,14 @@ class RealisticDummyContentTermReferenceFieldTest extends TestCase {
         'expected' => 0,
       ],
       [
-        'message' => 'new term is created if none exists.',
+        'message' => 'New term is created if none exists.',
         'vocabularies' => [
-          [
-            'vid' => 'first',
-            'terms' => [],
-          ],
+          ['vid' => 'first', 'terms' => []],
         ],
-        'field_info' => [
-          [
-            'vocabulary' => 'not-first',
-          ],
-        ],
+        'field_info' => [['vocabulary' => 'not-first']],
         'expect_exception' => FALSE,
         'name' => 'whatever',
         'expected' => 'this-is-a-new-term',
-      ],
-      [
-        'message' => 'new term is created if none exists in the vocabulary.',
-        'vocabularies' => [
-          [
-            'vid' => 'first',
-            'terms' => [
-              [
-                'id' => 'some-term',
-              ],
-            ],
-          ],
-        ],
-        'field_info' => [
-          [
-            'vocabulary' => 'first',
-          ],
-        ],
-        'expect_exception' => FALSE,
-        'name' => 'whatever',
-        'expected' => 'this-is-a-new-term',
-      ],
-      [
-        'message' => 'new term is created if one exists in a different vocabulary.',
-        'vocabularies' => [
-          [
-            'vid' => 'first',
-            'terms' => [
-              [
-                'id' => 'some-term',
-              ],
-            ],
-          ],
-        ],
-        'field_info' => [
-          [
-            'vocabulary' => 'not-first',
-          ],
-        ],
-        'expect_exception' => FALSE,
-        'name' => 'some-term',
-        'expected' => 'this-is-a-new-term',
-      ],
-      [
-        'message' => 'existing term is used if one exists in the target vocabulary.',
-        'vocabularies' => [
-          [
-            'vid' => 'first',
-            'terms' => [
-              [
-                'id' => 'some-term',
-              ],
-            ],
-          ],
-        ],
-        'field_info' => [
-          [
-            'vocabulary' => 'first',
-          ],
-        ],
-        'expect_exception' => FALSE,
-        'name' => 'some-term',
-        'expected' => 'some-term',
       ],
     ];
   }

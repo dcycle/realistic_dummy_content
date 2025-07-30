@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Used during continuous integration testing by the PHP Docker container -->
-<!-- called in ./developer/lib/unit.sh -->
-<phpunit bootstrap="phpunit-autoload.php">
+<phpunit bootstrap="phpunit-autoload.php"
+         colors="true"
+         verbose="true"
+         stopOnFailure="false">
   <testsuites>
     <testsuite name="realistic_dummy_content">
-      <directory>./api/tests</directory>
+      <directory suffix="Test.php">api/tests</directory>
     </testsuite>
   </testsuites>
 </phpunit>

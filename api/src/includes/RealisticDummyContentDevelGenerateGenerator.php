@@ -27,12 +27,18 @@ class RealisticDummyContentDevelGenerateGenerator extends RealisticDummyContentG
         'node_types' => [
           $this->getBundle() => $this->getBundle(),
         ],
-        'users' => [
+        'authors' => [
           1,
         ],
         'title_length' => 3,
+        "skip_fields" => [],
+        "base_fields" => [],
+        "add_type_label" => 0,
+        "add_alias" => 0,
+        "add_statistics" => TRUE,
       ]);
     }
+
     Framework::instance()->develGenerate($info);
   }
 

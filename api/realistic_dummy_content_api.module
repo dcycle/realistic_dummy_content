@@ -134,7 +134,12 @@ function realistic_dummy_content_api_realistic_dummy_content_attribute_manipulat
   switch (Framework::instance()->fieldTypeMachineName($info)) {
     case 'text_with_summary':
       // For example the body.
-      $class = '\Drupal\realistic_dummy_content_api\includes\RealisticDummyContentTextWithSummaryField';
+      // If realistic_dummy_content_ai module installed then generate then
+      // handle text generation from
+      // realistic_dummy_content_ai_realistic_dummy_content_attribute_manipulator_alter.
+      if (!\Drupal::moduleHandler()->moduleExists('realistic_dummy_content_ai')) {
+        $class = '\Drupal\realistic_dummy_content_api\includes\RealisticDummyContentTextWithSummaryField';
+      }
       break;
 
     case 'taxonomy_term_reference':

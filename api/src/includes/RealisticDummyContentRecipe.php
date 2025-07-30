@@ -89,7 +89,12 @@ abstract class RealisticDummyContentRecipe {
     if (!preg_match('/use Drupal*/s', $contents)) {
       throw new \Exception('As of the 2.x version you need to add the following line to the top of your recipe at ' . $fullpath . ': use Drupal\realistic_dummy_content_api\includes\RealisticDummyContentRecipe');
     }
-    return module_load_include('inc', $module, 'realistic_dummy_content/recipe/' . $module . '.recipe');
+
+    return \Drupal::moduleHandler()->loadInclude(
+      $module,
+      'inc',
+      'realistic_dummy_content/recipe/' . $module . '.recipe'
+    );
   }
 
   /**

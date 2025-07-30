@@ -181,6 +181,7 @@ abstract class RealisticDummyContentAttribute {
   public function getCandidateFiles() {
     $files = [];
     foreach (Framework::instance()->moduleList() as $module) {
+      // @phpstan-ignore-next-line
       $filepath = DRUPAL_ROOT . '/' . \Drupal::service('extension.path.resolver')->getPath('module', $module) . '/realistic_dummy_content/fields/' . $this->getEntityType() . '/' . $this->getBundle() . '/' . $this->getName();
       $files = array_merge($files, RealisticDummyContentEnvironment::getAllFileGroups($filepath, $this->getExtensions()));
     }

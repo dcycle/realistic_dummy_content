@@ -37,7 +37,7 @@ class MathTest extends TestCase {
   /**
    * Data provider for $this->testSequential().
    */
-  public function providerTestSequential() {
+  public static function providerTestSequential(): array {
     return [
       [0, 3, 'a', 0],
       [0, 3, 'a', 0],

@@ -1,0 +1,9 @@
+FROM nginx:alpine
+
+# Copy Nginx configuration file into the container
+COPY ./scripts/lib/docker-resources/nginx/default.conf /etc/nginx/conf.d/
+COPY --from=dcycle/drupal:11 /var/www/html /var/www/html
+
+# Expose the default HTTP port
+EXPOSE 80 443
+
